@@ -1,11 +1,13 @@
 package tafat.toolbox.statechart;
 
-public class Transition {
+import tafat.toolbox.Checker;
 
-    private final int from;
-    private final int to;
-    private Checker checker = () -> false;
-    private Action action = () -> {};
+public class Transition implements Checker {
+
+    final int from;
+    final int to;
+    Checker checker = () -> false;
+    Action action = () -> {};
 
     Transition(int from, int to) {
         this.from = from;
@@ -20,7 +22,7 @@ public class Transition {
         return to;
     }
 
-    boolean check(){
+    public boolean check(){
         return checker.check();
     }
 

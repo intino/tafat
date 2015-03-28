@@ -161,12 +161,69 @@ public class StateChartAccepted {
     public void should_transition_after_timeout() throws Exception {
         StateChart stateChart = new StateChart();
         stateChart.state(0).state(1).
-                from(0).to(1).timeout(() -> 45).action(() -> counter = 10);
-        stateChart.update();
+                from(0).to(1).timeout(() -> 60).action(() -> counter = 10);
+        stateChart.update(30);
+        assertEquals(0, counter);
+        stateChart.update(29);
+        assertEquals(0, counter);
+        stateChart.update(1);
         assertEquals(10, counter);
     }
 
-    // TODO DIFFERENT TYPES OF TRANSITIONS
-    // TODO STATES WITH STATECHARTS INSIDE
+    @Test
+    public void should_transition_three_times_with_timeouts() throws Exception {
+        StateChart stateChart = new StateChart();
+        stateChart.state(0).state(1).
+                from(0).to(1).timeout(() -> 20).action(() -> counter += 10).
+                from(1).to(0).timeout(() -> 20).action(() -> counter += 10);
+        stateChart.update(20);
+        stateChart.update(0);
+        assertEquals(10, counter);
+        stateChart.update(20);
+        stateChart.update(0);
+        assertEquals(20, counter);
+        stateChart.update(20);
+        stateChart.update(0);
+        assertEquals(30, counter);
+    }
 
+
+    @Test
+    public void should_transition_expected_times_per_unit() throws Exception {
+        int time = 0;
+        StateChart stateChart = new StateChart();
+        stateChart.state(0).state(1).
+                from(0).to(1).rate(3, 60).action(() -> counter += 10).
+                from(1).to(0).rate(3, 60).action(() -> counter += 10);
+        for (int i = 0; i < 40; i++, time++) {
+            stateChart.update(1);
+            if(counter == 10) break;
+        }
+        assertEquals(10, counter);
+        for (int i = 0; i < 40; i++, time++) {
+            stateChart.update(1);
+            if(counter == 20) break;
+        }
+        for (int i = 0; i < 40; i++, time++) {
+            stateChart.update(1);
+            if(counter == 30) break;
+        }
+        assertEquals(30, counter);
+    }
+
+    @Test
+    public void should_work_with_internal_state_charts() throws Exception {
+        StateChart stateChart = new StateChart();
+        stateChart.state(0).
+                state(1).with().state(2).state(3).
+                        from(2).to(3).timeout(() -> 10).action(() -> counter += 10).
+                        from(3).to(2).timeout(() -> 10).action(() -> counter += 10).end(). // end lo devuelve el otro
+                from(0).to(1).condition(() -> true);
+        stateChart.update();
+        assertEquals(0, counter);
+        stateChart.update(10);
+        assertEquals(10, counter);
+        stateChart.update(10);
+        assertEquals(20, counter);
+    }
 }

@@ -1,4 +1,4 @@
-package tafat.toolbox.statechart;
+package tafat.toolbox;
 
 public interface Checker {
 

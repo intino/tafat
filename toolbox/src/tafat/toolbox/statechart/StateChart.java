@@ -1,5 +1,10 @@
 package tafat.toolbox.statechart;
 
+import tafat.toolbox.Checker;
+import tafat.toolbox.timeout.RateFunction;
+import tafat.toolbox.timeout.Timeout;
+import tafat.toolbox.timeout.TimeoutFunction;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -8,25 +13,28 @@ public class StateChart {
 
     List<State> states = new ArrayList<>();
     List<Transition> transitions = new ArrayList<>();
-
+    StateChart parent;
     State state;
     String message = "";
+
+    public StateChart() {
+    }
+
+    private StateChart(StateChart stateChart) {
+        this.parent = stateChart;
+    }
 
     public int currentState() {
         return state.id();
     }
 
-    public void update() {
-        Optional<Transition> first = transitions.stream().filter(t -> t.from() == state.id() && t.check()).findFirst();
-        if(!first.isPresent()) return;
-        update(first.get());
+    public void update(){
+        update(0);
     }
 
-    private void update(Transition transition) {
-        state.out();
-        transition.action();
-        state = states.stream().filter(s -> s.id() == transition.to()).findFirst().get();
-        state.in();
+    public void update(long advancedTime) {
+        propagate(advancedTime);
+        checkTransitions();
     }
 
     public void receive(String message) {
@@ -38,6 +46,41 @@ public class StateChart {
         states.add(new State(id));
         if(states.size() == 1) state = states.get(0);
         return createStateTransaction();
+    }
+
+    private void propagate(long advancedTime) {
+        transitions.stream().filter(t -> t.checker instanceof Timeout && t.from == state.id()).
+                forEach(t -> ((Timeout) t.checker).step(advancedTime));
+        state.update(advancedTime);
+    }
+
+    private void checkTransitions() {
+        Optional<Transition> first = transitions.stream().filter(t -> t.from() == state.id() && t.check()).findFirst();
+        if(!first.isPresent()) return;
+        processTransition(first.get());
+        activeTransitions();
+    }
+
+    private void processTransition(Transition transition) {
+        state.out();
+        transition.action();
+        state = states.stream().filter(s -> s.id() == transition.to()).findFirst().get();
+        state.in();
+    }
+
+    private void activeTransitions() {
+        transitions.stream().filter(t -> t.checker instanceof Timeout && t.from == state.id()).
+                forEach(t -> ((Timeout) t.checker).activate());
+    }
+
+    private StateChart with() {
+        return new StateChart(this);
+    }
+
+    private StateChart end() {
+        if(parent == null) return this;
+        parent.states.get(parent.states.size() - 1).stateChart(this);
+        return parent;
     }
 
     private StateTransaction in(Action action) {
@@ -64,8 +107,8 @@ public class StateChart {
         return createDestinatedTransaction();
     }
 
-    private DefinedTransaction condition(Condition condition) {
-        transitions.get(transitions.size() - 1).check(condition::check);
+    private DefinedTransaction condition(Checker checker) {
+        transitions.get(transitions.size() - 1).check(checker::check);
         return createDefinedTransaction();
     }
 
@@ -74,7 +117,13 @@ public class StateChart {
         return createDefinedTransaction();
     }
 
-    private DefinedTransaction timeout(TimeoutTransitionCalculator calculator) {
+    private DefinedTransaction timeout(TimeoutFunction calculator) {
+        transitions.get(transitions.size() - 1).check(new Timeout(calculator));
+        return createDefinedTransaction();
+    }
+
+    private DefinedTransaction rate(int times, long period) {
+        transitions.get(transitions.size() - 1).check(new Timeout(new RateFunction(times, period)));
         return createDefinedTransaction();
     }
 
@@ -89,6 +138,11 @@ public class StateChart {
 
     private StateTransaction createStateTransaction() {
         return new StateTransaction() {
+            @Override
+            public StateChart end() {
+                return StateChart.this.end();
+            }
+
             @Override
             public StateTransaction in(Action action) {
                 return StateChart.this.in(action);
@@ -105,6 +159,11 @@ public class StateChart {
             }
 
             @Override
+            public StateChart with() {
+                return StateChart.this.with();
+            }
+
+            @Override
             public TransitionTransaction from(int id) {
                 return StateChart.this.from(id);
             }
@@ -118,8 +177,8 @@ public class StateChart {
     private DestinatedTransaction createDestinatedTransaction() {
         return new DestinatedTransaction() {
             @Override
-            public DefinedTransaction condition(Condition condition) {
-                return StateChart.this.condition(condition);
+            public DefinedTransaction condition(Checker checker) {
+                return StateChart.this.condition(checker);
             }
 
             @Override
@@ -128,14 +187,24 @@ public class StateChart {
             }
 
             @Override
-            public DefinedTransaction timeout(TimeoutTransitionCalculator calculator) {
+            public DefinedTransaction timeout(TimeoutFunction calculator) {
                 return StateChart.this.timeout(calculator);
+            }
+
+            @Override
+            public DefinedTransaction rate(int times, long period) {
+                return StateChart.this.rate(times, period);
             }
         };
     }
 
     private DefinedTransaction createDefinedTransaction() {
         return new DefinedTransaction() {
+            @Override
+            public StateChart end() {
+                return StateChart.this.end();
+            }
+
             @Override
             public DefinedTransaction action(Action action) {
                 return StateChart.this.action(action);
@@ -149,24 +218,31 @@ public class StateChart {
         };
     }
 
-    public interface StateTransaction {
+    public interface Transaction{
+        StateChart end();
+    }
+
+    public interface StateTransaction extends Transaction{
         StateTransaction in(Action action);
         StateTransaction out(Action action);
         StateTransaction state(int id);
+        StateChart with();
         TransitionTransaction from(int id);
+
     }
 
-    public interface TransitionTransaction {
+    public interface TransitionTransaction{
         DestinatedTransaction to(int id);
     }
 
-    public interface DestinatedTransaction {
-        DefinedTransaction condition(Condition condition);
+    public interface DestinatedTransaction{
+        DefinedTransaction condition(Checker checker);
         DefinedTransaction message(String message);
-        DefinedTransaction timeout(TimeoutTransitionCalculator calculator);
+        DefinedTransaction timeout(TimeoutFunction calculator);
+        DefinedTransaction rate(int times, long period);
     }
 
-    public interface DefinedTransaction {
+    public interface DefinedTransaction extends Transaction{
         DefinedTransaction action(Action action);
         TransitionTransaction from(int id);
     }
