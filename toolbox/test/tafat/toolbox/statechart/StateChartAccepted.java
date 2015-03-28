@@ -82,7 +82,21 @@ public class StateChartAccepted {
         assertEquals(10, stateChart.transitions.get(0).to());
     }
 
-    // TODO TRANSITION WITH FAKE STATES
+    @Test
+    public void should_reject_transition_with_invalid_state_at_from() throws Exception {
+        exception.expect(StateChartException.class);
+        exception.expectMessage("Transition has a non-existing from state: 1");
+        StateChart stateChart = new StateChart();
+        stateChart.state(0).state(10).from(1).to(10);
+    }
+
+    @Test
+    public void should_reject_transition_with_invalid_state_at_to() throws Exception {
+        exception.expect(StateChartException.class);
+        exception.expectMessage("Transition has a non-existing to state: 1");
+        StateChart stateChart = new StateChart();
+        stateChart.state(0).state(10).from(0).to(1);
+    }
 
     @Test
     public void should_transition_to_next_state() throws Exception {
@@ -94,11 +108,65 @@ public class StateChartAccepted {
     }
 
     @Test
-    public void api_state_chart_test() throws Exception {
+    public void should_execute_first_transition() throws Exception {
+        StateChart stateChart = new StateChart();
+        stateChart.state(0).state(10).
+                from(0).to(10).condition(() -> true).action(() -> counter = 5).
+                from(0).to(10).condition(() -> true).action(() -> counter = 20);
+        stateChart.update();
+        assertEquals(5, counter);
+    }
+
+    @Test
+    public void should_pass_reward_test() throws Exception {
         StateChart stateChart = new StateChart();
         stateChart.state(0).out(() -> counter++).state(1).in(() -> counter++).
                 from(0).to(1).condition(() -> counter == 0).action(() -> counter++);
         stateChart.update();
         assertEquals(3, counter);
     }
+
+    @Test
+    public void should_transition_when_receiving_a_message() throws Exception {
+        StateChart stateChart = new StateChart();
+        stateChart.state(0).out(() -> counter++).state(1).in(() -> counter++).
+                from(0).to(1).message("pass").action(() -> counter++);
+        stateChart.receive("pass");
+        stateChart.update();
+        assertEquals(3, counter);
+    }
+
+    @Test
+    public void should_not_transition_when_receiving_a_wrong_message() throws Exception {
+        StateChart stateChart = new StateChart();
+        stateChart.state(0).out(() -> counter++).state(1).in(() -> counter++).
+                from(0).to(1).message("pass").action(() -> counter++);
+        stateChart.receive("x");
+        stateChart.update();
+        assertEquals(0, counter);
+    }
+
+    @Test
+    public void should_transition_using_proper_message() throws Exception {
+        StateChart stateChart = new StateChart();
+        stateChart.state(0).state(1).
+                from(0).to(1).message("pass").action(() -> counter = 5).
+                from(0).to(1).message("pass2").action(() -> counter = 20);
+        stateChart.receive("pass2");
+        stateChart.update();
+        assertEquals(20, counter);
+    }
+
+    @Test
+    public void should_transition_after_timeout() throws Exception {
+        StateChart stateChart = new StateChart();
+        stateChart.state(0).state(1).
+                from(0).to(1).timeout(() -> 45).action(() -> counter = 10);
+        stateChart.update();
+        assertEquals(10, counter);
+    }
+
+    // TODO DIFFERENT TYPES OF TRANSITIONS
+    // TODO STATES WITH STATECHARTS INSIDE
+
 }

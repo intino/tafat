@@ -2,21 +2,24 @@ package tafat.toolbox.statechart;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class StateChart {
 
     List<State> states = new ArrayList<>();
     List<Transition> transitions = new ArrayList<>();
+
     State state;
+    String message = "";
 
     public int currentState() {
         return state.id();
     }
 
     public void update() {
-        Transition transition = transitions.stream().filter(t -> t.from() == state.id() && t.check()).findFirst().get();
-        if(transition == null) return;
-        update(transition);
+        Optional<Transition> first = transitions.stream().filter(t -> t.from() == state.id() && t.check()).findFirst();
+        if(!first.isPresent()) return;
+        update(first.get());
     }
 
     private void update(Transition transition) {
@@ -26,6 +29,10 @@ public class StateChart {
         state.in();
     }
 
+    public void receive(String message) {
+        this.message = message;
+    }
+
     public StateTransaction state(int id) {
         if(stateExists(id)) throw new StateChartException("State with identifier " + id + " has been already defined");
         states.add(new State(id));
@@ -33,12 +40,12 @@ public class StateChart {
         return createStateTransaction();
     }
 
-    public StateTransaction in(Action action) {
+    private StateTransaction in(Action action) {
         states.get(states.size() - 1).in(action);
         return createStateTransaction();
     }
 
-    public StateTransaction out(Action action) {
+    private StateTransaction out(Action action) {
         states.get(states.size() - 1).out(action);
         return createStateTransaction();
     }
@@ -46,21 +53,32 @@ public class StateChart {
     private int onGoingFrom;
 
     public TransitionTransaction from(int id) {
+        if(!stateExists(id)) throw new StateChartException("Transition has a non-existing from state: " + id);
         onGoingFrom = id;
         return createTransitionTransaction();
     }
 
-    public DestinatedTransaction to(int id) {
+    private DestinatedTransaction to(int id) {
+        if(!stateExists(id)) throw new StateChartException("Transition has a non-existing to state: " + id);
         transitions.add(new Transition(onGoingFrom, id));
         return createDestinatedTransaction();
     }
 
-    public DefinedTransaction condition(Condition condition) {
+    private DefinedTransaction condition(Condition condition) {
         transitions.get(transitions.size() - 1).check(condition::check);
         return createDefinedTransaction();
     }
 
-    public DefinedTransaction action(Action action) {
+    private DefinedTransaction message(String message) {
+        transitions.get(transitions.size() - 1).check(() -> this.message.equals(message));
+        return createDefinedTransaction();
+    }
+
+    private DefinedTransaction timeout(TimeoutTransitionCalculator calculator) {
+        return createDefinedTransaction();
+    }
+
+    private DefinedTransaction action(Action action) {
         transitions.get(transitions.size() - 1).action(action);
         return createDefinedTransaction();
     }
@@ -103,6 +121,16 @@ public class StateChart {
             public DefinedTransaction condition(Condition condition) {
                 return StateChart.this.condition(condition);
             }
+
+            @Override
+            public DefinedTransaction message(String message) {
+                return StateChart.this.message(message);
+            }
+
+            @Override
+            public DefinedTransaction timeout(TimeoutTransitionCalculator calculator) {
+                return StateChart.this.timeout(calculator);
+            }
         };
     }
 
@@ -118,10 +146,6 @@ public class StateChart {
                 return StateChart.this.from(id);
             }
 
-            @Override
-            public StateTransaction state(int id) {
-                return StateChart.this.state(id);
-            }
         };
     }
 
@@ -138,11 +162,12 @@ public class StateChart {
 
     public interface DestinatedTransaction {
         DefinedTransaction condition(Condition condition);
+        DefinedTransaction message(String message);
+        DefinedTransaction timeout(TimeoutTransitionCalculator calculator);
     }
 
     public interface DefinedTransaction {
         DefinedTransaction action(Action action);
         TransitionTransaction from(int id);
-        StateTransaction state(int id);
     }
 }
