@@ -24,7 +24,7 @@ public class StateChartAccepted {
         StateChart stateChart = new StateChart();
         stateChart.state(0);
         assertEquals(1, stateChart.states.size());
-        assertEquals(0, stateChart.states.get(0).id());
+        assertEquals(0, stateChart.states.get(0).id);
     }
 
     @Test
@@ -32,15 +32,15 @@ public class StateChartAccepted {
         StateChart stateChart = new StateChart();
         stateChart.state(0).state(3);
         assertEquals(2, stateChart.states.size());
-        assertEquals(0, stateChart.states.get(0).id());
-        assertEquals(3, stateChart.states.get(1).id());
+        assertEquals(0, stateChart.states.get(0).id);
+        assertEquals(3, stateChart.states.get(1).id);
     }
 
     @Test
     public void should_set_in_to_state() throws Exception {
         StateChart stateChart = new StateChart();
         stateChart.state(0).in(() -> counter++);
-        stateChart.states.get(0).in();
+        stateChart.states.get(0).in(stateChart);
         assertEquals(1, counter);
     }
 
@@ -49,9 +49,9 @@ public class StateChartAccepted {
         StateChart stateChart = new StateChart();
         stateChart.state(0).in(() -> counter++)
                 .state(1).in(() -> counter = 5);
-        stateChart.states.get(1).in();
+        stateChart.states.get(1).in(stateChart);
         assertEquals(5, counter);
-        stateChart.states.get(0).in();
+        stateChart.states.get(0).in(stateChart);
         assertEquals(6, counter);
     }
 
@@ -60,9 +60,9 @@ public class StateChartAccepted {
         StateChart stateChart = new StateChart();
         stateChart.state(0).out(() -> counter++)
                 .state(1).out(() -> counter = 5);
-        stateChart.states.get(1).out();
+        stateChart.states.get(1).out(stateChart);
         assertEquals(5, counter);
-        stateChart.states.get(0).out();
+        stateChart.states.get(0).out(stateChart);
         assertEquals(6, counter);
     }
 
@@ -78,8 +78,8 @@ public class StateChartAccepted {
         StateChart stateChart = new StateChart();
         stateChart.state(0).state(10).from(0).to(10);
         assertEquals(1, stateChart.transitions.size());
-        assertEquals(0, stateChart.transitions.get(0).from());
-        assertEquals(10, stateChart.transitions.get(0).to());
+        assertEquals(0, stateChart.transitions.get(0).from.id);
+        assertEquals(10, stateChart.transitions.get(0).to.id);
     }
 
     @Test
@@ -225,5 +225,42 @@ public class StateChartAccepted {
         assertEquals(10, counter);
         stateChart.update(10);
         assertEquals(20, counter);
+    }
+
+    private int power = 0;
+    @Test
+    public void should_work_with_washing_machine_state_chart() throws Exception {
+        StateChart stateChart = new StateChart();
+        int OFF = 0, ON = 1, HEATING = 2, WASHING = 3, DRYING = 4;
+        stateChart.
+                state(OFF).in(() -> power = 0).
+                state(ON).with().
+                    state(HEATING).in(() -> power = 1000).
+                    state(WASHING).in(() -> power = 500).
+                    state(DRYING).in(() -> power = 800).
+                    from(HEATING).to(WASHING).timeout(() -> 20).
+                    from(WASHING).to(DRYING).timeout(() -> 20).
+                    from(DRYING).to(OFF).timeout(() -> 20).end().
+                from(OFF).to(ON).message("ON");
+        //---------------------
+        assertEquals(0, power);
+        assertEquals(OFF, stateChart.currentState());
+
+        stateChart.receive("ON");
+        stateChart.update();
+        assertEquals(1000, power);
+        assertEquals(HEATING, stateChart.currentState());
+
+        stateChart.update(20);
+        assertEquals(500, power);
+        assertEquals(WASHING, stateChart.currentState());
+
+        stateChart.update(20);
+        assertEquals(800, power);
+        assertEquals(DRYING, stateChart.currentState());
+
+        stateChart.update(20);
+        assertEquals(0, power);
+        assertEquals(OFF, stateChart.currentState());
     }
 }

@@ -1,40 +1,30 @@
 package tafat.toolbox.statechart;
 
-public class State {
-    private final int id;
-    private Action in = () -> {};
-    private Action out = () -> {};
-    private StateChart stateChart = null;
+public class State extends StateChart {
+    final int id;
+    Action in = () -> {};
+    Action out = () -> {};
 
-    State(int id) {
+    State(int id, StateChart parent) {
+        super(parent);
         this.id = id;
     }
 
-    public int id() {
-        return id;
-    }
-
-    void in() {
+    void in(StateChart fromParent) {
+        if(parent instanceof State && parent != fromParent)
+            ((State)parent).in(fromParent);
         in.execute();
     }
 
-    void in(Action action) {
-        in = action;
-    }
-
-    void out() {
+    void out(StateChart toParent) {
         out.execute();
+        if(parent != null && parent != toParent)
+            ((State)parent).out(toParent);
     }
 
-    void out(Action action) {
-        out = action;
-    }
-
-    void stateChart(StateChart stateChart){
-        this.stateChart = stateChart;
-    }
-
-    public void update(long advancedTime) {
-        if(stateChart != null) stateChart.update(advancedTime);
+    @Override
+    public int currentState() {
+        if(state != null) return state.currentState();
+        return id;
     }
 }

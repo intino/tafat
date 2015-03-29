@@ -4,22 +4,14 @@ import tafat.toolbox.Checker;
 
 public class Transition implements Checker {
 
-    final int from;
-    final int to;
+    final State from;
+    final State to;
     Checker checker = () -> false;
     Action action = () -> {};
 
-    Transition(int from, int to) {
+    Transition(State from, State to) {
         this.from = from;
         this.to = to;
-    }
-
-    int from(){
-        return from;
-    }
-
-    int to(){
-        return to;
     }
 
     public boolean check(){

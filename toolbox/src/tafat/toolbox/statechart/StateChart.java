@@ -17,15 +17,14 @@ public class StateChart {
     State state;
     String message = "";
 
-    public StateChart() {
-    }
+    public StateChart() {}
 
-    private StateChart(StateChart stateChart) {
+    StateChart(StateChart stateChart) {
         this.parent = stateChart;
     }
 
     public int currentState() {
-        return state.id();
+        return state.currentState();
     }
 
     public void update(){
@@ -34,7 +33,7 @@ public class StateChart {
 
     public void update(long advancedTime) {
         propagate(advancedTime);
-        checkTransitions();
+        if (checkTransitions()) message = "";
     }
 
     public void receive(String message) {
@@ -42,68 +41,85 @@ public class StateChart {
     }
 
     public StateTransaction state(int id) {
-        if(stateExists(id)) throw new StateChartException("State with identifier " + id + " has been already defined");
-        states.add(new State(id));
+        if(findState(id) != null) throw new StateChartException("State with identifier " + id + " has been already defined");
+        states.add(new State(id, this));
         if(states.size() == 1) state = states.get(0);
         return createStateTransaction();
     }
 
     private void propagate(long advancedTime) {
-        transitions.stream().filter(t -> t.checker instanceof Timeout && t.from == state.id()).
+        transitions.stream().filter(t -> t.checker instanceof Timeout && t.from == state).
                 forEach(t -> ((Timeout) t.checker).step(advancedTime));
-        state.update(advancedTime);
+        if(state != null) state.update(advancedTime);
     }
 
-    private void checkTransitions() {
-        Optional<Transition> first = transitions.stream().filter(t -> t.from() == state.id() && t.check()).findFirst();
-        if(!first.isPresent()) return;
+    private boolean checkTransitions() {
+        Optional<Transition> first = transitions.stream().filter(t -> t.from == state && t.check()).findFirst();
+        if(!first.isPresent()) return false;
         processTransition(first.get());
-        activeTransitions();
+        return true;
     }
 
     private void processTransition(Transition transition) {
-        state.out();
+        state.out(transition.to.parent);
         transition.action();
-        state = states.stream().filter(s -> s.id() == transition.to()).findFirst().get();
-        state.in();
+        calculateState(transition);
     }
 
-    private void activeTransitions() {
-        transitions.stream().filter(t -> t.checker instanceof Timeout && t.from == state.id()).
+    private void calculateState(Transition transition) {
+        transition.to.in(state.parent);
+        if(transition.to.parent != this){
+            transition.to.parent.state = transition.to;
+            transition.to.parent.activate();
+            state = states.get(0);
+        }
+        else{
+            state = transition.to;
+            activate();
+        }
+    }
+
+    protected void activate() {
+        if(state.states.size() > 0){
+            state.state = state.states.get(0);
+            state.state.in.execute();
+            state.activate();
+        }
+        transitions.stream().filter(t -> t.checker instanceof Timeout && t.from == state).
                 forEach(t -> ((Timeout) t.checker).activate());
     }
 
     private StateChart with() {
-        return new StateChart(this);
+        State state = states.get(states.size() - 1);
+        state.parent = this;
+        return state;
     }
 
     private StateChart end() {
-        if(parent == null) return this;
-        parent.states.get(parent.states.size() - 1).stateChart(this);
-        return parent;
+        return parent != null ? parent : this;
     }
 
     private StateTransaction in(Action action) {
-        states.get(states.size() - 1).in(action);
+        states.get(states.size() - 1).in = action;
         return createStateTransaction();
     }
 
     private StateTransaction out(Action action) {
-        states.get(states.size() - 1).out(action);
+        states.get(states.size() - 1).out = action;
         return createStateTransaction();
     }
 
     private int onGoingFrom;
 
     public TransitionTransaction from(int id) {
-        if(!stateExists(id)) throw new StateChartException("Transition has a non-existing from state: " + id);
+        if(findState(id) == null) throw new StateChartException("Transition has a non-existing from state: " + id);
         onGoingFrom = id;
         return createTransitionTransaction();
     }
 
     private DestinatedTransaction to(int id) {
-        if(!stateExists(id)) throw new StateChartException("Transition has a non-existing to state: " + id);
-        transitions.add(new Transition(onGoingFrom, id));
+        if(findState(id) == null) throw new StateChartException("Transition has a non-existing to state: " + id);
+        transitions.add(new Transition(findState(onGoingFrom), findState(id)));
         return createDestinatedTransaction();
     }
 
@@ -132,8 +148,22 @@ public class StateChart {
         return createDefinedTransaction();
     }
 
-    private boolean stateExists(int id) {
-        return states.stream().filter(s -> s.id() == id).findFirst().isPresent();
+    protected State findState(int id) {
+        for (State state : allStates())
+            if (state.id == id) return state;
+        return null;
+    }
+
+    private List<State> allStates() {
+        if(parent != null) return parent.allStates();
+        List<State> states = new ArrayList<>();
+        for (State state : this.states) fillWithChild(state, states);
+        return states;
+    }
+
+    private void fillWithChild(State state, List<State> states) {
+        states.add(state);
+        for (State child : state.states) fillWithChild(child, states);
     }
 
     private StateTransaction createStateTransaction() {
