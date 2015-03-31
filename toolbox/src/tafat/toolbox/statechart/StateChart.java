@@ -1,5 +1,6 @@
 package tafat.toolbox.statechart;
 
+import tafat.toolbox.Action;
 import tafat.toolbox.Checker;
 import tafat.toolbox.timeout.RateFunction;
 import tafat.toolbox.timeout.Timeout;
@@ -11,51 +12,68 @@ import java.util.Optional;
 
 public class StateChart {
 
+    StateChart parent;
     List<State> states = new ArrayList<>();
     List<Transition> transitions = new ArrayList<>();
-    StateChart parent;
     State state;
     String message = "";
 
-    public StateChart() {}
+    private StateChart() {
+    }
+
+    public static StateChart define() {
+        return new StateChart();
+    }
 
     StateChart(StateChart stateChart) {
         this.parent = stateChart;
     }
 
-    public int currentState() {
+    public StateDefinition state(String id) {
+        if (stateExists(id)) throw new StateChartException("State include identifier " + id + " has been already defined");
+        states.add(new State(id, this));
+        if (states.size() == 1) state = states.get(0);
+        return new StateDefinition(this);
+    }
+
+    private StateChart commit(){
+        if(parent == null) resolveTransitions();
+        return this;
+    }
+
+    private void resolveTransitions() {
+        for (Transition transition : transitions)
+            tr
+    }
+
+    public String currentState() {
         return state.currentState();
     }
 
-    public void update(){
+    public void receive(String message) {
+        this.message = message;
+        if (state != null) state.receive(message);
+    }
+
+    public void update() {
         update(0);
     }
 
     public void update(long advancedTime) {
         propagate(advancedTime);
-        if (checkTransitions()) message = "";
-    }
-
-    public void receive(String message) {
-        this.message = message;
-    }
-
-    public StateTransaction state(int id) {
-        if(findState(id) != null) throw new StateChartException("State with identifier " + id + " has been already defined");
-        states.add(new State(id, this));
-        if(states.size() == 1) state = states.get(0);
-        return createStateTransaction();
+        while (checkTransitions()) if (parent != null && parent.state != this) break;
+        message = "";
     }
 
     private void propagate(long advancedTime) {
         transitions.stream().filter(t -> t.checker instanceof Timeout && t.from == state).
                 forEach(t -> ((Timeout) t.checker).step(advancedTime));
-        if(state != null) state.update(advancedTime);
+        if (state != null) state.update(advancedTime);
     }
 
     private boolean checkTransitions() {
         Optional<Transition> first = transitions.stream().filter(t -> t.from == state && t.check()).findFirst();
-        if(!first.isPresent()) return false;
+        if (!first.isPresent()) return false;
         processTransition(first.get());
         return true;
     }
@@ -67,213 +85,172 @@ public class StateChart {
     }
 
     private void calculateState(Transition transition) {
+        if (transition.to.parent != this) toOtherStateChart(transition);
+        else doTransition(transition);
         transition.to.in(state.parent);
-        if(transition.to.parent != this){
-            transition.to.parent.state = transition.to;
-            transition.to.parent.activate();
-            state = states.get(0);
-        }
-        else{
-            state = transition.to;
-            activate();
-        }
+    }
+
+    private void toOtherStateChart(Transition transition) {
+        transition.to.parent.doTransition(transition);
+        state = states.get(0);
+    }
+
+    private void doTransition(Transition transition) {
+        state = transition.to;
+        activate();
     }
 
     protected void activate() {
-        if(state.states.size() > 0){
-            state.state = state.states.get(0);
-            state.state.in.execute();
-            state.activate();
-        }
+        activateState(state);
         transitions.stream().filter(t -> t.checker instanceof Timeout && t.from == state).
                 forEach(t -> ((Timeout) t.checker).activate());
     }
 
-    private StateChart with() {
-        State state = states.get(states.size() - 1);
-        state.parent = this;
-        return state;
+    private void activateState(State state) {
+        if (state.states.size() > 0) {
+            state.state = state.states.get(0);
+            state.activate();
+        }
     }
 
-    private StateChart end() {
-        return parent != null ? parent : this;
+    private boolean stateExists(String id) {
+        return findState(id) != null;
     }
 
-    private StateTransaction in(Action action) {
-        states.get(states.size() - 1).in = action;
-        return createStateTransaction();
-    }
-
-    private StateTransaction out(Action action) {
-        states.get(states.size() - 1).out = action;
-        return createStateTransaction();
-    }
-
-    private int onGoingFrom;
-
-    public TransitionTransaction from(int id) {
-        if(findState(id) == null) throw new StateChartException("Transition has a non-existing from state: " + id);
-        onGoingFrom = id;
-        return createTransitionTransaction();
-    }
-
-    private DestinatedTransaction to(int id) {
-        if(findState(id) == null) throw new StateChartException("Transition has a non-existing to state: " + id);
-        transitions.add(new Transition(findState(onGoingFrom), findState(id)));
-        return createDestinatedTransaction();
-    }
-
-    private DefinedTransaction condition(Checker checker) {
-        transitions.get(transitions.size() - 1).check(checker::check);
-        return createDefinedTransaction();
-    }
-
-    private DefinedTransaction message(String message) {
-        transitions.get(transitions.size() - 1).check(() -> this.message.equals(message));
-        return createDefinedTransaction();
-    }
-
-    private DefinedTransaction timeout(TimeoutFunction calculator) {
-        transitions.get(transitions.size() - 1).check(new Timeout(calculator));
-        return createDefinedTransaction();
-    }
-
-    private DefinedTransaction rate(int times, long period) {
-        transitions.get(transitions.size() - 1).check(new Timeout(new RateFunction(times, period)));
-        return createDefinedTransaction();
-    }
-
-    private DefinedTransaction action(Action action) {
-        transitions.get(transitions.size() - 1).action(action);
-        return createDefinedTransaction();
-    }
-
-    protected State findState(int id) {
+    State findState(String id) {
         for (State state : allStates())
-            if (state.id == id) return state;
+            if (state.id.equals(id)) return state;
         return null;
     }
 
-    private List<State> allStates() {
-        if(parent != null) return parent.allStates();
+    List<State> allStates() {
+        if (parent != null) return parent.allStates();
         List<State> states = new ArrayList<>();
         for (State state : this.states) fillWithChild(state, states);
         return states;
     }
 
-    private void fillWithChild(State state, List<State> states) {
+    void fillWithChild(State state, List<State> states) {
         states.add(state);
         for (State child : state.states) fillWithChild(child, states);
     }
 
-    private StateTransaction createStateTransaction() {
-        return new StateTransaction() {
-            @Override
-            public StateChart end() {
-                return StateChart.this.end();
-            }
+    public class StateDefinition{
 
-            @Override
-            public StateTransaction in(Action action) {
-                return StateChart.this.in(action);
-            }
+        private final StateChart stateChart;
 
-            @Override
-            public StateTransaction out(Action action) {
-                return StateChart.this.out(action);
-            }
+        public StateDefinition(StateChart stateChart) {
+            this.stateChart = stateChart;
+        }
 
-            @Override
-            public StateTransaction state(int id) {
-                return StateChart.this.state(id);
-            }
+        public StateDefinition state(String id) {
+            stateChart.state(id);
+            return this;
+        }
 
-            @Override
-            public StateChart with() {
-                return StateChart.this.with();
-            }
+        public StateDefinition in(Action action) {
+            stateChart.states.get(stateChart.states.size() - 1).in = action;
+            return this;
+        }
 
-            @Override
-            public TransitionTransaction from(int id) {
-                return StateChart.this.from(id);
-            }
-        };
+        public StateDefinition out(Action action) {
+            stateChart.states.get(stateChart.states.size() - 1).out = action;
+            return this;
+        }
+
+        public StateDefinition include(StateChart newStateChart) {
+            stateChart.states.get(stateChart.states.size() - 1).states = newStateChart.states;
+            stateChart.states.get(stateChart.states.size() - 1).transitions = newStateChart.transitions;
+            stateChart.states.get(stateChart.states.size() - 1).state = newStateChart.state;
+            return this;
+        }
+
+        public PrevTransitionDefinition transition() {
+            return new PrevTransitionDefinition(stateChart);
+        }
+
+        public StateChart commit() {
+            return stateChart.commit();
+        }
     }
 
-    private TransitionTransaction createTransitionTransaction() {
-        return StateChart.this::to;
+    public class PrevTransitionDefinition {
+        private final StateChart stateChart;
+
+        public PrevTransitionDefinition(StateChart stateChart) {
+            this.stateChart = stateChart;
+        }
+
+        public TransitionDefinition from(String id) {
+            stateChart.transitions.add(new Transition());
+            stateChart.transitions.get(stateChart.transitions.size() - 1).fromString = id;
+            return new TransitionDefinition(stateChart);
+        }
     }
 
-    private DestinatedTransaction createDestinatedTransaction() {
-        return new DestinatedTransaction() {
-            @Override
-            public DefinedTransaction condition(Checker checker) {
-                return StateChart.this.condition(checker);
-            }
+    public class TransitionDefinition {
 
-            @Override
-            public DefinedTransaction message(String message) {
-                return StateChart.this.message(message);
-            }
+        private final StateChart stateChart;
 
-            @Override
-            public DefinedTransaction timeout(TimeoutFunction calculator) {
-                return StateChart.this.timeout(calculator);
-            }
+        public TransitionDefinition(StateChart stateChart) {
+            this.stateChart = stateChart;
+        }
 
-            @Override
-            public DefinedTransaction rate(int times, long period) {
-                return StateChart.this.rate(times, period);
-            }
-        };
-    }
-
-    private DefinedTransaction createDefinedTransaction() {
-        return new DefinedTransaction() {
-            @Override
-            public StateChart end() {
-                return StateChart.this.end();
-            }
-
-            @Override
-            public DefinedTransaction action(Action action) {
-                return StateChart.this.action(action);
-            }
-
-            @Override
-            public TransitionTransaction from(int id) {
-                return StateChart.this.from(id);
-            }
-
-        };
-    }
-
-    public interface Transaction{
-        StateChart end();
-    }
-
-    public interface StateTransaction extends Transaction{
-        StateTransaction in(Action action);
-        StateTransaction out(Action action);
-        StateTransaction state(int id);
-        StateChart with();
-        TransitionTransaction from(int id);
+        public DefinedTransitionDefinition to(String id) {
+            stateChart.transitions.get(stateChart.transitions.size() - 1).toString = id;
+            return new DefinedTransitionDefinition(stateChart);
+        }
 
     }
 
-    public interface TransitionTransaction{
-        DestinatedTransaction to(int id);
+    public class DefinedTransitionDefinition {
+
+        private final StateChart stateChart;
+
+        public DefinedTransitionDefinition(StateChart stateChart) {
+            this.stateChart = stateChart;
+        }
+
+        public FinishedTransitionDefinition condition(Checker checker) {
+            stateChart.transitions.get(stateChart.transitions.size() - 1).checker = checker::check;
+            return new FinishedTransitionDefinition(stateChart);
+        }
+
+        public FinishedTransitionDefinition message(String message) {
+            stateChart.transitions.get(stateChart.transitions.size() - 1).checker = (() -> stateChart.message.equals(message));
+            return new FinishedTransitionDefinition(stateChart);
+        }
+
+        public FinishedTransitionDefinition timeout(TimeoutFunction calculator) {
+            stateChart.transitions.get(stateChart.transitions.size() - 1).checker = new Timeout(calculator);
+            return new FinishedTransitionDefinition(stateChart);
+        }
+
+        public FinishedTransitionDefinition rate(int times, long period) {
+            stateChart.transitions.get(stateChart.transitions.size() - 1).checker = new Timeout(new RateFunction(times, period));
+            return new FinishedTransitionDefinition(stateChart);
+        }
     }
 
-    public interface DestinatedTransaction{
-        DefinedTransaction condition(Checker checker);
-        DefinedTransaction message(String message);
-        DefinedTransaction timeout(TimeoutFunction calculator);
-        DefinedTransaction rate(int times, long period);
-    }
+    public class FinishedTransitionDefinition {
 
-    public interface DefinedTransaction extends Transaction{
-        DefinedTransaction action(Action action);
-        TransitionTransaction from(int id);
+        private final StateChart stateChart;
+
+        public FinishedTransitionDefinition(StateChart stateChart) {
+            this.stateChart = stateChart;
+        }
+
+        public FinishedTransitionDefinition action(Action action) {
+            stateChart.transitions.get(stateChart.transitions.size() - 1).action = action;
+            return this;
+        }
+
+        public PrevTransitionDefinition transition() {
+            return new PrevTransitionDefinition(stateChart);
+        }
+
+        public StateChart stateChart() {
+            return stateChart.commit();
+        }
     }
 }

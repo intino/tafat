@@ -9,28 +9,26 @@ import static org.junit.Assert.assertEquals;
 
 public class StateChartAccepted {
 
-    private int counter;
+    private int value;
 
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
     @Before
     public void setUp() throws Exception {
-        counter = 0;
+        value = 0;
     }
 
     @Test
     public void should_store_state() throws Exception {
-        StateChart stateChart = new StateChart();
-        stateChart.state(0);
+        StateChart stateChart = StateChart.define().state("0").commit();
         assertEquals(1, stateChart.states.size());
         assertEquals(0, stateChart.states.get(0).id);
     }
 
     @Test
     public void should_store_states() throws Exception {
-        StateChart stateChart = new StateChart();
-        stateChart.state(0).state(3);
+        StateChart stateChart = StateChart.define().state("0").state("3").commit();
         assertEquals(2, stateChart.states.size());
         assertEquals(0, stateChart.states.get(0).id);
         assertEquals(3, stateChart.states.get(1).id);
@@ -38,45 +36,40 @@ public class StateChartAccepted {
 
     @Test
     public void should_set_in_to_state() throws Exception {
-        StateChart stateChart = new StateChart();
-        stateChart.state(0).in(() -> counter++);
+        StateChart stateChart = StateChart.define().state("0").in(() -> value++).commit();
         stateChart.states.get(0).in(stateChart);
-        assertEquals(1, counter);
+        assertEquals(1, value);
     }
 
     @Test
     public void should_set_correctly_different_ins_to_state() throws Exception {
-        StateChart stateChart = new StateChart();
-        stateChart.state(0).in(() -> counter++)
-                .state(1).in(() -> counter = 5);
+        StateChart stateChart = StateChart.define().state("0").in(() -> value++).state("1").in(() -> value = 5).commit();
         stateChart.states.get(1).in(stateChart);
-        assertEquals(5, counter);
+        assertEquals(5, value);
         stateChart.states.get(0).in(stateChart);
-        assertEquals(6, counter);
+        assertEquals(6, value);
     }
 
     @Test
     public void should_set_out_to_state() throws Exception {
-        StateChart stateChart = new StateChart();
-        stateChart.state(0).out(() -> counter++)
-                .state(1).out(() -> counter = 5);
+        StateChart stateChart = StateChart.define().state("0").out(() -> value++).state("1").out(() -> value = 5).commit();
         stateChart.states.get(1).out(stateChart);
-        assertEquals(5, counter);
+        assertEquals(5, value);
         stateChart.states.get(0).out(stateChart);
-        assertEquals(6, counter);
+        assertEquals(6, value);
     }
 
     @Test
     public void should_reject_state_with_same_id() throws Exception {
         exception.expect(StateChartException.class);
-        exception.expectMessage("State with identifier 0 has been already defined");
-        new StateChart().state(0).state(0);
+        exception.expectMessage("State include identifier 0 has been already defined");
+        StateChart.define().state("0").state("0");
     }
 
     @Test
     public void should_store_transition() throws Exception {
-        StateChart stateChart = new StateChart();
-        stateChart.state(0).state(10).from(0).to(10);
+        StateChart stateChart = StateChart.define().state("0").state("10").transition().
+                from("0").to("10").condition(() -> true).stateChart();
         assertEquals(1, stateChart.transitions.size());
         assertEquals(0, stateChart.transitions.get(0).from.id);
         assertEquals(10, stateChart.transitions.get(0).to.id);
@@ -86,22 +79,20 @@ public class StateChartAccepted {
     public void should_reject_transition_with_invalid_state_at_from() throws Exception {
         exception.expect(StateChartException.class);
         exception.expectMessage("Transition has a non-existing from state: 1");
-        StateChart stateChart = new StateChart();
-        stateChart.state(0).state(10).from(1).to(10);
+        StateChart.define().state("0").state("10").transition().from("1").to("10").condition(() -> true).stateChart();
     }
 
     @Test
     public void should_reject_transition_with_invalid_state_at_to() throws Exception {
         exception.expect(StateChartException.class);
         exception.expectMessage("Transition has a non-existing to state: 1");
-        StateChart stateChart = new StateChart();
-        stateChart.state(0).state(10).from(0).to(1);
+        StateChart.define().state("0").state("10").transition().from("0").to("1");
     }
 
     @Test
     public void should_transition_to_next_state() throws Exception {
-        StateChart stateChart = new StateChart();
-        stateChart.state(0).state(10).from(0).to(10).condition(() -> true);
+        StateChart stateChart = StateChart.define().state("0").state("10").
+                transition().from("0").to("10").condition(() -> true).stateChart();
         assertEquals(0, stateChart.currentState());
         stateChart.update();
         assertEquals(10, stateChart.currentState());
@@ -109,158 +100,191 @@ public class StateChartAccepted {
 
     @Test
     public void should_execute_first_transition() throws Exception {
-        StateChart stateChart = new StateChart();
-        stateChart.state(0).state(10).
-                from(0).to(10).condition(() -> true).action(() -> counter = 5).
-                from(0).to(10).condition(() -> true).action(() -> counter = 20);
+        StateChart stateChart = StateChart.define().state("0").state("10").
+                transition().from("0").to("10").condition(() -> true).action(() -> value = 5).
+                transition().from("0").to("10").condition(() -> true).action(() -> value = 20).stateChart();
         stateChart.update();
-        assertEquals(5, counter);
+        assertEquals(5, value);
     }
 
     @Test
     public void should_pass_reward_test() throws Exception {
-        StateChart stateChart = new StateChart();
-        stateChart.state(0).out(() -> counter++).state(1).in(() -> counter++).
-                from(0).to(1).condition(() -> counter == 0).action(() -> counter++);
+        StateChart stateChart = StateChart.define().state("0").out(() -> value++).state("1").in(() -> value++).
+                transition().from("0").to("1").condition(() -> value == 0).action(() -> value++).stateChart();
         stateChart.update();
-        assertEquals(3, counter);
+        assertEquals(3, value);
     }
 
     @Test
     public void should_transition_when_receiving_a_message() throws Exception {
-        StateChart stateChart = new StateChart();
-        stateChart.state(0).out(() -> counter++).state(1).in(() -> counter++).
-                from(0).to(1).message("pass").action(() -> counter++);
+        StateChart stateChart = StateChart.define().state("0").out(() -> value++).state("1").in(() -> value++).
+                transition().from("0").to("1").message("pass").action(() -> value++).stateChart();
         stateChart.receive("pass");
         stateChart.update();
-        assertEquals(3, counter);
+        assertEquals(3, value);
     }
 
     @Test
     public void should_not_transition_when_receiving_a_wrong_message() throws Exception {
-        StateChart stateChart = new StateChart();
-        stateChart.state(0).out(() -> counter++).state(1).in(() -> counter++).
-                from(0).to(1).message("pass").action(() -> counter++);
+        StateChart stateChart = StateChart.define().state("0").out(() -> value++).state("1").in(() -> value++).
+                transition().from("0").to("1").message("pass").action(() -> value++).stateChart();
         stateChart.receive("x");
         stateChart.update();
-        assertEquals(0, counter);
+        assertEquals(0, value);
     }
 
     @Test
     public void should_transition_using_proper_message() throws Exception {
-        StateChart stateChart = new StateChart();
-        stateChart.state(0).state(1).
-                from(0).to(1).message("pass").action(() -> counter = 5).
-                from(0).to(1).message("pass2").action(() -> counter = 20);
+        StateChart stateChart = StateChart.define().state("0").state("1").
+                transition().from("0").to("1").message("pass").action(() -> value = 5).
+                transition().from("0").to("1").message("pass2").action(() -> value = 20).stateChart();
         stateChart.receive("pass2");
         stateChart.update();
-        assertEquals(20, counter);
+        assertEquals(20, value);
     }
 
     @Test
     public void should_transition_after_timeout() throws Exception {
-        StateChart stateChart = new StateChart();
-        stateChart.state(0).state(1).
-                from(0).to(1).timeout(() -> 60).action(() -> counter = 10);
+        StateChart stateChart = StateChart.define().state("0").state("1").
+                transition().from("0").to("1").timeout(() -> 60).action(() -> value = 10).stateChart();
         stateChart.update(30);
-        assertEquals(0, counter);
+        assertEquals(0, value);
         stateChart.update(29);
-        assertEquals(0, counter);
+        assertEquals(0, value);
         stateChart.update(1);
-        assertEquals(10, counter);
+        assertEquals(10, value);
     }
 
     @Test
     public void should_transition_three_times_with_timeouts() throws Exception {
-        StateChart stateChart = new StateChart();
-        stateChart.state(0).state(1).
-                from(0).to(1).timeout(() -> 20).action(() -> counter += 10).
-                from(1).to(0).timeout(() -> 20).action(() -> counter += 10);
+        StateChart stateChart = StateChart.define().state("0").state("1").
+                transition().from("0").to("1").timeout(() -> 20).action(() -> value += 10).
+                transition().from("1").to("0").timeout(() -> 20).action(() -> value += 10).stateChart();
         stateChart.update(20);
         stateChart.update(0);
-        assertEquals(10, counter);
+        assertEquals(10, value);
         stateChart.update(20);
         stateChart.update(0);
-        assertEquals(20, counter);
+        assertEquals(20, value);
         stateChart.update(20);
         stateChart.update(0);
-        assertEquals(30, counter);
+        assertEquals(30, value);
     }
 
 
     @Test
     public void should_transition_expected_times_per_unit() throws Exception {
         int time = 0;
-        StateChart stateChart = new StateChart();
-        stateChart.state(0).state(1).
-                from(0).to(1).rate(3, 60).action(() -> counter += 10).
-                from(1).to(0).rate(3, 60).action(() -> counter += 10);
+        StateChart stateChart = StateChart.define().state("0").state("1").
+                transition().from("0").to("1").rate(3, 60).action(() -> value += 10).
+                transition().from("1").to("0").rate(3, 60).action(() -> value += 10).stateChart();
         for (int i = 0; i < 40; i++, time++) {
             stateChart.update(1);
-            if(counter == 10) break;
+            if (stateChart.currentState().equals("1")) break;
         }
-        assertEquals(10, counter);
+        assertEquals(10, value);
         for (int i = 0; i < 40; i++, time++) {
             stateChart.update(1);
-            if(counter == 20) break;
+            if (stateChart.currentState().equals("0")) break;
         }
+        assertEquals(20, value);
         for (int i = 0; i < 40; i++, time++) {
             stateChart.update(1);
-            if(counter == 30) break;
+            if (stateChart.currentState().equals("1")) break;
         }
-        assertEquals(30, counter);
+        assertEquals(30, value);
     }
 
     @Test
     public void should_work_with_internal_state_charts() throws Exception {
-        StateChart stateChart = new StateChart();
-        stateChart.state(0).
-                state(1).with().state(2).state(3).
-                        from(2).to(3).timeout(() -> 10).action(() -> counter += 10).
-                        from(3).to(2).timeout(() -> 10).action(() -> counter += 10).end(). // end lo devuelve el otro
-                from(0).to(1).condition(() -> true);
+        StateChart stateChart = StateChart.define().state("0").
+                state("1").include(
+                StateChart.define().state("2").state("3").
+                        transition().from("2").to("3").timeout(() -> 10).action(() -> value += 10).
+                        transition().from("3").to("2").timeout(() -> 10).action(() -> value += 10).stateChart()).
+                transition().from("0").to("1").condition(() -> true).stateChart();
         stateChart.update();
-        assertEquals(0, counter);
+        assertEquals(0, value);
         stateChart.update(10);
-        assertEquals(10, counter);
+        assertEquals(10, value);
         stateChart.update(10);
-        assertEquals(20, counter);
+        assertEquals(20, value);
     }
 
-    private int power = 0;
     @Test
     public void should_work_with_washing_machine_state_chart() throws Exception {
-        StateChart stateChart = new StateChart();
-        int OFF = 0, ON = 1, HEATING = 2, WASHING = 3, DRYING = 4;
-        stateChart.
-                state(OFF).in(() -> power = 0).
-                state(ON).with().
-                    state(HEATING).in(() -> power = 1000).
-                    state(WASHING).in(() -> power = 500).
-                    state(DRYING).in(() -> power = 800).
-                    from(HEATING).to(WASHING).timeout(() -> 20).
-                    from(WASHING).to(DRYING).timeout(() -> 20).
-                    from(DRYING).to(OFF).timeout(() -> 20).end().
-                from(OFF).to(ON).message("ON");
+        String OFF = "0", ON = "1", HEATING = "2", WASHING = "3", DRYING = "4";
+        StateChart stateChart = StateChart.define().
+                state(OFF).in(() -> value = 0).
+                state(ON).include(StateChart.define().
+                    state(HEATING).in(() -> value = 1000).
+                    state(WASHING).in(() -> value = 500).
+                    state(DRYING).in(() -> value = 800).
+                    transition().from(HEATING).to(WASHING).timeout(() -> 20).
+                    transition().from(WASHING).to(DRYING).timeout(() -> 20).
+                    transition().from(DRYING).to(OFF).timeout(() -> 20).stateChart()).
+                transition().from(OFF).to(ON).message("ON").stateChart();
         //---------------------
-        assertEquals(0, power);
+        assertEquals(0, value);
         assertEquals(OFF, stateChart.currentState());
 
         stateChart.receive("ON");
         stateChart.update();
-        assertEquals(1000, power);
+        assertEquals(1000, value);
         assertEquals(HEATING, stateChart.currentState());
 
         stateChart.update(20);
-        assertEquals(500, power);
+        assertEquals(500, value);
         assertEquals(WASHING, stateChart.currentState());
 
         stateChart.update(20);
-        assertEquals(800, power);
+        assertEquals(800, value);
         assertEquals(DRYING, stateChart.currentState());
 
         stateChart.update(20);
-        assertEquals(0, power);
+        assertEquals(0, value);
         assertEquals(OFF, stateChart.currentState());
+
+        stateChart.update(20);
+        assertEquals(0, value);
+        assertEquals(OFF, stateChart.currentState());
+    }
+
+    @Test
+    public void should_pass_state_chart_with_several_state_charts_inside() throws Exception {
+        String OFF = "0", TOTALLY_OFF = "0", WAKEABLE = "0", ON = "1", NORMAL = "0", CONTROLLED = "1", COOLING = "0", IDLE = "1";
+
+        StateChart stateChart = StateChart.define().
+                state(OFF).out(() -> value += 1).include(StateChart.define().
+                state(TOTALLY_OFF).in(() -> value += 2).out(() -> value += 2).
+                state(WAKEABLE).in(() -> value += 3).out(() -> value += 3).
+                transition().from(TOTALLY_OFF).to(WAKEABLE).message("WAKEABLE").
+                transition().from(WAKEABLE).to(TOTALLY_OFF).message("TOTALLY_OFF").stateChart()).
+                state(ON).in(() -> value += 4).out(() -> value += 4).include(StateChart.define().
+                state(NORMAL).in(() -> value += 6).out(() -> value += 6).include(StateChart.define().
+                state(COOLING).in(() -> value += 7).out(() -> value += 7).
+                state(IDLE).in(() -> value += 8).out(() -> value += 8).
+                transition().from(COOLING).to(IDLE).timeout(() -> 20).
+                transition().from(IDLE).to(COOLING).timeout(() -> 20).stateChart()).
+                state(CONTROLLED).in(() -> value += 5).out(() -> value += 5).
+                transition().from(CONTROLLED).to(NORMAL).message("CONTROL_OFF").
+                transition().from(NORMAL).to(CONTROLLED).message("CONTROL_ON").stateChart()).
+                transition().from(OFF).to(ON).message("ON").
+                transition().from(ON).to(OFF).message("OFF").stateChart();
+
+        //----------
+        stateChart.receive("WAKEABLE");
+        stateChart.update();
+        assertEquals(5, value);
+
+        stateChart.receive("TOTALLY_OFF");
+        stateChart.update();
+        assertEquals(10, value);
+
+        stateChart.receive("ON");
+        stateChart.update();
+        assertEquals(30, value);
+
+
     }
 }
