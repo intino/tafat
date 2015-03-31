@@ -6,18 +6,16 @@ import tafat.toolbox.timeout.RateFunction;
 import tafat.toolbox.timeout.Timeout;
 import tafat.toolbox.timeout.TimeoutFunction;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class StateChart {
 
     StateChart parent;
-    List<State> states = new ArrayList<>();
+    List<State> states = createStateList();
     List<Transition> transitions = new ArrayList<>();
+
     State state;
     String message = "";
-
     private StateChart() {
     }
 
@@ -30,20 +28,9 @@ public class StateChart {
     }
 
     public StateDefinition state(String id) {
-        if (stateExists(id)) throw new StateChartException("State include identifier " + id + " has been already defined");
-        states.add(new State(id, this));
+        if (!states.add(new State(id, this))) throw new StateChartException("State uses an identifier " + id + " that has been already defined");
         if (states.size() == 1) state = states.get(0);
         return new StateDefinition(this);
-    }
-
-    private StateChart commit(){
-        if(parent == null) resolveTransitions();
-        return this;
-    }
-
-    private void resolveTransitions() {
-        for (Transition transition : transitions)
-            tr
     }
 
     public String currentState() {
@@ -63,6 +50,11 @@ public class StateChart {
         propagate(advancedTime);
         while (checkTransitions()) if (parent != null && parent.state != this) break;
         message = "";
+    }
+
+    private StateChart commit() {
+        StateChartResolver.resolve(this);
+        return this;
     }
 
     private void propagate(long advancedTime) {
@@ -113,28 +105,6 @@ public class StateChart {
         }
     }
 
-    private boolean stateExists(String id) {
-        return findState(id) != null;
-    }
-
-    State findState(String id) {
-        for (State state : allStates())
-            if (state.id.equals(id)) return state;
-        return null;
-    }
-
-    List<State> allStates() {
-        if (parent != null) return parent.allStates();
-        List<State> states = new ArrayList<>();
-        for (State state : this.states) fillWithChild(state, states);
-        return states;
-    }
-
-    void fillWithChild(State state, List<State> states) {
-        states.add(state);
-        for (State child : state.states) fillWithChild(child, states);
-    }
-
     public class StateDefinition{
 
         private final StateChart stateChart;
@@ -169,7 +139,7 @@ public class StateChart {
             return new PrevTransitionDefinition(stateChart);
         }
 
-        public StateChart commit() {
+        public StateChart stateChart() {
             return stateChart.commit();
         }
     }
@@ -252,5 +222,22 @@ public class StateChart {
         public StateChart stateChart() {
             return stateChart.commit();
         }
+    }
+
+    private ArrayList<State> createStateList() {
+        return new ArrayList<State>(){
+            @Override
+            public boolean add(State state) {
+                return !contains(state) && super.add(state);
+            }
+
+            @Override
+            public boolean contains(Object object) {
+                for (State state : this)
+                    if(state.id.equals(((State) object).id))
+                        return true;
+                return false;
+            }
+        };
     }
 }

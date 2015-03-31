@@ -2,8 +2,10 @@ package tafat.toolbox.statechart;
 
 import tafat.toolbox.Action;
 
+import java.awt.*;
+
 public class State extends StateChart {
-    final String id;
+    String id;
     Action in = () -> {};
     Action out = () -> {};
 
@@ -38,5 +40,9 @@ public class State extends StateChart {
     public String currentState() {
         if(state != null) return state.currentState();
         return id;
+    }
+
+    public String shortId() {
+        return id.contains(".") ? id.substring(id.lastIndexOf(".") + 1) : id;
     }
 }

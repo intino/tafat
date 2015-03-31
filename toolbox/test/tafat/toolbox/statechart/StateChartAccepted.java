@@ -21,29 +21,29 @@ public class StateChartAccepted {
 
     @Test
     public void should_store_state() throws Exception {
-        StateChart stateChart = StateChart.define().state("0").commit();
+        StateChart stateChart = StateChart.define().state("0").stateChart();
         assertEquals(1, stateChart.states.size());
-        assertEquals(0, stateChart.states.get(0).id);
+        assertEquals("0", stateChart.states.get(0).id);
     }
 
     @Test
     public void should_store_states() throws Exception {
-        StateChart stateChart = StateChart.define().state("0").state("3").commit();
+        StateChart stateChart = StateChart.define().state("0").state("3").stateChart();
         assertEquals(2, stateChart.states.size());
-        assertEquals(0, stateChart.states.get(0).id);
-        assertEquals(3, stateChart.states.get(1).id);
+        assertEquals("0", stateChart.states.get(0).id);
+        assertEquals("3", stateChart.states.get(1).id);
     }
 
     @Test
     public void should_set_in_to_state() throws Exception {
-        StateChart stateChart = StateChart.define().state("0").in(() -> value++).commit();
+        StateChart stateChart = StateChart.define().state("0").in(() -> value++).stateChart();
         stateChart.states.get(0).in(stateChart);
         assertEquals(1, value);
     }
 
     @Test
     public void should_set_correctly_different_ins_to_state() throws Exception {
-        StateChart stateChart = StateChart.define().state("0").in(() -> value++).state("1").in(() -> value = 5).commit();
+        StateChart stateChart = StateChart.define().state("0").in(() -> value++).state("1").in(() -> value = 5).stateChart();
         stateChart.states.get(1).in(stateChart);
         assertEquals(5, value);
         stateChart.states.get(0).in(stateChart);
@@ -52,7 +52,7 @@ public class StateChartAccepted {
 
     @Test
     public void should_set_out_to_state() throws Exception {
-        StateChart stateChart = StateChart.define().state("0").out(() -> value++).state("1").out(() -> value = 5).commit();
+        StateChart stateChart = StateChart.define().state("0").out(() -> value++).state("1").out(() -> value = 5).stateChart();
         stateChart.states.get(1).out(stateChart);
         assertEquals(5, value);
         stateChart.states.get(0).out(stateChart);
@@ -62,7 +62,7 @@ public class StateChartAccepted {
     @Test
     public void should_reject_state_with_same_id() throws Exception {
         exception.expect(StateChartException.class);
-        exception.expectMessage("State include identifier 0 has been already defined");
+        exception.expectMessage("State uses an identifier 0 that has been already defined");
         StateChart.define().state("0").state("0");
     }
 
@@ -71,15 +71,16 @@ public class StateChartAccepted {
         StateChart stateChart = StateChart.define().state("0").state("10").transition().
                 from("0").to("10").condition(() -> true).stateChart();
         assertEquals(1, stateChart.transitions.size());
-        assertEquals(0, stateChart.transitions.get(0).from.id);
-        assertEquals(10, stateChart.transitions.get(0).to.id);
+        assertEquals("0", stateChart.transitions.get(0).from.id);
+        assertEquals("10", stateChart.transitions.get(0).to.id);
     }
 
     @Test
     public void should_reject_transition_with_invalid_state_at_from() throws Exception {
         exception.expect(StateChartException.class);
         exception.expectMessage("Transition has a non-existing from state: 1");
-        StateChart.define().state("0").state("10").transition().from("1").to("10").condition(() -> true).stateChart();
+        StateChart stateChart = StateChart.define().state("0").state("10").transition().from("1").to("10").condition(() -> true).stateChart();
+
     }
 
     @Test
