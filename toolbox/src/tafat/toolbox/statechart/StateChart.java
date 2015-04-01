@@ -10,6 +10,7 @@ import java.util.*;
 
 public class StateChart {
 
+    StateChartUpdater updater;
     StateChart parent;
     List<State> states = createStateList();
     List<Transition> transitions = new ArrayList<>();
@@ -17,15 +18,13 @@ public class StateChart {
     State state;
     Message message = new Message("");
 
-    private StateChart() {
-    }
-
     public static StateChart define() {
-        return new StateChart();
+        return new StateChart(null);
     }
 
     StateChart(StateChart stateChart) {
         this.parent = stateChart;
+        updater = new StateChartUpdater(this);
     }
 
     public StateDefinition state(String id) {
@@ -48,62 +47,12 @@ public class StateChart {
     }
 
     public void update(long advancedTime) {
-        propagate(advancedTime);
-        while (checkTransitions()) if (parent != null && parent.state != this) break;
-        this.message.content = "";
+        updater.update(advancedTime);
     }
 
     private StateChart commit() {
         StateChartResolver.resolve(this);
         return this;
-    }
-
-    private void propagate(long advancedTime) {
-        transitions.stream().filter(t -> t.checker instanceof Timeout && t.from == state).
-                forEach(t -> ((Timeout) t.checker).step(advancedTime));
-        if (state != null) state.update(advancedTime);
-    }
-
-    private boolean checkTransitions() {
-        Optional<Transition> first = transitions.stream().filter(t -> t.from == state && t.check()).findFirst();
-        if (!first.isPresent()) return false;
-        processTransition(first.get());
-        return true;
-    }
-
-    private void processTransition(Transition transition) {
-        state.out(transition.to.parent);
-        transition.action();
-        calculateState(transition);
-    }
-
-    private void calculateState(Transition transition) {
-        transition.to.in(state.parent);
-        if (transition.to.parent != this) toOtherStateChart(transition);
-        else doTransition(transition);
-    }
-
-    private void toOtherStateChart(Transition transition) {
-        transition.to.parent.doTransition(transition);
-        state = states.get(0);
-    }
-
-    private void doTransition(Transition transition) {
-        state = transition.to;
-        activate();
-    }
-
-    protected void activate() {
-        activateState(state);
-        transitions.stream().filter(t -> t.checker instanceof Timeout && t.from == state).
-                forEach(t -> ((Timeout) t.checker).activate());
-    }
-
-    private void activateState(State state) {
-        if (state.states.size() > 0) {
-            state.state = state.states.get(0);
-            state.activate();
-        }
     }
 
     public class StateDefinition{
