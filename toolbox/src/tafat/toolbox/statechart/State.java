@@ -3,6 +3,8 @@ package tafat.toolbox.statechart;
 import tafat.toolbox.Action;
 
 import java.awt.*;
+import java.util.*;
+import java.util.List;
 
 public class State extends StateChart {
     String id;
@@ -44,5 +46,10 @@ public class State extends StateChart {
 
     public String shortId() {
         return id.contains(".") ? id.substring(id.lastIndexOf(".") + 1) : id;
+    }
+
+    public void states(List<State> states) {
+        this.states = states;
+        this.states.forEach(s -> s.parent = this);
     }
 }

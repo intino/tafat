@@ -15,7 +15,8 @@ public class StateChart {
     List<Transition> transitions = new ArrayList<>();
 
     State state;
-    String message = "";
+    Message message = new Message("");
+
     private StateChart() {
     }
 
@@ -38,7 +39,7 @@ public class StateChart {
     }
 
     public void receive(String message) {
-        this.message = message;
+        this.message.content = message;
         if (state != null) state.receive(message);
     }
 
@@ -49,7 +50,7 @@ public class StateChart {
     public void update(long advancedTime) {
         propagate(advancedTime);
         while (checkTransitions()) if (parent != null && parent.state != this) break;
-        message = "";
+        this.message.content = "";
     }
 
     private StateChart commit() {
@@ -77,9 +78,9 @@ public class StateChart {
     }
 
     private void calculateState(Transition transition) {
+        transition.to.in(state.parent);
         if (transition.to.parent != this) toOtherStateChart(transition);
         else doTransition(transition);
-        transition.to.in(state.parent);
     }
 
     private void toOtherStateChart(Transition transition) {
@@ -129,9 +130,10 @@ public class StateChart {
         }
 
         public StateDefinition include(StateChart newStateChart) {
-            stateChart.states.get(stateChart.states.size() - 1).states = newStateChart.states;
+            stateChart.states.get(stateChart.states.size() - 1).states(newStateChart.states);
             stateChart.states.get(stateChart.states.size() - 1).transitions = newStateChart.transitions;
             stateChart.states.get(stateChart.states.size() - 1).state = newStateChart.state;
+            stateChart.states.get(stateChart.states.size() - 1).message = newStateChart.message;
             return this;
         }
 
@@ -187,7 +189,7 @@ public class StateChart {
         }
 
         public FinishedTransitionDefinition message(String message) {
-            stateChart.transitions.get(stateChart.transitions.size() - 1).checker = (() -> stateChart.message.equals(message));
+            stateChart.transitions.get(stateChart.transitions.size() - 1).checker = (() -> stateChart.message.content.equals(message));
             return new FinishedTransitionDefinition(stateChart);
         }
 

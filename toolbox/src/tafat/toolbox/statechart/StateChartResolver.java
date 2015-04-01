@@ -21,23 +21,22 @@ public class StateChartResolver {
 
     private static void resolveTransitions(StateChart stateChart, List<State> states) {
         stateChart.transitions.forEach(t -> {
-            t.from = findFromState(t.fromString, stateChart.states);
-            t.to = findToState(t.toString, states);
+            t.from = findStateInStateChart(t.fromString, stateChart);
+            if (t.from instanceof NullState) throw new StateChartException("Transition has a non-existing from state: " + t.fromString + ". From states in transition has to be inside the state chart where the transition is declared");
+            t.to = findToState(t.toString, stateChart);
         });
         stateChart.states.forEach(s -> resolveTransitions(s, states));
     }
 
-    private static State findFromState(String fromString, List<State> states) {
-        for (State state : states)
-            if (state.shortId().equals(fromString))
-                return state;
-        throw new StateChartException("From id");
+    private static State findStateInStateChart(String id, StateChart stateChart) {
+        return stateChart.states.stream().filter(s -> s.shortId().equals(id)).findFirst().orElse(NullState.create(id));
     }
 
-    static State findToState(String id, List<State> states) {
-        for (State state : states)
-            if (state.id.equals(id)) return state;
-        return null;
+    static State findToState(String id, StateChart stateChart) {
+        State state = findStateInStateChart(id, stateChart);
+        if(!(state instanceof NullState)) return state;
+        if(stateChart.parent != null) return findToState(id, stateChart.parent);
+        return state;
     }
 
     static List<State> allStates(StateChart stateChart) {
