@@ -2,8 +2,6 @@ package tafat.toolbox.statechart;
 
 import tafat.toolbox.Action;
 
-import java.awt.*;
-import java.util.*;
 import java.util.List;
 
 public class State extends StateChart {
@@ -16,40 +14,43 @@ public class State extends StateChart {
         this.id = id;
     }
 
-    void in(StateChart fromParent) {
-        if(parent == fromParent) doIn();
-        else if(parent != null && parent instanceof State) ((State)parent).in(fromParent);
-        else doIn();
-    }
-
-    private void doIn() {
-        in.execute();
-        if(state != null) state.doIn();
-    }
-
-    void out(StateChart toParent) {
-        if(state != null) state.out(toParent);
-        else doOut(toParent);
-    }
-
-    private void doOut(StateChart toParent) {
-        out.execute();
-        if(parent != null && parent != toParent && parent instanceof State)
-            ((State)parent).doOut(toParent);
-    }
-
     @Override
     public String currentState() {
-        if(state != null) return state.currentState();
+        if (state != null) return state.currentState();
         return id;
     }
 
-    public String shortId() {
+    String shortId() {
         return id.contains(".") ? id.substring(id.lastIndexOf(".") + 1) : id;
     }
 
-    public void states(List<State> states) {
+    @Override
+    void include(StateChart newStateChart) {
+        states(newStateChart.states);
+        transitions = newStateChart.transitions;
+        state = newStateChart.state;
+        message = newStateChart.message;
+    }
+
+    private void states(List<State> states) {
         this.states = states;
         this.states.forEach(s -> s.parent = this);
+    }
+
+    public static class Null extends State {
+
+        private Null(String id, StateChart stateChart) {
+            super(id, stateChart);
+            in = () -> {
+                throw new Exception("State " + id + " does not exist");
+            };
+            out = () -> {
+                throw new Exception("State " + id + " does not exist");
+            };
+        }
+
+        public static Null create(String id, StateChart stateChart) {
+            return new Null(id, stateChart);
+        }
     }
 }

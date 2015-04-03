@@ -13,7 +13,7 @@ public class StateChartAccepted {
     private int value;
 
     @Rule
-    public ExpectedException exception = ExpectedException.none();
+    public final ExpectedException exception = ExpectedException.none();
 
     @Before
     public void setUp() throws Exception {
@@ -38,31 +38,31 @@ public class StateChartAccepted {
     @Test
     public void should_set_in_to_state() throws Exception {
         StateChart stateChart = define().state("0").in(() -> value++).stateChart();
-        stateChart.states.get(0).in(stateChart);
+        stateChart.states.get(0).in.execute();
         assertEquals(1, value);
     }
 
     @Test
     public void should_set_correctly_different_ins_to_state() throws Exception {
         StateChart stateChart = define().state("0").in(() -> value++).state("1").in(() -> value = 5).stateChart();
-        stateChart.states.get(1).in(stateChart);
+        stateChart.states.get(1).in.execute();
         assertEquals(5, value);
-        stateChart.states.get(0).in(stateChart);
+        stateChart.states.get(0).in.execute();
         assertEquals(6, value);
     }
 
     @Test
     public void should_set_out_to_state() throws Exception {
         StateChart stateChart = define().state("0").out(() -> value++).state("1").out(() -> value = 5).stateChart();
-        stateChart.states.get(1).out(stateChart);
+        stateChart.states.get(1).out.execute();
         assertEquals(5, value);
-        stateChart.states.get(0).out(stateChart);
+        stateChart.states.get(0).out.execute();
         assertEquals(6, value);
     }
 
     @Test
     public void should_reject_state_with_same_id() throws Exception {
-        exception.expect(StateChartException.class);
+        exception.expect(StateChart.Exception.class);
         exception.expectMessage("State uses an identifier 0 that has been already defined");
         define().state("0").state("0");
     }
@@ -78,14 +78,14 @@ public class StateChartAccepted {
 
     @Test
     public void should_reject_transition_with_invalid_state_at_from() throws Exception {
-        exception.expect(StateChartException.class);
+        exception.expect(StateChart.Exception.class);
         exception.expectMessage("Transition has a non-existing from state: 1. From states in transition has to be inside the state chart where the transition is declared");
         define().state("0").state("10").transition().from("1").to("10").condition(() -> true).stateChart();
     }
 
     @Test
     public void should_reject_transition_with_invalid_state_at_to() throws Exception {
-        exception.expect(StateChartException.class);
+        exception.expect(StateChart.Exception.class);
         exception.expectMessage("State 1 does not exist");
         define().state("0").state("10").transition().from("0").to("1").condition(() -> true).stateChart().update();
     }
@@ -256,7 +256,7 @@ public class StateChartAccepted {
         String OFF = "0", TOTALLY_OFF = "0", WAKEABLE = "1", ON = "1", NORMAL = "0", CONTROLLED = "1", COOLING = "0", IDLE = "1";
 
         StateChart stateChart = define().
-                state(OFF).out(() -> value += 1).include(define().
+                state(OFF).in(() -> value += 1).out(() -> value += 1).include(define().
                     state(TOTALLY_OFF).in(() -> value += 2).out(() -> value += 2).
                     state(WAKEABLE).in(() -> value += 3).out(() -> value += 3).
                     transition().from(TOTALLY_OFF).to(WAKEABLE).message("WAKEABLE").
@@ -286,6 +286,42 @@ public class StateChartAccepted {
         stateChart.update();
         assertEquals(30, value);
 
+        stateChart.update(19);
+        assertEquals(30, value);
 
+        stateChart.update(20);
+        assertEquals(45, value);
+
+        stateChart.update(19);
+        assertEquals(45, value);
+
+        stateChart.update(20);
+        assertEquals(60, value);
+
+        stateChart.receive("CONTROL_ON");
+        stateChart.update(20);
+        assertEquals(94, value);
+
+        stateChart.receive("ON");
+        stateChart.update();
+        assertEquals(94, value);
+
+        stateChart.receive("OFF");
+        stateChart.update();
+        assertEquals(106, value);
     }
+
+    @Test
+    public void should_work_with_transitions_to_inner_state() throws Exception {
+        StateChart stateChart = define().
+                state("0").state("1").include(define().
+                    state("0").in(() -> value += 1).out(() -> value += 3).state("1").include(define().
+                        state("0").state("1").in(() -> value += 2).stateChart()).
+                    transition().from("0").to("1.1").condition(() -> true).action(() -> value += 20).stateChart()).
+                transition().from("0").to("1").condition(() -> true).action(() -> value += 20).stateChart();
+        stateChart.update();
+        assertEquals(46, value);
+    }
+
+    // TODO TRANSITIONS TO INNER STATE
 }

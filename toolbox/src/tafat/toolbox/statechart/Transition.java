@@ -5,18 +5,22 @@ import tafat.toolbox.Checker;
 
 public class Transition implements Checker {
 
-    String fromString;
-    String toString;
+    final String fromId;
+    String toId;
     State from;
     State to;
     Checker checker = () -> false;
     Action action = () -> {};
 
-    public boolean check(){
+    public Transition(String fromId) {
+        this.fromId = fromId;
+    }
+
+    public boolean check() {
         return checker.check();
     }
 
-    void action(){
+    void action() {
         action.execute();
     }
 
