@@ -1,7 +1,7 @@
 package tafat.toolbox.pointfunction.functions;
 
 import tafat.toolbox.pointfunction.Function;
-import tafat.toolbox.pointfunction.PointSet;
+import tafat.toolbox.pointset.PointSet;
 
 public class Linear implements Function {
 

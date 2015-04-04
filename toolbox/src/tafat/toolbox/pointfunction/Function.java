@@ -1,5 +1,7 @@
 package tafat.toolbox.pointfunction;
 
+import tafat.toolbox.pointset.PointSet;
+
 public interface Function {
 
     public void set(PointSet set);
