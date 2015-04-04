@@ -1,33 +1,27 @@
 package tafat.toolbox.statechart;
 
+import tafat.toolbox.Action;
 import tafat.toolbox.Checker;
 
 public class Transition implements Checker {
 
-    final State from;
-    final State to;
+    final String fromId;
+    String toId;
+    State from;
+    State to;
     Checker checker = () -> false;
     Action action = () -> {};
 
-    Transition(State from, State to) {
-        this.from = from;
-        this.to = to;
+    public Transition(String fromId) {
+        this.fromId = fromId;
     }
 
-    public boolean check(){
+    public boolean check() {
         return checker.check();
     }
 
-    void check(Checker checker){
-        this.checker = checker;
-    }
-
-    void action(){
+    void action() {
         action.execute();
-    }
-
-    void action(Action action){
-        this.action = action;
     }
 
 }
