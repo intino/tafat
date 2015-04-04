@@ -14,9 +14,22 @@ public class Definition {
         this.stateChart = stateChart;
     }
 
+    public static class Start extends Definition{
+
+        Start(StateChart stateChart) {
+            super(stateChart);
+        }
+
+        public State state(String id) {
+            stateChart.state(id);
+            return new State(stateChart);
+        }
+
+    }
+
     public static class State extends Definition {
 
-        public State(StateChart stateChart) {
+        State(StateChart stateChart) {
             super(stateChart);
         }
 

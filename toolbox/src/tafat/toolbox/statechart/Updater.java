@@ -40,15 +40,26 @@ class Updater {
 
     private static void processTransition(Transition transition, StateChart stateChart) {
         out(stateChart.state, transition.to.parent);
-        transition.action();
         doTransition(transition, transition.to.parent);
         in(transition.to, stateChart.state.parent);
     }
 
+    private static void out(State state, StateChart toParent) {
+        if (state.state != null) out(state.state, toParent);
+        else doOut(state, toParent);
+    }
+
     private static void doTransition(Transition transition, StateChart stateChart) {
+        transition.action();
         stateChart.state = transition.to;
         updateParentsState(transition.to);
         activate(stateChart);
+    }
+
+    private static void in(State state, StateChart fromParent) {
+        if (state.parent == fromParent) doIn(state);
+        else if (state.parent != null && state.parent instanceof State) in(((State) state.parent),fromParent);
+        else doIn(state);
     }
 
     private static void updateParentsState(StateChart stateChart) {
@@ -58,7 +69,11 @@ class Updater {
     }
 
     private static void activate(StateChart stateChart) {
+        activateTransitions(stateChart);
         activateState(stateChart.state);
+    }
+
+    private static void activateTransitions(StateChart stateChart) {
         stateChart.transitions.stream().filter(t -> t.checker instanceof Timeout && t.from == stateChart.state).
                 forEach(t -> ((Timeout) t.checker).activate());
     }
@@ -68,17 +83,6 @@ class Updater {
             state.state = state.states.get(0);
             activate(state);
         }
-    }
-
-    private static void in(State state, StateChart fromParent) {
-        if (state.parent == fromParent) doIn(state);
-        else if (state.parent != null && state.parent instanceof State) in(((State) state.parent),fromParent);
-        else doIn(state);
-    }
-
-    private static void out(State state, StateChart toParent) {
-        if (state.state != null) out(state.state, toParent);
-        else doOut(state, toParent);
     }
 
     private static void doIn(State state) {

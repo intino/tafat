@@ -262,14 +262,14 @@ public class StateChartAccepted {
                     transition().from(TOTALLY_OFF).to(WAKEABLE).message("WAKEABLE").
                     transition().from(WAKEABLE).to(TOTALLY_OFF).message("TOTALLY_OFF").stateChart()).
                 state(ON).in(() -> value += 4).out(() -> value += 4).include(define().
-                    state(NORMAL).in(() -> value += 6).out(() -> value += 6).include(define().
-                        state(COOLING).in(() -> value += 7).out(() -> value += 7).
-                        state(IDLE).in(() -> value += 8).out(() -> value += 8).
-                        transition().from(COOLING).to(IDLE).timeout(() -> 20).
-                        transition().from(IDLE).to(COOLING).timeout(() -> 20).stateChart()).
-                    state(CONTROLLED).in(() -> value += 5).out(() -> value += 5).
-                    transition().from(CONTROLLED).to(NORMAL).message("CONTROL_OFF").
-                    transition().from(NORMAL).to(CONTROLLED).message("CONTROL_ON").stateChart()).
+                state(NORMAL).in(() -> value += 6).out(() -> value += 6).include(define().
+                state(COOLING).in(() -> value += 7).out(() -> value += 7).
+                state(IDLE).in(() -> value += 8).out(() -> value += 8).
+                transition().from(COOLING).to(IDLE).timeout(() -> 20).
+                transition().from(IDLE).to(COOLING).timeout(() -> 20).stateChart()).
+                state(CONTROLLED).in(() -> value += 5).out(() -> value += 5).
+                transition().from(CONTROLLED).to(NORMAL).message("CONTROL_OFF").
+                transition().from(NORMAL).to(CONTROLLED).message("CONTROL_ON").stateChart()).
                 transition().from(OFF).to(ON).message("ON").
                 transition().from(ON).to(OFF).message("OFF").stateChart();
 
@@ -323,5 +323,20 @@ public class StateChartAccepted {
         assertEquals(46, value);
     }
 
-    // TODO TRANSITIONS TO INNER STATE
+    @Test
+    public void should_work_with_transitions_to_outer_state() throws Exception {
+        StateChart stateChart = define().
+                state("a").in(() -> value += 15).state("b").include(define().
+                    state("c").in(() -> value += 5).state("d").in(() -> value += 20).
+                    transition().from("c").to("d").timeout(() -> 20).
+                    transition().from("d").to("a").condition(() -> true).stateChart()).
+                transition().from("a").to("b").condition(() -> true).stateChart();
+        stateChart.update();
+        assertEquals(5, value);
+        stateChart.update();
+        assertEquals(5, value);
+        stateChart.update(20);
+        assertEquals(45, value);
+    }
+
 }

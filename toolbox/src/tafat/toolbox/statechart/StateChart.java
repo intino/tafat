@@ -18,15 +18,14 @@ public class StateChart {
         this.parent = stateChart;
     }
 
-    public static StateChart define() {
-        return new StateChart(null);
+    public static Definition.Start define() {
+        return new Definition.Start(new StateChart(null));
     }
 
-    public Definition.State state(String id) {
+    void state(String id) {
         if (stateExists(id))
             throw new Exception("State uses an identifier " + id + " that has been already defined");
         addState(id);
-        return new Definition.State(this);
     }
 
     public String currentState() {
@@ -95,7 +94,7 @@ public class StateChart {
         return transitions.get(transitions.size() - 1);
     }
 
-    public static class Message {
+    static class Message {
         String content = "";
     }
 
