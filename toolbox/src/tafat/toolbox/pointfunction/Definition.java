@@ -1,5 +1,7 @@
 package tafat.toolbox.pointfunction;
 
+import tafat.toolbox.pointset.PointSet;
+
 public abstract class Definition {
 
     protected final PointFunction function;
@@ -8,7 +10,7 @@ public abstract class Definition {
         this.function = function;
     }
 
-    static class Interpolation extends Definition{
+    public static class Interpolation extends Definition{
 
         Interpolation(PointFunction pointFunction) {
             super(pointFunction);
@@ -19,14 +21,13 @@ public abstract class Definition {
             return new Extrapolation(function);
         }
 
-        public Extrapolation errorInterpolation() {
-            function.errorInterpolation();
-            return new Extrapolation(function);
+        public PointFunction using(PointSet set) {
+            function.using(set);
+            return function;
         }
-
     }
 
-    static class Extrapolation extends Definition{
+    public static class Extrapolation extends Definition{
 
         Extrapolation(PointFunction function) {
             super(function);
@@ -37,17 +38,21 @@ public abstract class Definition {
             return new Using(function);
         }
 
-        public Using errorExtrapolation() {
-            function.errorExtrapolation();
-            return new Using(function);
+        public PointFunction using(PointSet set) {
+            function.using(set);
+            return function;
         }
-
     }
 
-    static class Using extends Definition{
+    public static class Using extends Definition{
 
         Using(PointFunction function) {
             super(function);
+        }
+
+        public PointFunction using(PointSet set) {
+            function.using(set);
+            return function;
         }
     }
 }

@@ -4,9 +4,7 @@ import tafat.toolbox.pointfunction.Function;
 import tafat.toolbox.pointset.Point;
 import tafat.toolbox.pointset.PointSet;
 
-import java.util.Collections;
-
-public class Linear implements Function {
+public class LinearOut implements Function {
 
     private PointSet set;
 
@@ -18,9 +16,9 @@ public class Linear implements Function {
 
     @Override
     public double y(double x) {
-        int index = Collections.binarySearch(set, new Point(x), (p1, p2) -> Double.compare(p1.x(), p2.x()));
-        if(index >= 0) return set.get(index).y();
-        return interpolateY(x, set.get(-(index+2)), set.get(-(index+1)));
+        return x < set.first().x() ?
+                interpolateY(x, set.first(), set.get(1)) :
+                interpolateY(x, set.get(set.size() - 2), set.last());
     }
 
     private double interpolateY(double x, Point p1, Point p2) {

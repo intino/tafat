@@ -1,11 +1,11 @@
 package tafat.toolbox.pointset;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 
-public class PointSet {
+public class PointSet extends ArrayList<Point> {
 
-    private List<Point> points = new ArrayList<>();
+    private boolean sorted = false;
 
     private PointSet() {
     }
@@ -14,48 +14,40 @@ public class PointSet {
         return new Definition.Start(new PointSet());
     }
 
-    public Point get(int index) {
-        return points.get(index);
+    public PointSet point(double x, double y) {
+        add(new Point(x, y));
+        sorted = false;
+        return this;
     }
 
-    public PointSet point(double x, double y) {
-        points.add(new Point(x, y));
-        return this;
+    public Point first() {
+        return get(0);
+    }
+
+    public Point last() {
+        return get(size() - 1);
+    }
+
+    public void sort(){
+        Collections.sort(this, (o1, o2) -> Double.compare(o1.x, o2.x));
+        sorted = true;
+    }
+
+    public boolean isSorted() {
+        return sorted;
     }
 
     void x(double... values) {
         for (double value : values)
-            points.add(new Point(value));
+            add(new Point(value));
+        sorted = false;
     }
 
     void y(double... values) {
-        if (values.length != points.size())
+        if (values.length != size())
             throw new Exception("X and Y coordinates do not have same size");
         for (int i = 0; i < values.length; i++)
-            points.get(i).y = values[i];
-    }
-
-    public static class Point {
-
-        double x;
-        double y;
-
-        public Point(double x) {
-            this.x = x;
-        }
-
-        public Point(double x, double y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        public double x() {
-            return x;
-        }
-
-        public double y() {
-            return y;
-        }
+            get(i).y = values[i];
     }
 
     public class Exception extends RuntimeException{
@@ -63,4 +55,5 @@ public class PointSet {
             super(message);
         }
     }
+
 }

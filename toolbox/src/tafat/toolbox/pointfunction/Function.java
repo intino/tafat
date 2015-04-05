@@ -6,6 +6,6 @@ public interface Function {
 
     public void set(PointSet set);
 
-    public double getY(double x);
+    public double y(double x) throws PointFunction.Exception;
 
 }

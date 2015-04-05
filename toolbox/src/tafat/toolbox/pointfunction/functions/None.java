@@ -1,12 +1,13 @@
 package tafat.toolbox.pointfunction.functions;
 
 import tafat.toolbox.pointfunction.Function;
+import tafat.toolbox.pointfunction.PointFunction;
 import tafat.toolbox.pointset.Point;
 import tafat.toolbox.pointset.PointSet;
 
 import java.util.Collections;
 
-public class Linear implements Function {
+public class None implements Function {
 
     private PointSet set;
 
@@ -17,14 +18,10 @@ public class Linear implements Function {
     }
 
     @Override
-    public double y(double x) {
+    public double y(double x) throws PointFunction.Exception {
         int index = Collections.binarySearch(set, new Point(x), (p1, p2) -> Double.compare(p1.x(), p2.x()));
         if(index >= 0) return set.get(index).y();
-        return interpolateY(x, set.get(-(index+2)), set.get(-(index+1)));
-    }
-
-    private double interpolateY(double x, Point p1, Point p2) {
-        return ((x - p1.x()) * (p2.y() - p1.y()) / (p2.x() - p1.x())) + p1.y();
+        throw new PointFunction.Exception("Value " + x + " cannot be interpolated with none interpolation. Please define an interpolator");
     }
 
 }
