@@ -20,8 +20,9 @@ abstract class Definition {
             return new Y(pointSet);
         }
 
-        public PointSet point(double x, double y) {
-            return pointSet.point(x, y);
+        public Point point(double x, double y) {
+            pointSet.point(x, y);
+            return new Point(pointSet);
         }
 
     }
@@ -32,11 +33,35 @@ abstract class Definition {
             super(pointSet);
         }
 
-        public PointSet y(double... values) {
+        public Finished y(double... values) {
             pointSet.y(values);
-            return pointSet;
+            return new Finished(pointSet);
+        }
+
+
+    }
+
+    public static class Point extends Finished{
+
+        public Point(PointSet pointSet) {
+            super(pointSet);
+        }
+        public Point point(double x, double y) {
+            pointSet.point(x, y);
+            return this;
         }
 
     }
 
+    public static class Finished extends Definition{
+
+        public Finished(PointSet pointSet) {
+            super(pointSet);
+        }
+
+        public PointSet pointSet() {
+            pointSet.commit();
+            return pointSet;
+        }
+    }
 }

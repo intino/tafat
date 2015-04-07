@@ -14,7 +14,7 @@ public class PointSetAccepted {
 
     @Test
     public void should_accept_x_and_y_definition() throws Exception {
-        PointSet set = define().x(1, 2, 3, 4, 5).y(1, 2, 3, 4, 5);
+        PointSet set = define().x(1, 2, 3, 4, 5).y(1, 2, 3, 4, 5).pointSet();
 
         assertEquals(1.0, set.get(0).x());
         assertEquals(1.0, set.get(0).y());
@@ -28,7 +28,7 @@ public class PointSetAccepted {
 
     @Test
     public void should_accept_points_definition() throws Exception {
-        PointSet set = define().point(1, 1).point(2, 2).point(3, 3).point(4, 4).point(5, 5);
+        PointSet set = define().point(1, 1).point(2, 2).point(3, 3).point(4, 4).point(5, 5).pointSet();
 
         assertEquals(1.0, set.get(0).x());
         assertEquals(1.0, set.get(0).y());
