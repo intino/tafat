@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Engine/Engine.iml" filepath="$PROJECT_DIR$/Engine/Engine.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SmartCities/SmartCities.iml" filepath="$PROJECT_DIR$/SmartCities/SmartCities.iml" />
       <module fileurl="file://$PROJECT_DIR$/toolbox/toolbox.iml" filepath="$PROJECT_DIR$/toolbox/toolbox.iml" />
     </modules>
   </component>

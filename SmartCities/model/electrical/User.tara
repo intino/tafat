@@ -16,6 +16,8 @@ Behavior Electrical &000.001
 		Job DvdPlayerOff > StartAction(N9)
 		Job HairdryerOn > StartAction(N8)
 		Job HairdryerOff > StartAction(N9)
+		Job IronOn > StartAction(N9)
+		Job IronOff > StartAction(N9)
 		Job LightsOn > StartAction(N0)
 		Job LightsOff > StartAction(N1)
 		Job TvOn > StartAction(N6)
@@ -32,6 +34,7 @@ Behavior Electrical &000.001
 				Job AllCookingStovesOn > StartAction(N8)
 				Job AllDvdPlayersOn > StartAction(N8)
 				Job AllHairdryersOn > StartAction(N8)
+				Job AllIronOn > StartAction(N8)
 				Job AllLightsOn > StartAction(N0)
 				Job AllTvsOn > StartAction(N6)
 				Job AllWashingMachinesOn > StartAction(N2)
@@ -39,6 +42,7 @@ Behavior Electrical &000.001
 				StartJob(put_all)
 
 		sub SingleJunior
+			Job Entertainment > Duration(75 m, 15 m); StartJob(TvOn DvdPlayerOn AudioHifiOn); EndJob(TvStandBy DvdPlayerOff AudioHifiStandBy)
 			Job Cooking > Duration(27.5 m, 2.5 m); StartJob(CookingStoveOn CookingStoveOn); EndJob(CookingStoveOff CookingStoveOff)
 			Job LightsOn > StartAction(N0)
 			Job LightsOff > StartAction(N1)
@@ -47,9 +51,9 @@ Behavior Electrical &000.001
 					Task > At("7:00"); Duration(90 m); StartJob(LightsOn); EndJob(LightsOff)
 					Task > At("7:15", 5 m); Duration(2 m); StartJob(WaterBoilerOn); EndJob(WaterBoilerOff)
 					Task > At("7:45", 5 m); Duration(30 m); StartJob(ComputerOn); EndJob(ComputerOff)
-					Task > At("20:00", 60 m); StartJob(Cooking)
 					Task > At("19:15", 15 m); End("00:00", 60 m); StartJob(LightsOn); EndJob(LightsOff)
 					Task > At("19:35", 5 m); Duration(30 m); StartJob(ComputerOn); EndJob(ComputerOff)
+					Task > At("20:00", 60 m); StartJob(Cooking)
 					Task > At("20:00", 60 m); Duration(4 m, 1 m); StartJob(WaterBoilerOn); EndJob(WaterBoilerOff)
 					Task > At("20:15", 5 m); Duration(60 m); StartJob(TvOn); EndJob(TvOff)
 					Task > At("21:25", 5 m); Duration(15 m); StartJob(HairdryerOn); EndJob(HairdryerOff)
@@ -71,7 +75,6 @@ Behavior Electrical &000.001
 
 			sub SingleJunior3
 				on SingleJunior
-					Job Entertainment > Duration(75 m, 15 m); StartJob(TvOn DvdPlayerOn AudioHifiOn); EndJob(TvStandBy DvdPlayerOff AudioHifiStandBy)
 					Task > At("7:45"); Duration(67.5 m, 7.5 m); StartJob(LightsOn); EndJob(LightsOff)
 					Task > At("7:50", 2.5 m); Duration(25 m, 5 m); StartJob(AudioHifiOn); EndJob(AudioHifiStandBy)
 					Task > At("19:10", 10 m); End("23:15", 45 m); StartJob(LightsOn); EndJob(LightsOff)
@@ -79,4 +82,15 @@ Behavior Electrical &000.001
 					Task > At("19:20", 10 m); StartJob(WashingMachineOn40)
 					Task > At("20:00", 60 m); StartJob(Cooking)
 					Task > At("20:45", 15 m); Duration(9 m, 1 m); StartJob(WaterBoilerOn)
-					Task > At("20:45", 15 m); Duration(9 m, 1 m); StartJob(Entertainment)
+					Task > At("20:45", 15 m); StartJob(Entertainment)
+
+			sub SingleJunior4
+				on SingleJunior
+					Task > At("7:45"); Duration(52.5 m, 7.5 m); StartJob(LightsOn); EndJob(LightsOff)
+					Task > At("7:57:30", 2.5 m); Duration(3.5 m, 1.5 m); StartJob(HairdryerOn); EndJob(HairdryerOff)
+					Task > At("8:02:30", 2.5 m); Duration(4 m, 1 m); StartJob(WaterBoilerOn); EndJob(WaterBoilerOff)
+					Task > At("18:10", 10 m); End("23:15", 15 m); StartJob(LightsOn); EndJob(LightsOff)
+					Task > At("18:27:30", 2.5 m); Duration(30 m); StartJob(AudioHifiOn); EndJob(AudioHifiOff)
+					Task > At("19:05", 5 m); Duration(11.5 m, 3.5 m); StartJob(IronOn); EndJob(IronOff)
+					Task > At("20:15", 15 m); Duration(25 m, 5 m); StartJob(ComputerOn); EndJob(ComputerOff)
+					Task > At("21:20", 10 m); StartJob(Entertainment)
