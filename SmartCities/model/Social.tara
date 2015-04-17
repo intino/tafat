@@ -7,3 +7,4 @@ Agent Social
     sub Person
     sub FamilyUnit
         sub SingleJunior
+        sub SingleSenior

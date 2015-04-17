@@ -20,9 +20,13 @@ Behavior Electrical &000.001
 		Job IronOff > StartAction(N9)
 		Job LightsOn > StartAction(N0)
 		Job LightsOff > StartAction(N1)
+		Job OvenOn > StartAction(N0)
+		Job OvenOff > StartAction(N1)
 		Job TvOn > StartAction(N6)
 		Job TvStandBy > StartAction(N6)
 		Job TvOff > StartAction(N6)
+		Job VacuumOn > StartAction(N6)
+		Job VacuumOff > StartAction(N6)
 		Job WashingMachineOn40 > StartAction(N2)
 		Job WaterBoilerOn > StartAction(N2)
 		Job WaterBoilerOff > StartAction(N3)
@@ -94,3 +98,30 @@ Behavior Electrical &000.001
 					Task > At("19:05", 5 m); Duration(11.5 m, 3.5 m); StartJob(IronOn); EndJob(IronOff)
 					Task > At("20:15", 15 m); Duration(25 m, 5 m); StartJob(ComputerOn); EndJob(ComputerOff)
 					Task > At("21:20", 10 m); StartJob(Entertainment)
+
+		sub SingleSenior
+			Job Entertainment > Duration(75 m, 15 m); StartJob(TvOn DvdPlayerOn AudioHifiOn); EndJob(TvStandBy DvdPlayerOff AudioHifiStandBy)
+			Job Cooking > Duration(27.5 m, 2.5 m); StartJob(CookingStoveOn CookingStoveOn OvenOn); EndJob(CookingStoveOff CookingStoveOff OvenOff)
+			Job LightsOn > StartAction(N0)
+			Job LightsOff > StartAction(N1)
+			sub SingleSenior1
+				on SingleSenior
+					Task > At("6:10", 10 m); Duration(145 m, 15 m); StartJob(LightsOn); StartJob(LightsOff)
+					Task > At("6:32:30", 7.5 m); Duration(4 m , 1 m); StartJob(WaterBoilerOn); StartJob(WaterBoilerOff)
+					Task > At("7:15", 15 m); Duration(9 m , 1 m); StartJob(CookingStoveOn); StartJob(CookingStoveOff)
+					Task > At("9:35", 15 m); End("21:00", 30 m); StartJob(LightsOn); StartJob(LightsOff)
+					Task > At("11:12:30", 27.5 m); Duration(15 m, 5 m); StartJob(VacuumOn); StartJob(VacuumOff)
+					Task > At("12:15", 15 m); StartJob(Cooking)
+					Task > At("19:15", 15 m); Duration(60); StartJob(TvOn); EndJob(TvOff)
+
+			sub SingleSenior2
+				on SingleSenior
+
+
+			sub SingleSenior3
+				on SingleSenior
+
+
+			sub SingleSenior4
+				on SingleSenior
+
