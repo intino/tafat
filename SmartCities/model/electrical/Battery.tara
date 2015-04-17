@@ -1,0 +1,44 @@
+dsl Tafat
+use PowerGrid
+
+Behavior Electrical &000.001
+	sub BatteryElectrical
+		var measure:Power activePower = 0 W
+		var measure:Energy capacity
+		var measure:Percentage stateOfCharge
+		var word mode > Idle*; Charging; Discharging
+		var measure:Power maxDischargePower
+		var measure:Power maxChargePower
+
+		sub Mode // BatteryFullBehaviorBasic
+			on Battery
+				Condition > Check(charge_over_95_and_is_charging); Action(mode_idle)
+				Condition > Check(charge_below_20_and_is_discharging); Action(mode_idle)
+
+		sub Power
+
+			sub BasicPowerControl // BatteryFullBehaviorChargeDischargeBasic
+				on Battery
+					Condition > Check(is_idle); Action(power_0)
+					Condition > Check(is_charging); Action(power_charge)
+					Condition > Check(is_discharging); Action(power_discharging)
+
+			sub TimeBasedPowerControl
+				on Battery
+					var measure:Time timeToCharge
+					var measure:Time timeToDischarge
+					InitedValue WattsPerSecondCharging > Calculator(N0)
+					InitedValue WattsPerSecondDischarging > Calculator(N1)
+					Condition > Check(is_idle); Action(power_0)
+					Condition > Check(is_charging); Action(power_watts_per_second_charging)
+					Condition > Check(is_discharging); Action(power_watts_per_second_discharging)
+
+			sub CurvePowerControl // BatteryFullBehaviorChargeDischargeCurve
+				on Battery
+					PointSet Charge > Point(0.0, 0.7992); Point(0.8, 1.0); Point(1.0, 0.3846)
+					PointSet Discharge > Point(0.0, 0.7272); Point(0.8, 0.8181); Point(1.0, 1.0)
+					TableFunction(Charge) ChargeCurve > LinearInterpolation; LinearExtrapolation
+					TableFunction(Discharge) DischargeCurve > LinearInterpolation; NoneExtrapolation
+					Condition > Check(is_idle); Action(power_0)
+					Condition > Check(is_charging); Action(power_charge)
+					Condition > Check(is_discharging); Action(power_discharging)

@@ -1,0 +1,23 @@
+dsl Tafat
+use PowerGrid
+use Residential
+
+
+Behavior Electrical &000.001
+	sub PotentialCalculator
+		var measure:Power potentialToReduce = 0
+		var measure:Power potentialToIncrease = 0
+		sub PotentialCalculator
+			CalculatedValue PotentialToIncrease > Calculator(N0)
+			CalculatedValue PotentialToIncrease > Calculator(N1)
+			on Device
+			on Appliance
+		sub BatteryPotentialCalculator
+			on Battery
+				PointSet Charge > Point(0.0, 0.7992); Point(0.8, 1.0); Point(1.0, 0.3846)
+				PointSet Discharge > Point(0.0, 0.7272); Point(0.8, 0.8181); Point(1.0, 1.0)
+				TableFunction(Charge) ChargeCurve > LinearInterpolation; NoneExtrapolation
+				TableFunction(Discharge) DischargeCurve > LinearInterpolation; NoneExtrapolation
+				CalculatedValue PotentialToIncrease > Calculator(N0)
+				CalculatedValue PotentialToIncrease > Calculator(N1)
+

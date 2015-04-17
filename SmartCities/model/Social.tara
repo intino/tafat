@@ -1,0 +1,9 @@
+dsl Tafat 
+
+use Residential
+
+Agent Social
+    var Household household
+    sub Person
+    sub FamilyUnit
+        sub SingleJunior

@@ -1,0 +1,12 @@
+dsl Tafat
+use Residential
+
+Behavior Electrical &000.001
+	on Computer
+		var measure:Power activePower = 0 W
+		var measure:Power standByPower = 7.1 W
+		var measure:Power intalledPower = 100 W
+		var word mode > Off*; StandBy; On
+		Condition > Check(is_off); Action(power_0)
+		Condition > Check(is_stand_by); Action(power_stand_by)
+		Condition > Check(is_on); Action(power_installed_power)

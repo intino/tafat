@@ -1,0 +1,82 @@
+dsl Tafat
+use Social
+
+
+Behavior Electrical &000.001
+
+	sub Social
+		Job AudioHifiOn > StartAction(N0)
+		Job AudioHifiStandBy > StartAction(N0)
+		Job AudioHifiOff > StartAction(N1)
+		Job ComputerOn > StartAction(N4)
+		Job ComputerOff > StartAction(N5)
+		Job CookingStoveOn > StartAction(N8)
+		Job CookingStoveOff > StartAction(N9)
+		Job DvdPlayerOn > StartAction(N8)
+		Job DvdPlayerOff > StartAction(N9)
+		Job HairdryerOn > StartAction(N8)
+		Job HairdryerOff > StartAction(N9)
+		Job LightsOn > StartAction(N0)
+		Job LightsOff > StartAction(N1)
+		Job TvOn > StartAction(N6)
+		Job TvStandBy > StartAction(N6)
+		Job TvOff > StartAction(N6)
+		Job WashingMachineOn40 > StartAction(N2)
+		Job WaterBoilerOn > StartAction(N2)
+		Job WaterBoilerOff > StartAction(N3)
+
+		sub SwitchEverythingOn
+			on Social
+				Job AllAudioHifisOn > StartAction(N0)
+				Job AllComputersOn > StartAction(N4)
+				Job AllCookingStovesOn > StartAction(N8)
+				Job AllDvdPlayersOn > StartAction(N8)
+				Job AllHairdryersOn > StartAction(N8)
+				Job AllLightsOn > StartAction(N0)
+				Job AllTvsOn > StartAction(N6)
+				Job AllWashingMachinesOn > StartAction(N2)
+				Job AllWaterBoilerOn > StartAction(N2)
+				StartJob(put_all)
+
+		sub SingleJunior
+			Job Cooking > Duration(27.5 m, 2.5 m); StartJob(CookingStoveOn CookingStoveOn); EndJob(CookingStoveOff CookingStoveOff)
+			Job LightsOn > StartAction(N0)
+			Job LightsOff > StartAction(N1)
+			sub SingleJunior1
+				on SingleJunior
+					Task > At("7:00"); Duration(90 m); StartJob(LightsOn); EndJob(LightsOff)
+					Task > At("7:15", 5 m); Duration(2 m); StartJob(WaterBoilerOn); EndJob(WaterBoilerOff)
+					Task > At("7:45", 5 m); Duration(30 m); StartJob(ComputerOn); EndJob(ComputerOff)
+					Task > At("20:00", 60 m); StartJob(Cooking)
+					Task > At("19:15", 15 m); End("00:00", 60 m); StartJob(LightsOn); EndJob(LightsOff)
+					Task > At("19:35", 5 m); Duration(30 m); StartJob(ComputerOn); EndJob(ComputerOff)
+					Task > At("20:00", 60 m); Duration(4 m, 1 m); StartJob(WaterBoilerOn); EndJob(WaterBoilerOff)
+					Task > At("20:15", 5 m); Duration(60 m); StartJob(TvOn); EndJob(TvOff)
+					Task > At("21:25", 5 m); Duration(15 m); StartJob(HairdryerOn); EndJob(HairdryerOff)
+					Task > At("21:50", 5 m); Duration(75 m, 15 m); StartJob(TvOn); EndJob(TvOff)
+					Task > At("23:00", 5 m); Duration(90 m, 30 m); StartJob(ComputerOn); EndJob(ComputerOff)
+
+			sub SingleJunior2
+				on SingleJunior
+					Task > At("8:45"); Duration(50 m, 5 m); StartJob(LightsOn); EndJob(LightsOff)
+					Task > At("8:12:30", 2.5 m); Duration(4 m, 1 m); StartJob(WaterBoilerOn); EndJob(WaterBoilerOff)
+					Task > At("8:12:30", 2.5 m); Duration(25 m, 5 m); StartJob(AudioHifiOn); EndJob(AudioHifiStandBy)
+					Task > At("18:10", 10 m); End("22:30", 30 m); StartJob(LightsOn); EndJob(LightsOff)
+					Task > At("18:45", 15 m); Duration(30 m); StartJob(AudioHifiOn); EndJob(AudioHifiStandBy)
+					Task > At("19:30", 30 m); Duration(27.5 m, 2.5 m); StartJob(CookingStoveOn); EndJob(CookingStoveOff)
+					Task > At("19:30", 30 m); Duration(5 m); StartJob(WaterBoilerOn); EndJob(WaterBoilerOff)
+					Task > At("19:10", 10 m); Duration(27.5 m, 2.5 m); StartJob(AudioHifiOn); EndJob(AudioHifiStandBy)
+					Task > At("21:00", 60 m); Duration(105 m, 15 m); StartJob(ComputerOn); EndJob(ComputerOff)
+					Task > At("21:00", 60 m); Duration(105 m, 15 m); StartJob(AudioHifiOn); EndJob(AudioHifiStandBy)
+
+			sub SingleJunior3
+				on SingleJunior
+					Job Entertainment > Duration(75 m, 15 m); StartJob(TvOn DvdPlayerOn AudioHifiOn); EndJob(TvStandBy DvdPlayerOff AudioHifiStandBy)
+					Task > At("7:45"); Duration(67.5 m, 7.5 m); StartJob(LightsOn); EndJob(LightsOff)
+					Task > At("7:50", 2.5 m); Duration(25 m, 5 m); StartJob(AudioHifiOn); EndJob(AudioHifiStandBy)
+					Task > At("19:10", 10 m); End("23:15", 45 m); StartJob(LightsOn); EndJob(LightsOff)
+					Task > At("7:50", 2.5 m); Duration(25 m, 5 m); StartJob(AudioHifiOn); EndJob(AudioHifiStandBy)
+					Task > At("19:20", 10 m); StartJob(WashingMachineOn40)
+					Task > At("20:00", 60 m); StartJob(Cooking)
+					Task > At("20:45", 15 m); Duration(9 m, 1 m); StartJob(WaterBoilerOn)
+					Task > At("20:45", 15 m); Duration(9 m, 1 m); StartJob(Entertainment)

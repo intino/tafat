@@ -1,0 +1,15 @@
+dsl Tafat
+use Residential
+
+
+Behavior Electrical &000.001
+	on Dryer
+		var measure:Power activePower = 0 W
+		var measure:Power installedPower = 2500 W
+		var measure:Time cycleTime = 72 m
+		var word mode > Off*; On
+		StateChart
+			State Off > EntryAction(mode_off_and_power_0)
+			State On > EntryAction(power_installed_power)
+			Transition(Off, On) > Boolean(is_on)
+			Transition(On, Off) > Timeout(cycleTime)

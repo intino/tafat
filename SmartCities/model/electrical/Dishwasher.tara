@@ -1,0 +1,28 @@
+dsl Tafat
+use PowerGrid
+
+
+Behavior Electrical &000.001
+	on Dishwasher
+		var measure:Power activePower = 0 W
+		var double:set capcity = 12 sets
+		var word mode > Off*; OnEco; OnNormal; OnIntensive
+		var word labelling > AAAA; AAA; AA; A*; B; C; D; E; F; G
+		Map Heat > Item("OnEco", 1300); Item("OnNormal", 1700); Item("OnIntensive", 2000)
+		Map HeatMinutes > Item("OnEco", 15); Item("OnNormal", 20); Item("OnIntensive", 24)
+		Map Wash > Item("OnEco", 50); Item("OnNormal", 70); Item("OnIntensive", 90)
+		Map WashMinutes > Item("OnEco", 54); Item("OnNormal", 50); Item("OnIntensive", 50)
+		Map Drying > Item("OnEco", 1300); Item("OnNormal", 1700); Item("OnIntensive", 2000)
+		Map DryingMinutes > Item("OnEco", 15); Item("OnNormal", 20); Item("OnIntensive", 20)
+		Map Labelling > Item("AAAA", 0.36); Item("AAA", 0.41); Item("AA", 0.47); Item("A", 0.52); Item("B", 0.58); Item("C", 0.68); Item("D", 0.78); Item("E", 0.88); Item("F", 0.98); Item("G", 1.08)
+		StateChart
+			State Off > EntryAction(mode_off_and_power_0)
+			State On
+				State HeatWater > EntryAction(power) //heatFactor.getY(dishwasher.mode.ordinal()) * labellingFactor.getY(dishwasher.labelling.ordinal()) * CR
+				State WashRinse > EntryAction(power) //washFactor.getY(dishwasher.mode.ordinal()) * labellingFactor.getY(dishwasher.labelling.ordinal()) * CR
+				State Drying > EntryAction(power); //dryingoFactor.getY(dishwasher.mode.ordinal()) * labellingFactor.getY(dishwasher.labelling.ordinal()) * CR
+				Transition(HeatWater, WashRinse) > Timeout(heat_minutes_mode_based)
+				Transition(WashRinse, Drying) > Timeout(wash_minutes_mode_based)
+				Transition(Drying, Off) > Timeout(drying_minutes_mode_based)
+			Transition(Off, On) > Boolean(is_not_off)
+		InitedValue CR > Calculator(power_efficiency_function)

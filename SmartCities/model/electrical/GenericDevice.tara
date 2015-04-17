@@ -1,0 +1,31 @@
+dsl Tafat
+use PowerGrid
+use Residential
+
+
+Behavior Electrical &000.001
+	sub GenericDevice
+		var measure:Power activePower = 0
+		var measure:Power installedPower
+		var word mode > Off*; On
+		sub ElectricalNormal
+			Condition > Check(is_off); Action(power_0)
+			Condition > Check(is_on); Action(power_installed_power)
+			on Device
+			on Appliance
+		sub ElectricalPulse
+			var measure:Power standByPower
+			var measure:Time periodTime
+			var measure:Porcentage ratioInstalledPower
+			StateChart
+				State Off > EntryAction(power_0)
+				State On
+					State CycleOff > EntryAction(power_pulse_off_power)
+					State CycleOn > EntryAction(power_installedPower)
+					Transition(CycleOff, CycleOn) > Timeout(time_based_on_period_time_and_ratio_installed_power_to_on)
+					Transition(CycleOn, CycleOff) > Timeout(time_based_on_period_time_and_ratio_installed_power_to_off)
+				Transition(Off, On.CycleOn) > Boolean(is_on)
+				Transition(On, Off) > Boolean(is_off)
+			on Device
+			on Appliance
+
