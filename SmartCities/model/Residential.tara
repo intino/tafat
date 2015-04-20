@@ -16,3 +16,4 @@ Entity Appliance into component
     sub Dishwasher
     sub Dryer
     sub Freezer
+    sub HvacSystem

@@ -9,29 +9,30 @@ Behavior Electrical &000.001
 		var word mode > Idle*; Charging; Discharging
 		var measure:Power maxDischargePower
 		var measure:Power maxChargePower
+		var measure:Percentage transferLoses = 20 %
 
 		sub Mode // BatteryFullBehaviorBasic
 			on Battery
-				Condition > Check(charge_over_95_and_is_charging); Action(mode_idle)
-				Condition > Check(charge_below_20_and_is_discharging); Action(mode_idle)
+				Condition > Check("stateOfCharge() > 95 && mode() == Mode.Charging"); Action("mode(Mode.Idle)")
+				Condition > Check("stateOfCharge() > 20 && mode() == Mode.Discharging"); Action("mode(Mode.Idle)")
 
 		sub Power
 
 			sub BasicPowerControl // BatteryFullBehaviorChargeDischargeBasic
 				on Battery
-					Condition > Check(is_idle); Action(power_0)
-					Condition > Check(is_charging); Action(power_charge)
-					Condition > Check(is_discharging); Action(power_discharging)
+					Condition > Check("mode() == Mode.Idle"); Action("activePower(0)")
+					Condition > Check("mode() == Mode.Charging"); Action("activePower(maxChargePower())")
+					Condition > Check("mode() == Mode.Discharging"); Action("activePower(maxDischargePower())")
 
 			sub TimeBasedPowerControl
 				on Battery
 					var measure:Time timeToCharge
 					var measure:Time timeToDischarge
-					InitedValue WattsPerSecondCharging > Calculator(N0)
-					InitedValue WattsPerSecondDischarging > Calculator(N1)
-					Condition > Check(is_idle); Action(power_0)
-					Condition > Check(is_charging); Action(power_watts_per_second_charging)
-					Condition > Check(is_discharging); Action(power_watts_per_second_discharging)
+					InitedValue WattsPerSecondCharging > Calculator("((capacity() / timeToCharge()) * (1 + transferLoses())) * 1000")
+					InitedValue WattsPerSecondDischarging > Calculator("capacity / timeToDischarge * 1000") // TODO TAKE DEFAULT MAX POWER
+					Condition > Check("mode() == Mode.Idle"); Action("activePower(0)")
+					Condition > Check("mode() == Mode.Charging"); Action("activePower(wattsPerSecondCharging())")
+					Condition > Check("mode() == Mode.Discharging"); Action("activePower(wattsPerSecondDischarging())")
 
 			sub CurvePowerControl // BatteryFullBehaviorChargeDischargeCurve
 				on Battery
