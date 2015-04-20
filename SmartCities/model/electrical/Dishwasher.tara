@@ -16,11 +16,11 @@ Behavior Electrical &000.001
 		Map DryingMinutes > Item("OnEco", 15); Item("OnNormal", 20); Item("OnIntensive", 20)
 		Map Labelling > Item("AAAA", 0.36); Item("AAA", 0.41); Item("AA", 0.47); Item("A", 0.52); Item("B", 0.58); Item("C", 0.68); Item("D", 0.78); Item("E", 0.88); Item("F", 0.98); Item("G", 1.08)
 		StateChart
-			State Off > EntryAction(mode_off_and_power_0)
+			State Off > EntryAction("mode(Mode.Off); activePower(0)")
 			State On
-				State HeatWater > EntryAction(power) //heatFactor.getY(dishwasher.mode.ordinal()) * labellingFactor.getY(dishwasher.labelling.ordinal()) * CR
-				State WashRinse > EntryAction(power) //washFactor.getY(dishwasher.mode.ordinal()) * labellingFactor.getY(dishwasher.labelling.ordinal()) * CR
-				State Drying > EntryAction(power); //dryingoFactor.getY(dishwasher.mode.ordinal()) * labellingFactor.getY(dishwasher.labelling.ordinal()) * CR
+				State HeatWater > EntryAction("heat.get(mode()) * labelling.get(labelling()) * CR")
+				State WashRinse > EntryAction("wash.get(mode()) * labelling.get(labelling()) * CR")
+				State Drying > EntryAction("drying.get(mode()) * labelling.get(labelling()) * CR")
 				Transition(HeatWater, WashRinse) > Timeout(heat_minutes_mode_based)
 				Transition(WashRinse, Drying) > Timeout(wash_minutes_mode_based)
 				Transition(Drying, Off) > Timeout(drying_minutes_mode_based)

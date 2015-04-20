@@ -9,12 +9,12 @@ Behavior Electrical &000.001
 		var measure:Time periodTime = 3m
 		var measure:Percentage ratioHeating = 66%
 		var word mode > Off*; StandBy; On
-		StateChart is property
-			State Off > EntryAction(power(0))
+		StateChart
+			State Off > EntryAction("power(0)")
 			State On
-				State HeatingOff > EntryAction(power(standByPower))
-				State HeatingOn > EntryAction(power(installedPower))
-				Transition(HeatingOff, HeatingOn) > Timeout((100-ratioHeating()) * periodTime())
-				Transition(HeatingOn, HeatingOff) > Timeout(ratioHeating() * periodTime())
-			Transition(Off, On.HeatingOn) > Boolean(is_on)
-			Transition(On, Off) > Boolean(is_off)
+				State HeatingOff > EntryAction("power(standByPower)")
+				State HeatingOn > EntryAction("power(installedPower)")
+				Transition(HeatingOff, HeatingOn) > Timeout("(100-ratioHeating()) * periodTime()")
+				Transition(HeatingOn, HeatingOff) > Timeout("ratioHeating() * periodTime()")
+			Transition(Off, On.HeatingOn) > Boolean("mode() == Mode.On")
+			Transition(On, Off) > Boolean("mode() == Mode.Off")
