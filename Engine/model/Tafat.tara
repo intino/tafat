@@ -112,6 +112,7 @@ Concept Job
 	Concept Duration is single
 		var measure:Time time
 		var measure:Time deviation = 0
+	has Job
 	has JobAction
 	Concept Action into native
 		sub StartAction
