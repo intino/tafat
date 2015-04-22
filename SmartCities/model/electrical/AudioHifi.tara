@@ -7,6 +7,6 @@ Behavior Electrical &000.001
 		var measure:Power standbyPower = 8.2 W
 		var measure:Power installedPower = 14 W
 		var word mode > Off*; StandBy; On
-		Condition > Check("mode() == Mode.Off"); Action("activePower(0)")
-		Condition > Check("mode() == Mode.StandBy"); Action("activePower(standByPower())")
-		Condition > Check("mode() == Mode.On"); Action("activePower(installedPower())")
+		ConditionalAction("() -> mode() == Mode.Off", "() -> activePower(0)")
+		ConditionalAction("() -> mode() == Mode.StandBy", "() -> activePower(standByPower())")
+		ConditionalAction("() -> mode() == Mode.On", "() -> activePower(installedPower())")

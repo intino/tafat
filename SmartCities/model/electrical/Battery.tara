@@ -13,26 +13,32 @@ Behavior Electrical &000.001
 
 		sub Mode // BatteryFullBehaviorBasic
 			on Battery
-				Condition > Check("stateOfCharge() > 95 && mode() == Mode.Charging"); Action("mode(Mode.Idle)")
-				Condition > Check("stateOfCharge() > 20 && mode() == Mode.Discharging"); Action("mode(Mode.Idle)")
+				ConditionalAction("() -> stateOfCharge() > 95 && mode() == Mode.Charging", "() -> mode(Mode.Idle)")
+				ConditionalAction("() -> stateOfCharge() > 20 && mode() == Mode.Discharging", "() -> mode(Mode.Idle)")
 
 		sub Power
 
 			sub BasicPowerControl // BatteryFullBehaviorChargeDischargeBasic
 				on Battery
-					Condition > Check("mode() == Mode.Idle"); Action("activePower(0)")
-					Condition > Check("mode() == Mode.Charging"); Action("activePower(maxChargePower())")
-					Condition > Check("mode() == Mode.Discharging"); Action("activePower(maxDischargePower())")
+					ConditionalAction("() -> mode() == Mode.Idle", "() -> activePower(0)")
+					ConditionalAction("() -> mode() == Mode.Charging", "() -> activePower(maxChargePower())")
+					ConditionalAction("() -> mode() == Mode.Discharging", "() -> activePower(maxDischargePower())")
 
 			sub TimeBasedPowerControl
 				on Battery
+					start = ("() -> {
+						double wattsPerSecondCharging = ((capacity() / timeToCharge()) * (1 + transferLoses())) * 1000
+						wattsPerSecondCharging(wattsPerSecondCharging < maxChargePower() ? wattsPerSecondCharging : maxChargePower)
+						double wattsPerSecondDischarging = capacity / timeToDischarge * 1000
+						wattsPerSecondDischarging(wattsPerSecondDischarging < maxChargePower() ? wattsPerSecondDischarging : maxChargePower)
+					}")
 					var measure:Time timeToCharge
 					var measure:Time timeToDischarge
-					InitedValue WattsPerSecondCharging > Calculator("((capacity() / timeToCharge()) * (1 + transferLoses())) * 1000")
-					InitedValue WattsPerSecondDischarging > Calculator("capacity / timeToDischarge * 1000") // TODO TAKE DEFAULT MAX POWER
-					Condition > Check("mode() == Mode.Idle"); Action("activePower(0)")
-					Condition > Check("mode() == Mode.Charging"); Action("activePower(wattsPerSecondCharging())")
-					Condition > Check("mode() == Mode.Discharging"); Action("activePower(wattsPerSecondDischarging())")
+					var measure:Power wattsPerSecondCharging
+					var measure:Power wattsPerSecondDischarging
+					ConditionalAction("() -> mode() == Mode.Idle", "() -> activePower(0)")
+					ConditionalAction("() -> mode() == Mode.Charging", "() -> activePower(wattsPerSecondCharging())")
+					ConditionalAction("() -> mode() == Mode.Discharging", "() -> activePower(wattsPerSecondDischarging())")
 
 			sub CurvePowerControl // BatteryFullBehaviorChargeDischargeCurve
 				on Battery
@@ -40,6 +46,6 @@ Behavior Electrical &000.001
 					PointSet Discharge > Point(0.0, 0.7272); Point(0.8, 0.8181); Point(1.0, 1.0)
 					TableFunction(Charge) ChargeCurve > LinearInterpolation; LinearExtrapolation
 					TableFunction(Discharge) DischargeCurve > LinearInterpolation; NoneExtrapolation
-					Condition > Check("mode() == Mode.Idle"); Action("activePower(0)")
-					Condition > Check("mode() == Mode.Charging"); Action("activePower(chargeCurve().y(stateOfCharge))")
-					Condition > Check("mode() == Mode.Discharging"); Action("activePower(dischargeCurve().y(stateOfCharge))")
+					ConditionalAction("() -> mode() == Mode.Idle", "() -> activePower(0)")
+					ConditionalAction("() -> mode() == Mode.Charging", "() -> activePower(chargeCurve().y(stateOfCharge))")
+					ConditionalAction("() -> mode() == Mode.Discharging", "() -> activePower(dischargeCurve().y(stateOfCharge))")

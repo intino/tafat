@@ -3,3 +3,7 @@ dsl Tafat
 Entity Device
     sub Battery
     sub DcAcConverter
+
+
+Behavior Electrical &000.001
+	step = 1

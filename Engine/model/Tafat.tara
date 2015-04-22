@@ -1,103 +1,38 @@
 dsl Proteo 
 
-Concept Simulation is required single into case
-	var date from
-	var date to
+Concept Simulation is required single terminal > var date from; var date to
 
 Concept Agent
 
 Concept Entity
 	has Entity
-	Concept Property into feature
-		has Property
+	Concept Feature into feature
 
-Concept Dynamic into property
+Concept Facet into facet
+	sub Behavior
+	 	var integer step = 1 is terminal
+	 	var native:OnStart onStart
 
-	sub Custom into native
+		has Action
+		has EquationSystem
+		has StateChart
+		has PointSet
+		has Task
+		has Job
+	sub Aspect
 
-	sub EquationSystem
-		var word solver > Euler*
-		var double step = 0.1
-		Concept Element
-			Concept Formula into native single required
-			sub Stock
-			sub Flow
-
-	sub	StateChart
-		var string message = ""
-		Concept State
-            Concept Action into native
-				sub EntryAction
-				sub ExitAction
-			has State
-			has Transition
-		Concept Transition
-			var State from
-			var State to
-			Concept Condition
-				sub Boolean into native
-				sub Timeout into native
-				sub After into native
-					var measure:Time time
-				sub Rate
-					var integer:time times
-					var word unit > Second; Minute; Hour; Day; Month; Year
-				sub Message
-					var string message
-			Concept Action into native
-
-	sub Condition
-		Concept Check into native required single
-		Concept Action into native required single
-
-	sub TableFunction
-		var PointSet pointSet
-		Concept Interpolation into single
-			sub NoneInterpolation
-			sub LinearInterpolation
-			sub PolynomialInterpolation
-			sub SplineInterpolation
-			sub StepInterpolation
-		Concept Extrapolation into single
-			sub NoneExtrapolation
-			sub CustomExtrapolation > var double value
-			sub NearestPointExtrapolation
-			sub RepeatSerieExtrapolation
-			sub LinearExtrapolation
-			sub PolynomialExtrapolation
-			sub SplineExtrapolation
-			sub StepExtrapolation
-
-Concept PointSet into case
-	Concept Definition
-		sub Point > var double x; var double y
-		sub X into single > var double... values
-		sub Y into single > var double... values
-
-Concept Value into case
-	var double value
-	Concept Calculator into native
-	sub InitedValue
-	sub CalculatedValue
-
-Concept Map
-	Concept Item
-		var string key
-		var double value
-
-Concept InitAction into native
-
-Concept RecurrentAction into native
+Concept Action into property
+	var native:Condition condition = empty
+	var native:Action action
 
 Concept Task
-	var word... days > M*; T*; W*; Th*; F*; S*; Sn*
-	Concept Init is required single
-		sub At
-			var date time
-			var measure:Time deviation = 0
-	Concept Terminate is single
+	var word... days > Monday*; Tuesday*; Wednesday*; Thursday*; Friday*; Saturday*; Sunday*
+	Concept Start is required single
+		var date time
+		var measure:Time deviation = 0
+	Concept Finish is single
 		sub End
-			var date time
+			var instant time
 			var measure:Time deviation = 0
 		sub Duration
 			var measure:Time time
@@ -114,7 +49,8 @@ Concept Job
 		var measure:Time deviation = 0
 	has Job
 	has JobAction
-	Concept Action into native
+	Concept Action
+		var native:Action action
 		sub StartAction
 		sub RecurrentAction
 		sub EndAction
@@ -125,14 +61,63 @@ Concept JobAction is terminal
 	sub RecurrentJob
 	sub EndJob
 
-Concept Facet into facet
-	sub Behavior
-		var integer step = 1 is terminal
-		has Dynamic is required
-		has Value
-		has PointSet
-		has InitAction
-		has RecurrentAction
-		has Task
-		has JobAction
-	sub Aspect
+Concept EquationSystem into property
+	var word solver > Euler*
+	var double step = 0.1
+	Concept Element
+		var native:Calculation calculation
+		sub Stock
+		sub Flow
+
+Concept StateChart into property
+	Concept State
+		Concept Action
+			var native:Action action
+			sub EntryAction
+			sub ExitAction
+		has State
+		has Transition
+	Concept Transition
+		var State from
+		var State to
+		var native:Action action = empty
+		Concept Condition
+			sub Boolean > var native:Condition condition
+			sub Timeout > var native:Timeout timeout
+			sub After > var measure:Time time
+			sub Rate > var integer:time times; var word unit > Second; Minute; Hour; Day; Month; Year
+			sub Message > var string message
+
+Concept TableFunction
+	var PointSet pointSet
+	Concept Interpolation is single
+		sub NoneInterpolation
+		sub LinearInterpolation
+		sub PolynomialInterpolation
+		sub SplineInterpolation
+		sub StepInterpolation
+	Concept Extrapolation is single
+		sub NoneExtrapolation
+		sub CustomExtrapolation > var double value
+		sub NearestPointExtrapolation
+		sub RepeatSerieExtrapolation
+		sub LinearExtrapolation
+		sub PolynomialExtrapolation
+		sub SplineExtrapolation
+		sub StepExtrapolation
+
+Concept PointSet into property
+	Concept Definition
+		sub Point > var double x; var double y
+		sub X is single > var double... values
+		sub Y is single > var double... values
+
+
+
+Concept Calculator is terminal > var native:Calculation calculation
+
+Concept OnStart is terminal > var native:Custom custom
+
+Concept Map is terminal
+	Concept Item > var string key; var double value
+

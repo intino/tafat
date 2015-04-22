@@ -1,7 +1,7 @@
 dsl Tafat
 
 Entity Building
-    Property volume
+    Feature Volume
         var double length = 0
         var double width = 0
         var double height = 0
