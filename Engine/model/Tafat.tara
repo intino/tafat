@@ -10,9 +10,8 @@ Concept Entity
 
 Concept Facet into facet
 	sub Behavior
-	 	var integer step = 1 is terminal
-	 	var native:OnStart onStart
-
+		var integer step = 1 is terminal
+		var native:OnStart onStart
 		has Action
 		has EquationSystem
 		has StateChart
@@ -32,7 +31,7 @@ Concept Task
 		var measure:Time deviation = 0
 	Concept Finish is single
 		sub End
-			var instant time
+			var date time
 			var measure:Time deviation = 0
 		sub Duration
 			var measure:Time time
@@ -112,12 +111,9 @@ Concept PointSet into property
 		sub X is single > var double... values
 		sub Y is single > var double... values
 
-
-
 Concept Calculator is terminal > var native:Calculation calculation
 
 Concept OnStart is terminal > var native:Custom custom
 
 Concept Map is terminal
 	Concept Item > var string key; var double value
-
