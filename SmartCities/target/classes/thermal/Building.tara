@@ -1,0 +1,30 @@
+dsl Tafat
+use Residential
+
+Behavior Thermal &000.002
+	on Building
+		var measure:Temperature temperature
+		var double:W/m2K floorAlpha
+		var double:W/m2K roofAlpha
+		var double:W/m2K wallAlpha
+		var double:W/m2K windowAlpha
+		var measure:Surface floorArea
+		var measure:Surface roofArea
+		var measure:Surface wallArea
+		var measure:Surface windowArea
+		var word mode > Off*; StandBy; On
+		var double:W/m2K airAlpha = 50
+		var double:W/m2K rho = 1.204
+		InitedValue XCoefficient > Calculator(N0)
+		CalculatedValue OutdoorHeatGains > Calculator(N0)
+		CalculatedValue SolarRadiationHeatGains > Calculator(N1)
+		CalculatedValue HvacHeatGains > Calculator(N2)
+		CalculatedValue AppliancesHeatGains > Calculator(N3)
+		CalculatedValue PeopleHeatGains > Calculator(N4)
+		CalculatedValue TransferHeatGains > Calculator(N4)
+		EquationSystem(Euler, 0.01)
+			Stock Temperature > Formula(N0)
+			Flow Hvac > Formula(N1)
+			Flow Transfers > Formula(N2)
+			Flow Outdoor > Formula(N3)
+			Flow Others > Formula(N4)

@@ -4,6 +4,20 @@
     <entry_points version="2.0" />
   </component>
   <component name="IdProvider" IDEtalkID="951ABE7AA651E3B17FB2442E9C7A4CA3" />
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/Engine/pom.xml" />
+        <option value="$PROJECT_DIR$/SmartCities/pom.xml" />
+        <option value="$PROJECT_DIR$/SGISite/pom.xml" />
+        <option value="$PROJECT_DIR$/SGITools/pom.xml" />
+        <option value="$PROJECT_DIR$/SGITools/HttpHandler/pom.xml" />
+        <option value="$PROJECT_DIR$/SGITools/DiscoveryProtocol/pom.xml" />
+        <option value="$PROJECT_DIR$/SGITools/ExceptionHandler/pom.xml" />
+        <option value="$PROJECT_DIR$/SGIFramework/pom.xml" />
+      </list>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>

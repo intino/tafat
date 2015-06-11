@@ -1,0 +1,19 @@
+dsl Tafat
+
+Entity Building
+    Feature Volume
+        var double length = 0
+        var double width = 0
+        var double height = 0
+    Entity Household
+        has Appliance
+    has Appliance
+
+Entity Appliance
+    sub AudioHifi
+    sub Computer
+    sub CookingStove
+    sub Dishwasher
+    sub Dryer
+    sub Freezer
+    sub HvacSystem

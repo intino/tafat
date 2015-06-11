@@ -1,0 +1,6 @@
+{
+  "sensors":[
+    {"name":"sensor1"},
+    {"name":"sensor2"}
+  ]
+}

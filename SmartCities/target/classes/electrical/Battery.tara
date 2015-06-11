@@ -1,0 +1,52 @@
+dsl Tafat
+use PowerGrid
+
+Behavior ElectricalConsumer
+	sub BatteryElectrical
+		var measure:Power activePower = 0 W
+		var measure:Energy capacity
+		var measure:Percentage stateOfCharge
+		var word:[Idle Charging Discharging] mode = Idle
+		var measure:Power maxDischargePower
+		var measure:Power maxChargePower
+		var measure:Percentage transferLoses = 20 %
+
+		sub Mode // BatteryFullBehaviorBasic
+			on Battery
+				Action("stateOfCharge() > 95 && mode() == Mode.Charging", "mode(Mode.Idle)")
+				Action("stateOfCharge() < 20 && mode() == Mode.Discharging", "mode(Mode.Idle)")
+
+		sub Power
+
+			sub BasicPowerControl // BatteryFullBehaviorChargeDischargeBasic
+				on Battery
+					Action("mode() == Mode.Idle", "activePower(0)")
+					Action("mode() == Mode.Charging", "activePower(maxChargePower())")
+					Action("mode() == Mode.Discharging", "activePower(maxDischargePower())")
+
+			sub TimeBasedPowerControl
+				on Battery
+					onStart =
+					---
+						double wattsPerSecondCharging = ((capacity() / timeToCharge()) * (1 + transferLoses())) * 1000;
+						wattsPerSecondCharging(wattsPerSecondCharging < maxChargePower() ? wattsPerSecondCharging : maxChargePower);
+						double wattsPerSecondDischarging = capacity / timeToDischarge * 1000;
+						wattsPerSecondDischarging(wattsPerSecondDischarging < maxChargePower() ? wattsPerSecondDischarging : maxChargePower);
+					---
+					var measure:Time timeToCharge
+					var measure:Time timeToDischarge
+					var measure:Power wattsPerSecondCharging
+					var measure:Power wattsPerSecondDischarging
+					Action("mode() == Mode.Idle", "activePower(0)")
+					Action("mode() == Mode.Charging", "activePower(wattsPerSecondCharging())")
+					Action("mode() == Mode.Discharging", "activePower(wattsPerSecondDischarging())")
+
+			sub CurvePowerControl // BatteryFullBehaviorChargeDischargeCurve
+				on Battery
+					PointSet Charge > Point(0.0, 0.7992); Point(0.8, 1.0); Point(1.0, 0.3846)
+					PointSet Discharge > Point(0.0, 0.7272); Point(0.8, 0.8181); Point(1.0, 1.0)
+					TableFunction(Charge) ChargeCurve > LinearInterpolation; LinearExtrapolation
+					TableFunction(Discharge) DischargeCurve > LinearInterpolation; NoneExtrapolation
+					Action("mode() == Mode.Idle", "activePower(0)")
+					Action("mode() == Mode.Charging", "activePower(chargeCurve().y(stateOfCharge))")
+					Action("mode() == Mode.Discharging", "activePower(dischargeCurve().y(stateOfCharge))")

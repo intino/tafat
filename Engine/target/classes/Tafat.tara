@@ -1,0 +1,115 @@
+dsl Proteo 
+
+Concept Simulation is required single terminal main > var date from; var date to
+
+Concept Agent
+
+Concept Entity
+	has Entity
+	Concept Feature into feature
+
+Concept Behavior into facet
+	var integer step = 1 is terminal
+	var native:Action init = empty
+	has Entity is feature terminal
+	has Executable
+	has PointSet
+	has Job
+	has Map
+
+Concept Executable
+
+Concept Action extends Executable is feature
+	var native:Check condition = 'return true;'
+	var native:Action action
+
+Concept EquationSystem extends Executable is feature terminal
+	var word:[Euler] solver = Euler
+	var double step = 0.1
+	Concept Element
+		var native:Function function
+		sub Stock
+		sub Flow
+
+Concept StateChart extends Executable is feature terminal
+	Concept State
+		Concept Action
+			var native:Action action
+			sub EntryAction
+			sub ExitAction
+		has State
+		has Transition
+	Concept Transition
+		var State from
+		var State to
+		var native:Action action = empty
+		Concept Trigger
+			sub Condition > var native:Check check
+			sub Timeout > var native:Timeout timeout
+			sub After > var measure:Time time
+			sub Rate > var integer:time times; var word:[Second Minute Hour Day Month Year] unit
+			sub Message > var string message
+
+Concept Task extends Executable is feature terminal
+	var word:[Monday Tuesday Wednesday Thursday Friday Saturday Sunday]... days = Monday Tuesday Wednesday Thursday Friday Saturday Sunday
+	Concept Start is required single
+		var date time
+		var measure:Time deviation = 0
+	Concept Finish is single
+		sub End
+			var date time
+			var measure:Time deviation = 0
+		sub Duration
+			var measure:Time time
+			var measure:Time deviation = 0
+	has Task
+	has JobAction
+
+Concept JobAction is terminal
+	var Job... job
+	sub StartJob
+	sub RecurrentJob
+	sub EndJob
+
+Concept Job is terminal
+	Concept Start is single
+		var measure:Time time
+		var measure:Time deviation = 0
+	Concept Duration is single
+		var measure:Time time
+		var measure:Time deviation = 0
+	has Job
+	has JobAction
+	Concept Action
+		var native:Action action
+		sub StartAction
+		sub RecurrentAction
+		sub EndAction
+
+Concept TableFunction is feature
+	var PointSet pointSet
+	Concept Interpolation is single
+		sub NoneInterpolation
+		sub LinearInterpolation
+		sub PolynomialInterpolation
+		sub SplineInterpolation
+		sub StepInterpolation
+	Concept Extrapolation is single
+		sub NoneExtrapolation
+		sub CustomExtrapolation > var native:Function function
+		sub NearestPointExtrapolation
+		sub RepeatSeriesExtrapolation
+		sub LinearExtrapolation
+		sub PolynomialExtrapolation
+		sub SplineExtrapolation
+		sub StepExtrapolation
+
+Concept PointSet is feature
+	Concept Definition
+		sub Point > var double x; var double y
+		sub X is single > var double... values
+		sub Y is single > var double... values
+
+Concept Map is feature
+	var native:Get get = '' is final
+	Concept Entry > var string key; var double value

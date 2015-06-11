@@ -1,0 +1,4 @@
+<select id="objects-selection" class="form-control">
+    <option> Choose object  </option>
+    {#.}<option data-id={.objectId}> {.name} </option>{/.}
+</select>

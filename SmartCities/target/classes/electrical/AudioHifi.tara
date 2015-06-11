@@ -1,0 +1,13 @@
+dsl Tafat
+
+use Residential
+
+Behavior ElectricalConsumer
+	on AudioHifi
+		var measure:Power activePower = 0 W
+		var measure:Power standbyPower = 8.2 W
+		var measure:Power installedPower = 14 W
+		var word:[Off StandBy On] mode = Off
+		Action("mode() == Mode.Off", "activePower(0)") X
+		Action("mode() == Mode.StandBy", "activePower(standByPower())") X
+		Action("mode() == Mode.On", "activePower(installedPower())") X
