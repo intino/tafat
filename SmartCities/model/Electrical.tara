@@ -1,0 +1,6 @@
+dsl Tafat 
+
+Behavior ElectricalConsumer is abstract
+	step = 1
+	var measure:Power activePower
+	var measure:Power installedPower

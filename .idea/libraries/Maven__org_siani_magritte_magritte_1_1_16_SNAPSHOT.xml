@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.siani.magritte:magritte:1.1.16-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/siani/magritte/magritte/1.1.16-SNAPSHOT/magritte-1.1.16-20150610.180236-1.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/siani/magritte/magritte/1.1.16-SNAPSHOT/magritte-1.1.16-20150610.180236-1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/siani/magritte/magritte/1.1.16-SNAPSHOT/magritte-1.1.16-20150610.180236-1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
