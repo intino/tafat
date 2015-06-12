@@ -1,7 +1,7 @@
 package tafat.framework.services;
 
-import model.conection.Request;
-import model.conection.Response;
+import tafat.sgi.model.conection.Request;
+import tafat.sgi.model.conection.Response;
 
 public interface BreakpointService extends FrameworkService{
     public Response create(Request breakpointId);

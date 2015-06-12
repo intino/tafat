@@ -5,14 +5,14 @@ import tafat.framework.services.ServicesManager;
 import tafat.framework.services.BreakpointService;
 import tafat.framework.services.FrameworkService;
 import tafat.framework.finder.ServiceFinder;
-import model.conection.HttpRequest;
-import model.handler.Handler;
+import tafat.sgi.model.conection.HttpRequest;
+import tafat.sgi.model.handler.Handler;
 import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static exception.ExceptionHandler.getSafe;
+import static tafat.sgi.exception.ExceptionHandler.getSafe;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 

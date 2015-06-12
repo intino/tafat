@@ -1,11 +1,11 @@
 package tafat.framework.services.defaults;
 
 import tafat.framework.state.ServerState;
-import model.conection.HttpRequest;
-import model.conection.Request;
+import tafat.sgi.model.conection.HttpRequest;
+import tafat.sgi.model.conection.Request;
 import org.junit.Test;
 
-import static exception.ExceptionHandler.getSafe;
+import static tafat.sgi.exception.ExceptionHandler.getSafe;
 import static org.junit.Assert.assertEquals;
 
 public class SensorServiceTest {

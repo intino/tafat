@@ -1,7 +1,7 @@
 package tafat.framework.services.defaults;
 
-import model.conection.HttpRequest;
-import model.conection.Response;
+import tafat.sgi.model.conection.HttpRequest;
+import tafat.sgi.model.conection.Response;
 import org.junit.Test;
 import tafat.framework.state.ServerState;
 
@@ -9,7 +9,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static exception.ExceptionHandler.getSafe;
+import static tafat.sgi.exception.ExceptionHandler.getSafe;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertEquals;

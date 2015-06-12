@@ -1,9 +1,9 @@
 package tafat.framework.mockServices.classToService;
 
 import tafat.framework.services.SensorService;
-import model.conection.HttpResponse;
-import model.conection.Request;
-import model.conection.Response;
+import tafat.sgi.model.conection.HttpResponse;
+import tafat.sgi.model.conection.Request;
+import tafat.sgi.model.conection.Response;
 
 public class SensorHandlerService implements SensorService {
     public SensorHandlerService() {

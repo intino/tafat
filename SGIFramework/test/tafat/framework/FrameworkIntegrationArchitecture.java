@@ -6,9 +6,9 @@ import tafat.framework.integration.simulation.Breakpoint;
 import tafat.framework.integration.simulation.SimulationState;
 import tafat.framework.integration.simulation.SimulationStateListener;
 import tafat.framework.integration.simulation.Watcher;
-import model.conection.HttpRequest;
-import model.conection.Request;
-import model.conection.Response;
+import tafat.sgi.model.conection.HttpRequest;
+import tafat.sgi.model.conection.Request;
+import tafat.sgi.model.conection.Response;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import static exception.ExceptionHandler.getSafe;
+import static tafat.sgi.exception.ExceptionHandler.getSafe;
 import static tafat.framework.state.ServerState.state;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
@@ -88,12 +88,12 @@ public class FrameworkIntegrationArchitecture {
         assertEquals(500, response.getStatusCode());
         assertEquals(IMPOSIBLE_PAUSE, response.getBody());
     }
-
+    //TODO echar un ojo al control breakpoints
     @Test
     public void shouldDetectThatBreakpointHaveBeenNotFired() {
         Date date = new Date(System.currentTimeMillis());
         state().breakpoints().add(Breakpoint.create(date));
-        assertFalse(state().breakpoints().haveBreakpointNotPassed(date));
+        assertTrue(state().breakpoints().haveBreakpointNotPassed(date));
     }
 
     @Test

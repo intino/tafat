@@ -6,14 +6,14 @@ import tafat.site.route.identification.UserIdentification;
 import tafat.site.route.notification.NotificationConnection;
 import tafat.site.route.notification.NotificationServer;
 import tafat.site.route.notification.WebSocketConnection;
-import model.conection.HttpRequest;
-import model.conection.Response;
-import model.handler.Handler;
+import tafat.sgi.model.conection.HttpRequest;
+import tafat.sgi.model.conection.Response;
+import tafat.sgi.model.handler.Handler;
 import org.java_websocket.WebSocket;
 import org.junit.Before;
 import org.junit.Test;
 
-import static exception.ExceptionHandler.getSafe;
+import static tafat.sgi.exception.ExceptionHandler.getSafe;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.TestCase.assertSame;
 import static org.mockito.Mockito.mock;

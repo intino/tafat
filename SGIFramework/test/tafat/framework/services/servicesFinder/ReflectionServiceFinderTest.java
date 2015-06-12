@@ -16,20 +16,20 @@ public class ReflectionServiceFinderTest {
 
     @Test
     public void shouldFindBreakpointService() throws ClassNotFoundException {
-        Map<Class<?>, Class<? extends FrameworkService>> search = new ReflectionServiceFinder().search("framework.mockServices.classToService");
+        Map<Class<?>, Class<? extends FrameworkService>> search = new ReflectionServiceFinder().search("tafat.framework.mockServices.classToService");
         assertSame(BreakpointHandlerService.class, search.get(BreakpointService.class));
     }
 
     @Test
     public void notReturnInnerInterfaces() {
-        Map<Class<?>, Class<? extends FrameworkService>> search = new ReflectionServiceFinder().search("framework");
+        Map<Class<?>, Class<? extends FrameworkService>> search = new ReflectionServiceFinder().search("tafat.framework");
         for (Class<?> serviceClass : search.keySet())
             assertTrue("inner interface(FakeService) find", !serviceClass.getName().contains("FakeService"));
     }
 
     @Test
     public void detectALotImplementationOfAInterface() {
-        Map<Class<?>, Class<? extends FrameworkService>> search = new ReflectionServiceFinder().search("framework.mockServices.allInOneServices");
+        Map<Class<?>, Class<? extends FrameworkService>> search = new ReflectionServiceFinder().search("tafat.framework.mockServices.allInOneServices");
         assertSame(AllServices.class, search.get(BreakpointService.class));
     }
 

@@ -29,16 +29,16 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.siani.tafat</groupId>
-      <artifactId>sgi-httphandler</artifactId>
-      <type>jar</type>
-      <version>1.0</version>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.siani.tafat</groupId>
-      <artifactId>sgi-discoveryprotocol</artifactId>
-      <type>jar</type>
-      <version>1.0</version>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <version>1.10.19</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.reflections</groupId>
@@ -49,6 +49,16 @@
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
       <version>2.3.1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.googlecode.json-simple</groupId>
+      <artifactId>json-simple</artifactId>
+      <version>1.1.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.4</version>
     </dependency>
   </dependencies>
 

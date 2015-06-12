@@ -1,9 +1,9 @@
 package tafat.site.subscription;
 
-import connection.Connection;
-import connection.NetInformation;
-import model.handler.DiscoveryProtocolHandler;
-import protocol.ServerSideDiscoveryProtocol;
+import tafat.sgi.discovery.ServerProtocol;
+import tafat.sgi.discovery.connection.Connection;
+import tafat.sgi.discovery.connection.NetInformation;
+import tafat.sgi.discovery.handler.DiscoveryProtocolHandler;
 import tafat.site.ServerState;
 
 public class SubscriptionsHandler implements Runnable {
@@ -26,7 +26,7 @@ public class SubscriptionsHandler implements Runnable {
     }
 
     public void collectingSubscriptions() throws Exception {
-        DiscoveryProtocolHandler handler = new DiscoveryProtocolHandler(new ServerSideDiscoveryProtocol(ServerState.instance()), connection);
+        DiscoveryProtocolHandler handler = new DiscoveryProtocolHandler(new ServerProtocol(ServerState.instance()), connection);
         NetInformation subscription = handler.start();
         ServerState.instance().addSubscription(subscription);
     }

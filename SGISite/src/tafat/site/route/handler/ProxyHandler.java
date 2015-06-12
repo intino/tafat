@@ -1,16 +1,16 @@
 package tafat.site.route.handler;
 
-import Controller.PetitionClient;
+import tafat.sgi.controller.PetitionClient;
+import tafat.sgi.discovery.connection.NetInformation;
+import tafat.sgi.model.conection.HttpRequest;
+import tafat.sgi.model.conection.Request;
+import tafat.sgi.model.conection.Response;
+import tafat.sgi.model.handler.Handler;
 import tafat.site.ServerState;
-import connection.NetInformation;
-import model.conection.HttpRequest;
-import model.conection.Request;
-import model.conection.Response;
-import model.handler.Handler;
 
 import java.io.IOException;
 
-import static exception.ExceptionHandler.getSafe;
+import static tafat.sgi.exception.ExceptionHandler.getSafe;
 
 public class ProxyHandler implements Handler {
     private final PetitionClient petitionClient;

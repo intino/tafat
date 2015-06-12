@@ -1,8 +1,8 @@
 package tafat.framework.mockServices.classToService;
 
 import tafat.framework.services.SubscriptionService;
-import model.conection.Request;
-import model.conection.Response;
+import tafat.sgi.model.conection.Request;
+import tafat.sgi.model.conection.Response;
 
 public class SubscribeHandlerService implements SubscriptionService {
     @Override

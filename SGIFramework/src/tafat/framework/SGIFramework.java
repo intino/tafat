@@ -1,26 +1,26 @@
 package tafat.framework;
 
-import Controller.HttpService;
-import connection.DatagramConnection;
-import connection.NetInformation;
+import tafat.framework.finder.ReflectionServiceFinder;
 import tafat.framework.handler.HandlerDictionary;
 import tafat.framework.integration.SimulationAgent;
 import tafat.framework.integration.SimulationAgentWrapper;
 import tafat.framework.integration.simulation.Breakpoint;
 import tafat.framework.integration.simulation.SimulationStateListener;
-import tafat.framework.state.WatcherManager;
-import tafat.framework.services.ServicesManager;
 import tafat.framework.services.NotificationService;
-import tafat.framework.finder.ReflectionServiceFinder;
-import model.handler.DiscoveryProtocolHandler;
-import model.proccesor.RequestProcessor;
-import protocol.ClientSideDiscoverProtocol;
+import tafat.framework.services.ServicesManager;
+import tafat.framework.state.WatcherManager;
+import tafat.sgi.controller.HttpService;
+import tafat.sgi.discovery.ClientProtocol;
+import tafat.sgi.discovery.connection.DatagramConnection;
+import tafat.sgi.discovery.connection.NetInformation;
+import tafat.sgi.discovery.handler.DiscoveryProtocolHandler;
+import tafat.sgi.model.proccesor.RequestProcessor;
 
 import java.net.URI;
 import java.util.Date;
 
-import static exception.ExceptionHandler.runSafe;
 import static tafat.framework.state.ServerState.state;
+import static tafat.sgi.exception.ExceptionHandler.runSafe;
 
 public abstract class SGIFramework implements SimulationAgent{
     private HttpService httpService;
@@ -35,7 +35,7 @@ public abstract class SGIFramework implements SimulationAgent{
     }
 
     private void start(String simulationName, URI servicesPath) throws Exception {
-        NetInformation result = new DiscoveryProtocolHandler(new ClientSideDiscoverProtocol(simulationName), new DatagramConnection(35001)).start();
+        NetInformation result = new DiscoveryProtocolHandler(new ClientProtocol(simulationName), new DatagramConnection(35001)).start();
         httpService = new HttpService(new RequestProcessor(new HandlerDictionary(new SimulationAgentWrapper(this))), result.getPort());
         setupFramework(simulationName, servicesPath, result);
         httpService.start();

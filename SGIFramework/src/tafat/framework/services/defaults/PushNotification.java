@@ -1,15 +1,15 @@
 package tafat.framework.services.defaults;
 
-import Controller.HttpPetitionClient;
-import Controller.PetitionClient;
-import tafat.framework.state.ServerState;
 import tafat.framework.services.NotificationService;
-import model.conection.HttpRequest;
-import model.conection.Response;
+import tafat.framework.state.ServerState;
+import tafat.sgi.controller.HttpPetitionClient;
+import tafat.sgi.controller.PetitionClient;
+import tafat.sgi.model.conection.HttpRequest;
+import tafat.sgi.model.conection.Response;
 
-import static exception.ExceptionHandler.getSafe;
-import static exception.ExceptionHandler.runSafe;
 import static tafat.framework.state.ServerState.state;
+import static tafat.sgi.exception.ExceptionHandler.getSafe;
+import static tafat.sgi.exception.ExceptionHandler.runSafe;
 
 public class PushNotification implements NotificationService {
 
@@ -28,7 +28,7 @@ public class PushNotification implements NotificationService {
 
     @Override
     public void push(String username, String message) {
-        HttpRequest request = getSafe(() -> new HttpRequest("POST", serverState.getRemoteAddress() + ":8080/" + serverState.simulationId() + "/notification", message));
+        HttpRequest request = getSafe(() -> new HttpRequest("POST", serverState.getRemoteAddress() + ":8082/" + serverState.simulationId() + "/notification", message));
         System.out.println("notification request-> " +request.getBody() + " " + request.getPath());
         request.setParameter("username", username);
         runSafe(() -> petitionClient.sendRequest(request, response -> treatResponse(response, username)));
@@ -36,7 +36,7 @@ public class PushNotification implements NotificationService {
 
     @Override
     public void broadcast(String message) {
-        HttpRequest request = getSafe(() -> new HttpRequest("POST", serverState.getRemoteAddress() + ":8080/" + serverState.simulationId() + "/broadcast-notification", message));
+        HttpRequest request = getSafe(() -> new HttpRequest("POST", serverState.getRemoteAddress() + ":8082/" + serverState.simulationId() + "/broadcast-notification", message));
         System.out.println("broadcast request-> " +request.getBody() + " " + request.getPath());
         runSafe(() -> petitionClient.sendRequest(request, response -> runSafe(()->{})));
     }

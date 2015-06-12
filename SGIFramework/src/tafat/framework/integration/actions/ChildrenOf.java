@@ -3,9 +3,9 @@ package tafat.framework.integration.actions;
 import com.google.gson.Gson;
 import tafat.framework.integration.SimulationAgent;
 import tafat.framework.integration.simulation.SimulationObject;
-import model.conection.HttpResponse;
-import model.conection.Request;
-import model.conection.Response;
+import tafat.sgi.model.conection.HttpResponse;
+import tafat.sgi.model.conection.Request;
+import tafat.sgi.model.conection.Response;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
