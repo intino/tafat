@@ -10,8 +10,9 @@ import tafat.site.subscription.SubscriptionsHandler;
 
 import java.io.IOException;
 
-import static com.sun.javafx.fxml.expression.Expression.greaterThanOrEqualTo;
 import static org.junit.Assert.assertNotNull;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 
 public class TestApi {
 
@@ -19,7 +20,7 @@ public class TestApi {
     public void subscribeSimulatorWithHostnameFelipe() throws Exception {
         Connection clientSideConnection = clientSideConnection("Felipe", "192.168.1.4");
         new SubscriptionsHandler(clientSideConnection).collectingSubscriptions();
-        greaterThanOrEqualTo(1, ServerState.instance().numberOfSubscriptions());
+        assertThat(ServerState.instance().numberOfSubscriptions(), greaterThanOrEqualTo(1));
         assertNotNull(ServerState.instance().getSubscription("Felipe"));
     }
 
@@ -29,7 +30,7 @@ public class TestApi {
         new SubscriptionsHandler(clientSideConnection).collectingSubscriptions();
         clientSideConnection = clientSideConnection("Francisco", "192.168.1.5");
         new SubscriptionsHandler(clientSideConnection).collectingSubscriptions();
-        greaterThanOrEqualTo(2, ServerState.instance().numberOfSubscriptions());
+        assertThat(ServerState.instance().numberOfSubscriptions(), greaterThanOrEqualTo(2));
         assertNotNull(ServerState.instance().getSubscription("Felipe"));
         assertNotNull(ServerState.instance().getSubscription("Francisco"));
     }
@@ -40,8 +41,8 @@ public class TestApi {
         new SubscriptionsHandler(clientSideConnection).collectingSubscriptions();
         clientSideConnection = clientSideConnection("Francisco", "192.168.1.4");
         new SubscriptionsHandler(clientSideConnection).collectingSubscriptions();
-        greaterThanOrEqualTo(50000, ServerState.instance().getSubscription("Felipe").getPort());
-        greaterThanOrEqualTo(50001, ServerState.instance().getSubscription("Francisco").getPort());
+        assertThat(ServerState.instance().getSubscription("Felipe").getPort(), greaterThanOrEqualTo(50000));
+        assertThat(ServerState.instance().getSubscription("Francisco").getPort(), greaterThanOrEqualTo(50001));
     }
 
     //TODO HACER PASAR ESTE TEST .
