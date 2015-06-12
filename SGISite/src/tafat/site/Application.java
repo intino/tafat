@@ -1,9 +1,11 @@
 package tafat.site;
 
-import Controller.HttpService;
-import connection.DatagramConnection;
+import spark.Route;
 import spark.Spark;
 import spark.SparkBase;
+import tafat.sgi.controller.HttpService;
+import tafat.sgi.discovery.connection.DatagramConnection;
+import tafat.sgi.model.conection.HttpRequest;
 import tafat.site.route.HandlerDictionary;
 import tafat.site.route.notification.NotificationServer;
 import tafat.site.route.notification.WebSocketConnection;
@@ -12,6 +14,8 @@ import tafat.site.subscription.SimulatorSubscriptionsService;
 import java.net.SocketException;
 
 public class Application {
+    static RouterRequestProcessor requestProcessor = new RouterRequestProcessor(new HandlerDictionary());
+
     public static void main(String[] args) {
         try {
             (new Application()).execute();
@@ -33,7 +37,7 @@ public class Application {
     }
 
     private void runHttpServer() {
-        (new HttpService(new RouterRequestProcessor(new HandlerDictionary()), 8080)).start();
+        (new HttpService(new RouterRequestProcessor(new HandlerDictionary()), 8082)).start();
     }
 
     private void runSubscriptionServer() throws SocketException {
@@ -41,10 +45,23 @@ public class Application {
     }
 
     private void runStaticServer() {
+        SparkBase.port(8080);
         SparkBase.staticFileLocation("/public");
-        SparkBase.port(80);
+        setDefault((req, res) ->
+            requestProcessor.process
+                    (new HttpRequest(req.requestMethod(), req.pathInfo(), req.body()))
+                    .getBody());
+
         Spark.get("/about", (req, res) -> "Tafat. SIANI-2015");
     }
+
+
+    private void setDefault(Route route) {
+        Spark.get("/api/*","application/json", route);
+        Spark.post("/api/*", route);
+        Spark.delete("/api/*", route);
+    }
+
 
     private void runNotificationServer() {
         WebSocketConnection connection = new WebSocketConnection(8081);

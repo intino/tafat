@@ -12,7 +12,7 @@ public class SensorServiceTest {
     @Test
     public void shouldRemoveSensor() {
         Request removeRequest = getSafe(() -> new HttpRequest("DELETE", "/Sensor", "{\"measurableAttributeName\":\"watcher1\", \"objectId\":\"objectid\",\"username\":\"ramclen\" }"));
-        Request installRequest = getSafe(() -> new HttpRequest("DELETE", "/Sensor", ""));
+        Request installRequest = getSafe(() -> new HttpRequest("POST", "/Sensor", ""));
         installRequest.setParameter("measurableAttributeName","watcher1");
         installRequest.setParameter("username","ramclen");
         installRequest.setParameter("objectId","objectid");
