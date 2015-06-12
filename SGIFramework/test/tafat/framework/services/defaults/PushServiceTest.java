@@ -1,6 +1,6 @@
 package tafat.framework.services.defaults;
 
-import Controller.PetitionClient;
+import tafat.sgi.controller.PetitionClient;
 import tafat.framework.services.ServicesManager;
 import tafat.framework.services.NotificationService;
 import tafat.framework.finder.ReflectionServiceFinder;
@@ -18,7 +18,7 @@ public class PushServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        ServicesManager.setUp(new ReflectionServiceFinder(), "framework.integrationTest.services");
+        ServicesManager.setUp(new ReflectionServiceFinder(), "tafat.framework.services.defaults");
     }
 
     @Test
@@ -30,7 +30,7 @@ public class PushServiceTest {
     public void sendPushNotificationSensorJSON() throws IOException {
         PetitionClient petitionClient = mock(PetitionClient.class);
         new PushNotification(petitionClient).push("Bryan","{\"sensor2\":12}");
-        verify(petitionClient).sendRequest(anyObject());
+        verify(petitionClient).sendRequest(anyObject(), anyObject());
     }
 
 }

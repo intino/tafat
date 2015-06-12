@@ -22,20 +22,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="DiscoveryProtocol" />
         <module name="Engine" />
-        <module name="ExceptionHandler" />
-        <module name="HttpHandler" />
         <module name="SGIFramework" />
+        <module name="SGISite" />
+        <module name="SGIToolbox" />
         <module name="SGITools" />
         <module name="SmartCities" />
-      </profile>
-      <profile default="false" name="Annotation profile for SGISite" enabled="true">
-        <sourceOutputDir name="target\generated-sources\annotations" />
-        <sourceTestOutputDir name="target\generated-test-sources\test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
-        <module name="SGISite" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -45,6 +37,7 @@
       <module name="HttpHandler" target="1.8" />
       <module name="SGIFramework" target="1.8" />
       <module name="SGISite" target="1.8" />
+      <module name="SGIToolbox" target="1.8" />
       <module name="SGITools" target="1.8" />
       <module name="SmartCities" target="1.8" />
       <module name="Tafat" target="1.7" />

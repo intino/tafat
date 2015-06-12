@@ -2,9 +2,9 @@ package tafat.framework.mockServices.allInOneServices;
 
 import tafat.framework.services.BreakpointService;
 import tafat.framework.services.SensorService;
-import model.conection.HttpResponse;
-import model.conection.Request;
-import model.conection.Response;
+import tafat.sgi.model.conection.HttpResponse;
+import tafat.sgi.model.conection.Request;
+import tafat.sgi.model.conection.Response;
 
 public class AllServices implements SensorService, BreakpointService {
 

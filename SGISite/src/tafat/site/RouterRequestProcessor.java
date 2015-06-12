@@ -1,15 +1,15 @@
 package tafat.site;
 
-import model.conection.HttpRequest;
-import model.conection.Request;
-import model.conection.Response;
-import model.handler.Handler;
-import model.proccesor.Processor;
-import model.proccesor.RequestDictionary;
+import tafat.sgi.model.conection.HttpRequest;
+import tafat.sgi.model.conection.Request;
+import tafat.sgi.model.conection.Response;
+import tafat.sgi.model.handler.Handler;
+import tafat.sgi.model.proccesor.Processor;
+import tafat.sgi.model.proccesor.RequestDictionary;
 
 import java.io.IOException;
 
-import static exception.ExceptionHandler.getSafe;
+import static tafat.sgi.exception.ExceptionHandler.getSafe;
 
 public class RouterRequestProcessor implements Processor {
     private RequestDictionary dictionary;

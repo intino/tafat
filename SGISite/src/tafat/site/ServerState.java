@@ -1,7 +1,8 @@
 package tafat.site;
 
-import SubscriptionsState.SubscriptionsState;
-import connection.NetInformation;
+
+import tafat.sgi.discovery.SubscriptionsState.SubscriptionsState;
+import tafat.sgi.discovery.connection.NetInformation;
 
 import java.util.ArrayList;
 import java.util.HashMap;

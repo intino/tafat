@@ -1,6 +1,7 @@
 package tafat.site.subscription;
 
-import connection.Connection;
+
+import tafat.sgi.discovery.connection.Connection;
 
 public class SimulatorSubscriptionsService{
     private Connection connection;

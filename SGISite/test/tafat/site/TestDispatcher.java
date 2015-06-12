@@ -1,18 +1,18 @@
 package tafat.site;
 
-import Controller.PetitionClient;
-import tafat.site.route.handler.ProxyHandler;
-import connection.NetInformation;
-import model.conection.HttpRequest;
-import model.conection.HttpResponse;
-import model.conection.Request;
-import model.conection.Response;
 import org.junit.Test;
+import tafat.sgi.controller.PetitionClient;
+import tafat.sgi.discovery.connection.NetInformation;
+import tafat.sgi.model.conection.HttpRequest;
+import tafat.sgi.model.conection.HttpResponse;
+import tafat.sgi.model.conection.Request;
+import tafat.sgi.model.conection.Response;
+import tafat.site.route.handler.ProxyHandler;
 
 import java.io.IOException;
 
-import static exception.ExceptionHandler.getSafe;
 import static junit.framework.TestCase.assertEquals;
+import static tafat.sgi.exception.ExceptionHandler.getSafe;
 
 public class TestDispatcher {
 

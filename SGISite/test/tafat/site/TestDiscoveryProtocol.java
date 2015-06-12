@@ -1,12 +1,12 @@
 package tafat.site;
 
-import connection.Connection;
-import connection.Datagram;
-import connection.NetInformation;
 import org.junit.Before;
 import org.junit.Test;
-import protocol.ClientSideDiscoverProtocol;
-import protocol.Protocol;
+import tafat.sgi.discovery.ClientProtocol;
+import tafat.sgi.discovery.Protocol;
+import tafat.sgi.discovery.connection.Connection;
+import tafat.sgi.discovery.connection.Datagram;
+import tafat.sgi.discovery.connection.NetInformation;
 import tafat.site.subscription.SubscriptionsHandler;
 
 import java.io.IOException;
@@ -63,7 +63,7 @@ public class TestDiscoveryProtocol {
 
     private Connection clientSideConnection(String hostname, String ip) {
         return new Connection() {
-            Protocol protocol = new ClientSideDiscoverProtocol(hostname);
+            Protocol protocol = new ClientProtocol(hostname);
             public Datagram datagram;
 
             @Override

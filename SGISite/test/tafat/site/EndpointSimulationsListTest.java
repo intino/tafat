@@ -1,13 +1,13 @@
 package tafat.site;
 
-import connection.NetInformation;
-import model.conection.HttpRequest;
-import model.conection.Response;
 import org.junit.Test;
+import tafat.sgi.discovery.connection.NetInformation;
+import tafat.sgi.model.conection.HttpRequest;
+import tafat.sgi.model.conection.Response;
 import tafat.site.route.handler.SimulatorSubscribedHandler;
 
-import static exception.ExceptionHandler.getSafe;
 import static junit.framework.TestCase.assertEquals;
+import static tafat.sgi.exception.ExceptionHandler.getSafe;
 
 public class EndpointSimulationsListTest {
     @Test

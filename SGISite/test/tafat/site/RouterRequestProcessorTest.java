@@ -1,11 +1,11 @@
 package tafat.site;
 
-import model.conection.HttpRequest;
+import tafat.sgi.model.conection.HttpRequest;
 import org.junit.Before;
 import org.junit.Test;
 import tafat.site.route.HandlerDictionary;
 
-import static exception.ExceptionHandler.getSafe;
+import static tafat.sgi.exception.ExceptionHandler.getSafe;
 import static junit.framework.TestCase.assertEquals;
 
 public class RouterRequestProcessorTest {

@@ -26,18 +26,22 @@
 
   <dependencies>
     <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.siani.magritte</groupId>
       <artifactId>magritte</artifactId>
       <version>LATEST</version>
     </dependency>
-
-  
-  <dependency>
-      <groupId>org.siani.tafat</groupId>
-      <artifactId>engine</artifactId>
-      <type>bundle</type>
-      <version>1.0</version>
-    </dependency>
+    <dependency>
+        <groupId>org.siani.tafat</groupId>
+        <artifactId>engine</artifactId>
+        <type>bundle</type>
+        <version>1.0</version>
+      </dependency>
   </dependencies>
 
 </project>

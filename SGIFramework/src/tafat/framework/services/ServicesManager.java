@@ -6,7 +6,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
-import static exception.ExceptionHandler.getSafe;
+import static tafat.sgi.exception.ExceptionHandler.getSafe;
 
 public class ServicesManager {
     private static Map<Class<?>, Object >services;

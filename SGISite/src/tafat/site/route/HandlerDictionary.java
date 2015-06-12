@@ -1,9 +1,9 @@
 package tafat.site.route;
 
-import Controller.HttpPetitionClient;
-import model.conection.Request;
-import model.handler.Handler;
-import model.proccesor.RequestDictionary;
+import tafat.sgi.controller.HttpPetitionClient;
+import tafat.sgi.model.conection.Request;
+import tafat.sgi.model.handler.Handler;
+import tafat.sgi.model.proccesor.RequestDictionary;
 import tafat.site.route.handler.BroadcastNotificationHandler;
 import tafat.site.route.handler.NotificationHandler;
 import tafat.site.route.handler.ProxyHandler;

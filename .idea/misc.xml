@@ -11,9 +11,6 @@
         <option value="$PROJECT_DIR$/SmartCities/pom.xml" />
         <option value="$PROJECT_DIR$/SGISite/pom.xml" />
         <option value="$PROJECT_DIR$/SGITools/pom.xml" />
-        <option value="$PROJECT_DIR$/SGITools/HttpHandler/pom.xml" />
-        <option value="$PROJECT_DIR$/SGITools/DiscoveryProtocol/pom.xml" />
-        <option value="$PROJECT_DIR$/SGITools/ExceptionHandler/pom.xml" />
         <option value="$PROJECT_DIR$/SGIFramework/pom.xml" />
       </list>
     </option>

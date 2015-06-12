@@ -4,16 +4,16 @@ import tafat.framework.state.ServerState;
 import tafat.framework.services.ServicesManager;
 import tafat.framework.services.NotificationService;
 import tafat.framework.services.SubscriptionService;
-import model.conection.HttpResponse;
-import model.conection.Request;
-import model.conection.Response;
+import tafat.sgi.model.conection.HttpResponse;
+import tafat.sgi.model.conection.Request;
+import tafat.sgi.model.conection.Response;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static exception.ExceptionHandler.getSafe;
-import static exception.ExceptionHandler.runSafe;
+import static tafat.sgi.exception.ExceptionHandler.getSafe;
+import static tafat.sgi.exception.ExceptionHandler.runSafe;
 
 public class SubscribeService implements SubscriptionService {
 

@@ -29,22 +29,16 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.siani.tafat</groupId>
-      <artifactId>sgi-httphandler</artifactId>
-      <type>jar</type>
-      <version>1.0</version>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.siani.tafat</groupId>
-      <artifactId>sgi-discoveryprotocol</artifactId>
-      <type>jar</type>
-      <version>1.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.siani.tafat</groupId>
-      <artifactId>sgi-exceptionhandler</artifactId>
-      <type>jar</type>
-      <version>1.0</version>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <version>LATEST</version>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.java-websocket</groupId>
@@ -56,58 +50,12 @@
       <artifactId>spark-core</artifactId>
       <version>2.2</version>
     </dependency>
+    <dependency>
+      <groupId>com.googlecode.json-simple</groupId>
+      <artifactId>json-simple</artifactId>
+      <version>1.1.1</version>
+    </dependency>
   </dependencies>
 
-  <build>
-      <finalName>sgi-site</finalName>
-      <sourceDirectory>src/</sourceDirectory>
-      <resources>
-          <resource>
-              <directory>res/</directory>
-          </resource>
-      </resources>
-      <plugins>
-          <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-compiler-plugin</artifactId>
-              <version>2.3.2</version>
-              <configuration>
-                  <includes>
-                      <include>src</include>
-                  </includes>
-              </configuration>
-          </plugin>
 
-          <!-- Maven Assembly Plugin -->
-          <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-assembly-plugin</artifactId>
-              <version>2.4.1</version>
-              <configuration>
-                  <!-- get all project dependencies -->
-                  <descriptorRefs>
-                      <descriptorRef>jar-with-dependencies</descriptorRef>
-                  </descriptorRefs>
-                  <!-- MainClass in mainfest make a executable jar -->
-                  <archive>
-                      <manifest>
-                          <mainClass>tafat.tafat.site.Application</mainClass>
-                      </manifest>
-                  </archive>
-
-              </configuration>
-              <executions>
-                  <execution>
-                      <id>make-assembly</id>
-                      <!-- bind to the packaging phase -->
-                      <phase>package</phase>
-                      <goals>
-                          <goal>single</goal>
-                      </goals>
-                  </execution>
-              </executions>
-          </plugin>
-
-      </plugins>
-  </build>
 </project>

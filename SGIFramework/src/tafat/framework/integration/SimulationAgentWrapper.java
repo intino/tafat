@@ -1,8 +1,8 @@
 package tafat.framework.integration;
 
 import tafat.framework.integration.actions.AgentAction;
-import model.conection.Request;
-import model.conection.Response;
+import tafat.sgi.model.conection.Request;
+import tafat.sgi.model.conection.Response;
 
 public class SimulationAgentWrapper {
     SimulationRequestParser parser;

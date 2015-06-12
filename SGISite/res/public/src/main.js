@@ -4,7 +4,7 @@ function main($,eventHandler, menu, connection, datetime, breakpointSection, Gra
     $(window).load(function () {
         $('#myModal').modal("show");
     });
-    const REMOTE_DIRECTION = "localhost/simulation";
+    const REMOTE_DIRECTION = "localhost:8080";
 
     $("#dropdown-button a").on("click", function () {
         if($(this).data("format")==undefined)
