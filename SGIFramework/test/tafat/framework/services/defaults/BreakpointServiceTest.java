@@ -25,14 +25,6 @@ public class BreakpointServiceTest {
     }
 
     @Test
-    public void shouldCreateABreakpointWithMilliseconds() {
-        Response response = new BreakpointService().create(getSafe(() -> new HttpRequest("POST", "/Breakpoint", "{\"time\":\"01/30/2015 11:00:00:952\"}")));
-        assertEquals(200, response.getStatusCode());
-        assertThat(response.getBody(), containsString("{\"message\":\"breakpoint created\",\"breakpointId\":\""));
-        assertNotNull(ServerState.state().breakpoints().get("0"));
-    }
-
-    @Test
     public void shouldRespondWithABreakpointDeletion() {
         Response response = new BreakpointService().create(getSafe(() -> new HttpRequest("POST", "/Breakpoint", "{\"time\":\"01/30/2015 11:00:00:952\"}")));
         assertNotNull(ServerState.state().breakpoints().get("0"));

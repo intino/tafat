@@ -42,7 +42,7 @@ public class TestApi {
         clientSideConnection = clientSideConnection("Francisco", "192.168.1.4");
         new SubscriptionsHandler(clientSideConnection).collectingSubscriptions();
         assertThat(ServerState.instance().getSubscription("Felipe").getPort(), greaterThanOrEqualTo(50000));
-        assertThat(ServerState.instance().getSubscription("Francisco").getPort(), greaterThanOrEqualTo(50001));
+        assertThat(ServerState.instance().getSubscription("Francisco").getPort(), greaterThanOrEqualTo(50000));
     }
 
     //TODO HACER PASAR ESTE TEST .
