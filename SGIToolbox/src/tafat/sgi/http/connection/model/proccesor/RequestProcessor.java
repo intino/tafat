@@ -1,8 +1,8 @@
-package tafat.sgi.model.proccesor;
+package tafat.sgi.http.connection.model.proccesor;
 
-import tafat.sgi.model.conection.Request;
-import tafat.sgi.model.conection.Response;
-import tafat.sgi.model.handler.Handler;
+import tafat.sgi.http.connection.model.conection.Request;
+import tafat.sgi.http.connection.model.conection.Response;
+import tafat.sgi.http.connection.model.handler.Handler;
 
 import java.io.IOException;
 

@@ -1,8 +1,8 @@
-package tafat.sgi.controller;
+package tafat.sgi.http.connection.controller;
 
 import com.sun.net.httpserver.HttpServer;
-import tafat.sgi.model.handler.HttpPetitionHandler;
-import tafat.sgi.model.proccesor.Processor;
+import tafat.sgi.http.connection.model.handler.HttpPetitionHandler;
+import tafat.sgi.http.connection.model.proccesor.Processor;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

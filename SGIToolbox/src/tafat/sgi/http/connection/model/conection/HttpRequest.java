@@ -1,4 +1,4 @@
-package tafat.sgi.model.conection;
+package tafat.sgi.http.connection.model.conection;
 
 import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;

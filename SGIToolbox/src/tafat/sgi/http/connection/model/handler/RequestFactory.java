@@ -1,8 +1,8 @@
-package tafat.sgi.model.handler;
+package tafat.sgi.http.connection.model.handler;
 
 import com.sun.net.httpserver.HttpExchange;
-import tafat.sgi.model.conection.HttpRequest;
-import tafat.sgi.model.conection.Request;
+import tafat.sgi.http.connection.model.conection.HttpRequest;
+import tafat.sgi.http.connection.model.conection.Request;
 import org.json.simple.parser.ParseException;
 
 import java.io.BufferedReader;
