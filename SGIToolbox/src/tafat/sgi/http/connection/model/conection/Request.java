@@ -1,4 +1,4 @@
-package tafat.sgi.model.conection;
+package tafat.sgi.http.connection.model.conection;
 
 import java.net.URI;
 

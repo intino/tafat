@@ -1,9 +1,9 @@
 package tafat.framework.services.defaults;
 
 import tafat.framework.integration.simulation.Breakpoint;
-import tafat.sgi.model.conection.HttpResponse;
-import tafat.sgi.model.conection.Request;
-import tafat.sgi.model.conection.Response;
+import tafat.sgi.http.connection.model.conection.HttpResponse;
+import tafat.sgi.http.connection.model.conection.Request;
+import tafat.sgi.http.connection.model.conection.Response;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

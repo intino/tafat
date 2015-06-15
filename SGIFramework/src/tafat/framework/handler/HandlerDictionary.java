@@ -1,9 +1,9 @@
 package tafat.framework.handler;
 
 import tafat.framework.integration.SimulationAgentWrapper;
-import tafat.sgi.model.conection.Request;
-import tafat.sgi.model.handler.Handler;
-import tafat.sgi.model.proccesor.RequestDictionary;
+import tafat.sgi.http.connection.model.conection.Request;
+import tafat.sgi.http.connection.model.handler.Handler;
+import tafat.sgi.http.connection.model.proccesor.RequestDictionary;
 import tafat.framework.services.ServicesManager;
 import tafat.framework.services.BreakpointService;
 import tafat.framework.services.SensorService;

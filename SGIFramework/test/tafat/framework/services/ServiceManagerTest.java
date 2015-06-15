@@ -1,19 +1,14 @@
 package tafat.framework.services;
 
-import tafat.framework.finder.ReflectionServiceFinder;
+import org.junit.Test;
 import tafat.framework.finder.ServiceFinder;
 import tafat.framework.mockServices.classToService.BreakpointHandlerService;
-import tafat.framework.mockServices.classToService.NotificationHandlerService;
-import tafat.framework.mockServices.classToService.SensorHandlerService;
-import tafat.framework.mockServices.classToService.SubscribeHandlerService;
-import tafat.sgi.model.conection.HttpResponse;
-import tafat.sgi.model.conection.Request;
-import tafat.sgi.model.conection.Response;
-import org.junit.Test;
+import tafat.sgi.http.connection.model.conection.HttpResponse;
+import tafat.sgi.http.connection.model.conection.Request;
+import tafat.sgi.http.connection.model.conection.Response;
 
 import java.util.HashMap;
 import java.util.Map;
-
 
 import static junit.framework.TestCase.assertSame;
 import static org.mockito.Mockito.mock;
@@ -45,23 +40,6 @@ public class ServiceManagerTest {
         assertSame(AllServicesImplementation.class, ServicesManager.get(NotificationService.class).getClass());
         assertSame(AllServicesImplementation.class, ServicesManager.get(SensorService.class).getClass());
         assertSame(AllServicesImplementation.class, ServicesManager.get(SubscriptionService.class).getClass());
-    }
-
-    @Test
-    public void integrationWithReflectionServiceFinder() {
-        ServicesManager.setUp(new ReflectionServiceFinder(), "tafat.framework.mockServices.classToService");
-        assertSame(BreakpointHandlerService.class, ServicesManager.get(BreakpointService.class).getClass());
-        assertSame(SubscribeHandlerService.class, ServicesManager.get(SubscriptionService.class).getClass());
-        assertSame(SensorHandlerService.class, ServicesManager.get(SensorService.class).getClass());
-        assertSame(NotificationHandlerService.class, ServicesManager.get(NotificationService.class).getClass());
-    }
-
-
-    @Test
-    public void testGetNotificationService() throws Exception {
-        ServicesManager.setUp(new ReflectionServiceFinder(), "tafat.framework.mockServices.classToService");
-        NotificationService notificationService = ServicesManager.get(NotificationService.class);
-        assertSame(notificationService.getClass(), NotificationHandlerService.class);
     }
 
     private Map<Class<?>, Class<? extends FrameworkService>> getServiceList(Class<? extends FrameworkService> service) {

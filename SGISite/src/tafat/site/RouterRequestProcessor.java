@@ -1,11 +1,11 @@
 package tafat.site;
 
-import tafat.sgi.model.conection.HttpRequest;
-import tafat.sgi.model.conection.Request;
-import tafat.sgi.model.conection.Response;
-import tafat.sgi.model.handler.Handler;
-import tafat.sgi.model.proccesor.Processor;
-import tafat.sgi.model.proccesor.RequestDictionary;
+import tafat.sgi.http.connection.model.conection.HttpRequest;
+import tafat.sgi.http.connection.model.conection.Request;
+import tafat.sgi.http.connection.model.conection.Response;
+import tafat.sgi.http.connection.model.handler.Handler;
+import tafat.sgi.http.connection.model.proccesor.Processor;
+import tafat.sgi.http.connection.model.proccesor.RequestDictionary;
 
 import java.io.IOException;
 

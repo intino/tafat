@@ -2,8 +2,8 @@ package tafat.framework.services.defaults;
 
 import org.junit.Test;
 import tafat.framework.state.ServerState;
-import tafat.sgi.model.conection.HttpRequest;
-import tafat.sgi.model.conection.Request;
+import tafat.sgi.http.connection.model.conection.HttpRequest;
+import tafat.sgi.http.connection.model.conection.Request;
 
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;

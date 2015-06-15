@@ -1,12 +1,12 @@
-package tafat.sgi.model.handler;
+package tafat.sgi.http.connection.model.handler;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import tafat.sgi.model.conection.HttpRequest;
-import tafat.sgi.model.conection.HttpResponse;
-import tafat.sgi.model.conection.Request;
-import tafat.sgi.model.conection.Response;
-import tafat.sgi.model.proccesor.Processor;
+import tafat.sgi.http.connection.model.conection.HttpRequest;
+import tafat.sgi.http.connection.model.conection.HttpResponse;
+import tafat.sgi.http.connection.model.conection.Request;
+import tafat.sgi.http.connection.model.conection.Response;
+import tafat.sgi.http.connection.model.proccesor.Processor;
 import org.json.simple.parser.ParseException;
 
 import java.io.ByteArrayInputStream;

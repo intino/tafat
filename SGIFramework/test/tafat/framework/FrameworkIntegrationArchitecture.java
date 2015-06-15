@@ -1,27 +1,28 @@
 package tafat.framework;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import tafat.framework.integration.SimulationAgent;
 import tafat.framework.integration.SimulationAgentWrapper;
 import tafat.framework.integration.simulation.Breakpoint;
 import tafat.framework.integration.simulation.SimulationState;
 import tafat.framework.integration.simulation.SimulationStateListener;
 import tafat.framework.integration.simulation.Watcher;
-import tafat.sgi.model.conection.HttpRequest;
-import tafat.sgi.model.conection.Request;
-import tafat.sgi.model.conection.Response;
-import org.junit.Before;
-import org.junit.Test;
+import tafat.sgi.http.connection.model.conection.HttpRequest;
+import tafat.sgi.http.connection.model.conection.Request;
+import tafat.sgi.http.connection.model.conection.Response;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import static tafat.sgi.exception.ExceptionHandler.getSafe;
-import static tafat.framework.state.ServerState.state;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static tafat.framework.state.ServerState.state;
+import static tafat.sgi.exception.ExceptionHandler.getSafe;
 
 public class FrameworkIntegrationArchitecture {
 
@@ -39,6 +40,12 @@ public class FrameworkIntegrationArchitecture {
     public void setUp() throws Exception {
         agent = new MySimulationAgent();
         wrapper = new SimulationAgentWrapper(agent);
+    }
+
+    @After
+    public void tearDown() throws Exception {
+
+
     }
 
     @Test
@@ -99,7 +106,7 @@ public class FrameworkIntegrationArchitecture {
     @Test
     public void shouldDetectThatBreakpointHaveBeenFired() {
         Date date = new Date(System.currentTimeMillis());
-        Date dateAfter1Millisecond = new Date(System.currentTimeMillis()+1);
+        Date dateAfter1Millisecond = new Date(System.currentTimeMillis()+1000);
         state().breakpoints().add(Breakpoint.create(date));
         assertTrue(state().breakpoints().haveBreakpointNotPassed(dateAfter1Millisecond));
     }
@@ -107,8 +114,9 @@ public class FrameworkIntegrationArchitecture {
     @Test
     public void shouldDetectThatBreakpointHaveBeenNotFiredTimeBefore() {
         Date date = new Date(System.currentTimeMillis());
-        Date dateAfter1Millisecond = new Date(System.currentTimeMillis()-1);
+        Date dateAfter1Millisecond = new Date(System.currentTimeMillis()-1000);
         state().breakpoints().add(Breakpoint.create(date));
+        state().breakpoints().clear();
         assertFalse(state().breakpoints().haveBreakpointNotPassed(dateAfter1Millisecond));
     }
 

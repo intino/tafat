@@ -11,7 +11,7 @@ function connection ($){return {
 
         send : function (request, actionWhenReceive) {
             $.ajax({
-                url: "http://"+ this.direction + "/" +this.simulationId + request.path,
+                url: "http://"+ this.direction + "/api/" +this.simulationId + request.path,
                 dataType: "text",
                 type: request.method,
                 data: request.data,

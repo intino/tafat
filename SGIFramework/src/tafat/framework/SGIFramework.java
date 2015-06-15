@@ -1,6 +1,6 @@
 package tafat.framework;
 
-import tafat.framework.finder.ReflectionServiceFinder;
+import tafat.framework.finder.DefaultServices;
 import tafat.framework.handler.HandlerDictionary;
 import tafat.framework.integration.SimulationAgent;
 import tafat.framework.integration.SimulationAgentWrapper;
@@ -9,12 +9,12 @@ import tafat.framework.integration.simulation.SimulationStateListener;
 import tafat.framework.services.NotificationService;
 import tafat.framework.services.ServicesManager;
 import tafat.framework.state.WatcherManager;
-import tafat.sgi.controller.HttpService;
 import tafat.sgi.discovery.ClientProtocol;
 import tafat.sgi.discovery.connection.DatagramConnection;
 import tafat.sgi.discovery.connection.NetInformation;
 import tafat.sgi.discovery.handler.DiscoveryProtocolHandler;
-import tafat.sgi.model.proccesor.RequestProcessor;
+import tafat.sgi.http.connection.controller.HttpNativeService;
+import tafat.sgi.http.connection.model.proccesor.RequestProcessor;
 
 import java.net.URI;
 import java.util.Date;
@@ -23,7 +23,7 @@ import static tafat.framework.state.ServerState.state;
 import static tafat.sgi.exception.ExceptionHandler.runSafe;
 
 public abstract class SGIFramework implements SimulationAgent{
-    private HttpService httpService;
+    private HttpNativeService httpService;
     private WatcherManager watcherManager;
     private Date lastDate;
 
@@ -36,7 +36,7 @@ public abstract class SGIFramework implements SimulationAgent{
 
     private void start(String simulationName, URI servicesPath) throws Exception {
         NetInformation result = new DiscoveryProtocolHandler(new ClientProtocol(simulationName), new DatagramConnection(35001)).start();
-        httpService = new HttpService(new RequestProcessor(new HandlerDictionary(new SimulationAgentWrapper(this))), result.getPort());
+        httpService = new HttpNativeService(new RequestProcessor(new HandlerDictionary(new SimulationAgentWrapper(this))), result.getPort());
         setupFramework(simulationName, servicesPath, result);
         httpService.start();
     }
@@ -47,7 +47,7 @@ public abstract class SGIFramework implements SimulationAgent{
         state().setRemoteAddress(result.getRemoteIP());
         state().setSimulationStateListener(new SimulationStateListener());
         System.out.println("port assigned: " + result.getPort());
-        ServicesManager.setUp(new ReflectionServiceFinder(), servicesPath.getPath());
+        ServicesManager.setUp(new DefaultServices(), servicesPath.getPath());
     }
 
     public void refresh(Date date) {
