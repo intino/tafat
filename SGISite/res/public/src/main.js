@@ -18,6 +18,7 @@ function main($,eventHandler, menu, connection, datetime, breakpointSection, Gra
 
     connection.init(REMOTE_DIRECTION);
     modalInitialConfiguration.init().show().done(function () {
+
         WebSocketClient.init("localhost:8081");
         Graphic.refreshGraphic();
         eventHandler.init(menu, breakpointSection, datetime, connection);
@@ -30,7 +31,8 @@ function main($,eventHandler, menu, connection, datetime, breakpointSection, Gra
         // Sensor modal
         progressbar.init();
         $("#selectable-sensor").selectable();
-
+        $('#ui-datepicker-div').addClass("triangle-isosceles").addClass("left")
+            .css("margin-top","-44px").css("margin-left","147px");
     });
 
 
