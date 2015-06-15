@@ -32,7 +32,7 @@ public class BreakpointContainer {
 
     private Stream<Breakpoint> filterBreakpointNotPassed(Date date) {
         return breakpoints.stream()
-                .filter(element -> (element.date().compareTo(date) <= 0)&&(!element.isPassed()));
+                .filter(element -> (element.date().compareTo(date) <= 0) && (!element.isPassed()));
     }
 
     public Breakpoint get(String breakpointId) {
@@ -48,5 +48,9 @@ public class BreakpointContainer {
 
     public List<Breakpoint> getBreakpointsNotPassed(Date date) {
         return filterBreakpointNotPassed(date).collect(Collectors.toList());
+    }
+
+    public void clear() {
+        breakpoints = new LinkedList<>();
     }
 }
