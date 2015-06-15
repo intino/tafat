@@ -2,9 +2,9 @@ package tafat.framework.integration.actions;
 
 import tafat.framework.integration.SimulationAgent;
 import tafat.framework.integration.simulation.SimulationState;
-import tafat.sgi.model.conection.HttpResponse;
-import tafat.sgi.model.conection.Request;
-import tafat.sgi.model.conection.Response;
+import tafat.sgi.http.connection.model.conection.HttpResponse;
+import tafat.sgi.http.connection.model.conection.Request;
+import tafat.sgi.http.connection.model.conection.Response;
 import tafat.framework.state.ServerState;
 
 public class Pause implements AgentAction {

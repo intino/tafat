@@ -6,9 +6,9 @@ import tafat.framework.integration.simulation.Breakpoint;
 import tafat.framework.integration.simulation.SimulationState;
 import tafat.framework.integration.simulation.SimulationStateListener;
 import tafat.framework.integration.simulation.Watcher;
-import tafat.sgi.model.conection.HttpRequest;
-import tafat.sgi.model.conection.Request;
-import tafat.sgi.model.conection.Response;
+import tafat.sgi.http.connection.model.conection.HttpRequest;
+import tafat.sgi.http.connection.model.conection.Request;
+import tafat.sgi.http.connection.model.conection.Response;
 import org.junit.Before;
 import org.junit.Test;
 

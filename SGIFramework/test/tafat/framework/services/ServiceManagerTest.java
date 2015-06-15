@@ -6,9 +6,9 @@ import tafat.framework.mockServices.classToService.BreakpointHandlerService;
 import tafat.framework.mockServices.classToService.NotificationHandlerService;
 import tafat.framework.mockServices.classToService.SensorHandlerService;
 import tafat.framework.mockServices.classToService.SubscribeHandlerService;
-import tafat.sgi.model.conection.HttpResponse;
-import tafat.sgi.model.conection.Request;
-import tafat.sgi.model.conection.Response;
+import tafat.sgi.http.connection.model.conection.HttpResponse;
+import tafat.sgi.http.connection.model.conection.Request;
+import tafat.sgi.http.connection.model.conection.Response;
 import org.junit.Test;
 
 import java.util.HashMap;

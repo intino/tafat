@@ -1,6 +1,6 @@
 package tafat.framework.services.defaults;
 
-import tafat.sgi.controller.PetitionClient;
+import tafat.sgi.http.connection.controller.PetitionClient;
 import tafat.framework.services.ServicesManager;
 import tafat.framework.services.NotificationService;
 import tafat.framework.finder.ReflectionServiceFinder;

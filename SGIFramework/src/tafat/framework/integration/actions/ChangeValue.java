@@ -1,9 +1,9 @@
 package tafat.framework.integration.actions;
 
 import tafat.framework.integration.SimulationAgent;
-import tafat.sgi.model.conection.HttpResponse;
-import tafat.sgi.model.conection.Request;
-import tafat.sgi.model.conection.Response;
+import tafat.sgi.http.connection.model.conection.HttpResponse;
+import tafat.sgi.http.connection.model.conection.Request;
+import tafat.sgi.http.connection.model.conection.Response;
 
 public class ChangeValue implements AgentAction {
     private final SimulationAgent agent;

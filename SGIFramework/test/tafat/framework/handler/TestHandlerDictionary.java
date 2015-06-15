@@ -5,8 +5,8 @@ import tafat.framework.services.ServicesManager;
 import tafat.framework.services.BreakpointService;
 import tafat.framework.services.FrameworkService;
 import tafat.framework.finder.ServiceFinder;
-import tafat.sgi.model.conection.HttpRequest;
-import tafat.sgi.model.handler.Handler;
+import tafat.sgi.http.connection.model.conection.HttpRequest;
+import tafat.sgi.http.connection.model.handler.Handler;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -17,8 +17,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class TestHandlerDictionary {
-
-    private HandlerDictionary dictionary;
 
     @Test
     public void givePlayHandler() {

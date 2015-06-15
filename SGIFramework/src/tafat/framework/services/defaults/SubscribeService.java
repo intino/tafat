@@ -4,9 +4,9 @@ import tafat.framework.state.ServerState;
 import tafat.framework.services.ServicesManager;
 import tafat.framework.services.NotificationService;
 import tafat.framework.services.SubscriptionService;
-import tafat.sgi.model.conection.HttpResponse;
-import tafat.sgi.model.conection.Request;
-import tafat.sgi.model.conection.Response;
+import tafat.sgi.http.connection.model.conection.HttpResponse;
+import tafat.sgi.http.connection.model.conection.Request;
+import tafat.sgi.http.connection.model.conection.Response;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

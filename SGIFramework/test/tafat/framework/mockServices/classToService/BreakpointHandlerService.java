@@ -1,8 +1,8 @@
 package tafat.framework.mockServices.classToService;
 
 import tafat.framework.services.BreakpointService;
-import tafat.sgi.model.conection.Request;
-import tafat.sgi.model.conection.Response;
+import tafat.sgi.http.connection.model.conection.Request;
+import tafat.sgi.http.connection.model.conection.Response;
 
 public class BreakpointHandlerService implements BreakpointService {
     public BreakpointHandlerService() {

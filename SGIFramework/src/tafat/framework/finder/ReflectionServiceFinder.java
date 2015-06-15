@@ -35,7 +35,7 @@ public class ReflectionServiceFinder implements ServiceFinder {
 
     private boolean onThePackage(Class<? extends FrameworkService> element, String path) {
         if(path.equals(""))//When search in all project is the user project not Framework Project
-            return !element.getPackage().getName().startsWith("framework");
+            return !element.getPackage().getName().startsWith("tafat.framework");
         return element.getPackage().getName().startsWith(path);
     }
 
