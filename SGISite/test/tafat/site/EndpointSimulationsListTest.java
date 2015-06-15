@@ -2,8 +2,8 @@ package tafat.site;
 
 import org.junit.Test;
 import tafat.sgi.discovery.connection.NetInformation;
-import tafat.sgi.model.conection.HttpRequest;
-import tafat.sgi.model.conection.Response;
+import tafat.sgi.http.connection.model.conection.HttpRequest;
+import tafat.sgi.http.connection.model.conection.Response;
 import tafat.site.route.handler.SimulatorSubscribedHandler;
 
 import static junit.framework.TestCase.assertEquals;

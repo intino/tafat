@@ -1,11 +1,11 @@
 package tafat.site.route.handler;
 
-import tafat.sgi.controller.PetitionClient;
+import tafat.sgi.http.connection.controller.PetitionClient;
 import tafat.sgi.discovery.connection.NetInformation;
-import tafat.sgi.model.conection.HttpRequest;
-import tafat.sgi.model.conection.Request;
-import tafat.sgi.model.conection.Response;
-import tafat.sgi.model.handler.Handler;
+import tafat.sgi.http.connection.model.conection.HttpRequest;
+import tafat.sgi.http.connection.model.conection.Request;
+import tafat.sgi.http.connection.model.conection.Response;
+import tafat.sgi.http.connection.model.handler.Handler;
 import tafat.site.ServerState;
 
 import java.io.IOException;

@@ -1,9 +1,9 @@
 package tafat.site.route.handler;
 
-import tafat.sgi.model.conection.HttpResponse;
-import tafat.sgi.model.conection.Request;
-import tafat.sgi.model.conection.Response;
-import tafat.sgi.model.handler.Handler;
+import tafat.sgi.http.connection.model.conection.HttpResponse;
+import tafat.sgi.http.connection.model.conection.Request;
+import tafat.sgi.http.connection.model.conection.Response;
+import tafat.sgi.http.connection.model.handler.Handler;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import tafat.site.ServerState;

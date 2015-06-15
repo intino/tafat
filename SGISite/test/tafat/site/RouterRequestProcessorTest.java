@@ -1,6 +1,6 @@
 package tafat.site;
 
-import tafat.sgi.model.conection.HttpRequest;
+import tafat.sgi.http.connection.model.conection.HttpRequest;
 import org.junit.Before;
 import org.junit.Test;
 import tafat.site.route.HandlerDictionary;
