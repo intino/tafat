@@ -1,11 +1,11 @@
 package tafat.framework.services.defaults;
 
-import tafat.sgi.http.connection.controller.PetitionClient;
-import tafat.framework.services.ServicesManager;
-import tafat.framework.services.NotificationService;
-import tafat.framework.finder.ReflectionServiceFinder;
 import org.junit.Before;
 import org.junit.Test;
+import tafat.framework.finder.DefaultServices;
+import tafat.framework.services.NotificationService;
+import tafat.framework.services.ServicesManager;
+import tafat.sgi.http.connection.controller.PetitionClient;
 
 import java.io.IOException;
 
@@ -18,7 +18,7 @@ public class PushServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        ServicesManager.setUp(new ReflectionServiceFinder(), "tafat.framework.services.defaults");
+        ServicesManager.setUp(new DefaultServices(), "tafat.framework.services.defaults");
     }
 
     @Test
