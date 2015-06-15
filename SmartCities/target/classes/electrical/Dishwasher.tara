@@ -1,0 +1,29 @@
+dsl Tafat
+use PowerGrid
+
+
+Behavior ElectricalConsumer
+	on Dishwasher
+		init = "cr = capacity <= 9 ? 0.45 + 0.09 * capacity : 1.35 + 0.025 * capacity;"
+		var measure:Power activePower = 0 W
+		var double cr is final
+		var integer:set capacity = 12 sets
+		var word:[Off OnEco OnNormal OnIntensive] mode = Off
+		var word:[AAAA AAA AA A B C D E F G] labelling = A
+		Map Heat > Item("OnEco", 1300); Item("OnNormal", 1700); Item("OnIntensive", 2000)
+		Map HeatMinutes > Item("OnEco", 15); Item("OnNormal", 20); Item("OnIntensive", 24)
+		Map Wash > Item("OnEco", 50); Item("OnNormal", 70); Item("OnIntensive", 90)
+		Map WashMinutes > Item("OnEco", 54); Item("OnNormal", 50); Item("OnIntensive", 50)
+		Map Drying > Item("OnEco", 1300); Item("OnNormal", 1700); Item("OnIntensive", 2000)
+		Map DryingMinutes > Item("OnEco", 15); Item("OnNormal", 20); Item("OnIntensive", 20)
+		Map Labelling > Item("AAAA", 0.36); Item("AAA", 0.41); Item("AA", 0.47); Item("A", 0.52); Item("B", 0.58); Item("C", 0.68); Item("D", 0.78); Item("E", 0.88); Item("F", 0.98); Item("G", 1.08)
+		StateChart
+			State Off > EntryAction("mode(Mode.Off); activePower(0)")
+			State On
+				State HeatWater > EntryAction("cr = heat.get(mode) * labelling.get(labelling) * cr")
+				State WashRinse > EntryAction("wash.get(mode) * labelling.get(labelling()) * cr")
+				State Drying > EntryAction("drying.get(mode) * labelling.get(labelling()) * cr")
+				Transition(HeatWater, WashRinse) > Timeout("heatMinutes.get(mode())")
+				Transition(WashRinse, Drying) > Timeout("washMinutes.get(mode())")
+				Transition(Drying, Off) > Timeout("dryingMinutes.get(mode())")
+			Transition(Off, On) > Condition("mode() != Mode.Off")

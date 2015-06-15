@@ -1,0 +1,20 @@
+dsl Tafat
+use Residential
+
+Behavior ElectricalConsumer
+	on CookingStove
+		var measure:Power activePower = 0 W
+		var measure:Power installedPower = 1500 W
+		var measure:Power standByPower = 10 W
+		var measure:Time periodTime = 3m
+		var measure:Percentage ratioHeating = 66%
+		var word:[Off StandBy On] mode = Off
+		StateChart
+			State Off > EntryAction("power(0)")
+			State On
+				State HeatingOff > EntryAction("power(standByPower)")
+				State HeatingOn > EntryAction("power(installedPower)")
+				Transition(HeatingOff, HeatingOn) > Timeout("(100-ratioHeating()) * periodTime()")
+				Transition(HeatingOn, HeatingOff) > Timeout("ratioHeating() * periodTime()")
+			Transition(Off, On.HeatingOn) > Condition("mode() == Mode.On")
+			Transition(On, Off) > Condition("mode() == Mode.Off")

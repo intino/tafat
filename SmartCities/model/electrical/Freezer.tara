@@ -1,0 +1,27 @@
+dsl Tafat
+use PowerGrid
+
+
+Behavior Electrical #retes
+	on Freezer
+		var measure:Power activePower = 0 W
+		var measure:Power standByPower = 8.8 W
+		var measure:Power installedPower = 0 W
+		var measure:Time periodTime = 108 m
+		var double:set capcity = 12 sets
+		var word:[Off On] mode = On
+		var word:[AAAA AAA AA A B C D E F G] labelling = A
+		Map Labelling > Item("AAAA", 0.3); Item("AAA", 0.42); Item("AA", 0.55); Item("A", 0.75); Item("B", 0.9); Item("C", 0.99); Item("D", 1); Item("E", 1); Item("F", 1); Item("G", 1)
+		StateChart
+			State Off > EntryAction(power_0)
+			State On
+				State Ready > EntryAction(power_random_between_intalled_and_stand_by_power)
+				State CycleOff > EntryAction(power_stand_by_power)
+				State CycleOn > EntryAction(power_installedPower)
+				Transition(Ready, CycleOff) > Timeout(random_between_0_and_period_time_divided_by_2)
+				Transition(Ready, CycleOn) > Timeout(random_between_0_and_period_time_divided_by_2)
+				Transition(CycleOff, CycleOn) > Timeout(period_time_divided_by_2)
+				Transition(CycleOn, CycleOff) > Timeout(period_time_divided_by_2)
+			Transition(Off, On.CycleOn) > Boolean("mode() == Mode.On")
+			Transition(On, Off) > Boolean("mode() == Mode.Off")
+		InitedValue InstalledPower > Calculator(200_multiplied_by_labelling_map)

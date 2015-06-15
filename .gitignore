@@ -1,1 +1,9 @@
 .idea/workspace.xml
+out/
+Engine/gen/
+Engine/.idea/workspace.xml
+SGIFramework/target
+SGISite/target
+.directory
+deploy/deployproject.xml
+deploy/local
