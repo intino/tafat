@@ -62,15 +62,16 @@ define(["connection/Request", "TemplateHelper", "Graphic", "ClientState", "Senso
         function attachEvents() {
             $(".close-sensor").on("click", function () {
                 var sensorDiv = $(this).parent();
-                var watchIdentification = $(sensorDiv).data("id").split(":");
+                var watchIdentification = $(sensorDiv).data("id");
                 Request.init("DELETE", {
-                    objectId: watchIdentification[0],
-                    measurableAttributeName: watchIdentification[1],
+                    objectId: watchIdentification.split(":")[0],
+                    measurableAttributeName: watchIdentification.split(":")[1],
                     username:ClientState.username
                 }, "/Sensor");
                 Connection.send(Request, function () {
                     sensorDiv.remove()
                 });
+                Graphic.deleteSerie(watchIdentification)
             });
         }
         SensorHandler.init =  function (connection) {

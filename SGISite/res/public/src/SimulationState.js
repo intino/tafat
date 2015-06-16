@@ -15,7 +15,8 @@ define(["connection/Request", "connection/Connection", "Graphic", "ClientState",
             return;
         }
         if (info.state == "stop") {
-            togglePlayButton();
+            setPlay();
+            Graphic.clear();
         } else {
             togglePlayButton();
         }
@@ -35,6 +36,11 @@ define(["connection/Request", "connection/Connection", "Graphic", "ClientState",
         }else
             $('#sensorModal').modal({show: true});
 
+    }
+
+    function setPlay(){
+        $("#play-pause-button").removeClass("fa-pause");
+        $("#play-pause-button").addClass("fa-play");
     }
 
     function togglePlayButton() {
