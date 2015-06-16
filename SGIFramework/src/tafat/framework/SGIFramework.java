@@ -57,6 +57,7 @@ public abstract class SGIFramework implements SimulationAgent{
             watcherManager.sendWatcherValues(date);
             sendPercentageLoaded(date);
         }
+        lastDate = date;
     }
 
     private void treatBreakpoints(Date date) {
@@ -73,9 +74,7 @@ public abstract class SGIFramework implements SimulationAgent{
     }
 
     private boolean isPaused(Date date) {
-        boolean isPaused = date.after(lastDate);
-        lastDate = date;
-        return isPaused;
+        return date.after(lastDate);
     }
 
     private void sendPercentageLoaded(Date date) {
