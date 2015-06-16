@@ -25,14 +25,18 @@ public class BreakpointContainer {
                 .ifPresent(breakpoints::remove);
     }
 
-    public boolean haveBreakpointNotPassed(Date date) {
-        return filterBreakpointNotPassed(date)
+    public boolean haveBreakpointNotPassed(Date lastDate, Date actualDate) {
+        return filterBreakpointNotPassed(lastDate, actualDate)
                 .findFirst().isPresent();
     }
 
-    private Stream<Breakpoint> filterBreakpointNotPassed(Date date) {
+    private Stream<Breakpoint> filterBreakpointNotPassed(Date lastDate, Date actualDate) {
         return breakpoints.stream()
-                .filter(element -> (element.date().compareTo(date) <= 0) && (!element.isPassed()));
+                .filter(element -> onRange(lastDate, actualDate, element) && (!element.isPassed()));
+    }
+
+    private boolean onRange(Date lastDate, Date actualDate, Breakpoint element) {
+        return element.date().after(lastDate) && (element.date().before(actualDate) || element.date().equals(actualDate)) ;
     }
 
     public Breakpoint get(String breakpointId) {
@@ -46,8 +50,8 @@ public class BreakpointContainer {
         return breakpoints.stream();
     }
 
-    public List<Breakpoint> getBreakpointsNotPassed(Date date) {
-        return filterBreakpointNotPassed(date).collect(Collectors.toList());
+    public List<Breakpoint> getBreakpointsNotPassed(Date lastDate, Date actualDate) {
+        return filterBreakpointNotPassed(lastDate, actualDate).collect(Collectors.toList());
     }
 
     public void clear() {

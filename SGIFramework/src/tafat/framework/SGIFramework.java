@@ -60,7 +60,7 @@ public abstract class SGIFramework implements SimulationAgent{
     }
 
     private void treatBreakpoints(Date date) {
-        if (state().breakpoints().haveBreakpointNotPassed(date)) {
+        if (state().breakpoints().haveBreakpointNotPassed(lastDate, date)) {
             ServicesManager.get(NotificationService.class).broadcast("{\"type\":\"Breakpoint\"}");
             markBreakpointPassed(date);
             pause();
@@ -68,7 +68,7 @@ public abstract class SGIFramework implements SimulationAgent{
     }
 
     private void markBreakpointPassed(Date date) {
-        state().breakpoints().getBreakpointsNotPassed(date).stream()
+        state().breakpoints().getBreakpointsNotPassed(lastDate, date).stream()
                 .forEach(Breakpoint::passed);
     }
 
