@@ -15,6 +15,10 @@ define(["SensorsManager", "ClientState"], function(SensorManager, ClientState){
 
     };
 
+    Graphic.deleteSerie = function (seriesIdentification) {
+        $('#container-graph').highcharts().get(seriesIdentification).remove(true);
+    };
+
     Graphic.initTimeLine = function initTimeLine(info) {
         var chart = $('#container-graph').highcharts();
         chart.addSeries({
