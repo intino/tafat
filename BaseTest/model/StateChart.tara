@@ -1,0 +1,10 @@
+dsl Tafat
+
+Entity Fridge
+
+Behavior SimpleStateChart
+	on Fridge
+		StateChart
+			State Off
+			State On
+			Transition(Off, On) > Condition('true')

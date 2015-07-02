@@ -1,0 +1,5 @@
+dsl Tafat
+
+Entity Device
+    sub Battery
+    sub DcAcConverter

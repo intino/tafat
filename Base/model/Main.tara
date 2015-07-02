@@ -1,0 +1,139 @@
+dsl Proteo
+
+Concept Simulation is required single terminal main > var date from; var date to
+
+Concept Agent
+
+Concept Entity
+	has Entity
+	Concept Feature into feature
+
+Concept Facet into facet
+	sub Behavior
+		var integer step = 1 is terminal
+		var native:Action init = empty
+		Concept Knol is feature terminal final
+		has Action is final
+		has EquationSystem is final
+		has StateChart is final
+		has Task is final
+		has TableFunction is final
+		has PointSet is  final
+		has Job is final
+		has Map is final
+
+Concept Action is feature
+	var native:Check condition = 'true'
+	var native:Action action
+
+Concept EquationSystem  is feature terminal
+	var word:[Euler] solver = Euler
+	var double step = 0.1
+	Concept Element
+		var native:Function function
+		sub Stock
+		sub Flow
+
+Concept StateChart is feature terminal
+	var string message = ""
+	var native:Message receiveMessage = 'message(message);if(current() != null) current().receiveMessage(message)'
+	var StateChart current = empty
+	Concept State extends StateChart
+		Concept Action
+			var native:Action action
+			sub EntryAction
+			sub ExitAction
+	Concept Transition
+		var State from
+		var State to
+		var native:Action action = empty
+		Concept Trigger is single
+			var native:Check check
+			sub Condition >	var native:Check check
+			sub TimeBased
+				var measure:Time timeLeft = 0
+				var native:Check check = 'timeLeft() <= 0'
+				var native:Action activate
+				sub Timeout
+					var native:Action activate = 'timeLeft(timeout())'
+					var native:Timeout timeout is final
+				sub After
+					var native:Action activate = 'timeLeft(time())'
+					var measure:Time time is final
+				sub Rate
+					var native:Action activate = 'timeLeft(unit() / times())'
+					var integer:time times; var integer unit
+			sub Message
+				var string expectedMessage
+				var native:Check check = '_owner(StateChart.class).message().equals(expectedMessage())'
+
+Concept Task  is feature terminal
+	var word:[Monday Tuesday Wednesday Thursday Friday Saturday Sunday]... days = Monday Tuesday Wednesday Thursday Friday Saturday Sunday
+	Concept Start is required single
+		var date time
+		var measure:Time deviation = 0
+	Concept Finish is single
+		sub End
+			var date time
+			var measure:Time deviation = 0
+		sub Duration
+			var measure:Time time
+			var measure:Time deviation = 0
+	has Task
+	has JobAction
+
+Concept JobAction is feature
+	var Job... job
+	sub StartJob
+	sub RecurrentJob
+	sub EndJob
+
+Concept Job is feature
+	Concept Start is single
+		var measure:Time time
+		var measure:Time deviation = 0
+	Concept Duration is single
+		var measure:Time time
+		var measure:Time deviation = 0
+	has Job
+	has JobAction
+	Concept Action
+		var native:Action action
+		sub StartAction
+		sub RecurrentAction
+		sub EndAction
+
+Concept TableFunction is feature
+	var PointSet pointSet
+	Concept Interpolation is single
+		sub NoneInterpolation
+		sub LinearInterpolation
+		sub PolynomialInterpolation
+		sub SplineInterpolation
+		sub StepInterpolation
+	Concept Extrapolation is single
+		sub NoneExtrapolation
+		sub CustomExtrapolation > var native:Function function
+		sub NearestPointExtrapolation
+		sub RepeatSeriesExtrapolation
+		sub LinearExtrapolation
+		sub PolynomialExtrapolation
+		sub SplineExtrapolation
+		sub StepExtrapolation
+
+Concept PointSet  is feature
+	Concept Definition is final
+		sub Point > var double x is final; var double y is final
+		sub X is single > var double... values is final
+		sub Y is single > var double... values is final
+
+Concept Map is feature
+	var native:Get get = '0' is final
+	Concept Entry > var string key; var double value
+
+Concept View is main terminal
+	sub HeatMap
+		var string path
+		Concept Region
+			var double[2] coordinates
+			var native:Function calculate

@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Tara -&gt; Proteo">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/dsl/Proteo/Proteo.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -2,11 +2,12 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Engine/Engine.iml" filepath="$PROJECT_DIR$/Engine/Engine.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Base/Base.iml" filepath="$PROJECT_DIR$/Base/Base.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BaseTest/BaseTest.iml" filepath="$PROJECT_DIR$/BaseTest/BaseTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Cityx/Cityx.iml" filepath="$PROJECT_DIR$/Cityx/Cityx.iml" />
       <module fileurl="file://$PROJECT_DIR$/SGIFramework/SGIFramework.iml" filepath="$PROJECT_DIR$/SGIFramework/SGIFramework.iml" />
       <module fileurl="file://$PROJECT_DIR$/SGISite/SGISite.iml" filepath="$PROJECT_DIR$/SGISite/SGISite.iml" />
-      <module fileurl="file:///media/ramclen/Silo/Biblioteca/Documentos/Projects/IdeaProjects/tafat/SGITools/SGIToolbox.iml" filepath="/media/ramclen/Silo/Biblioteca/Documentos/Projects/IdeaProjects/tafat/SGITools/SGIToolbox.iml" />
-      <module fileurl="file://$PROJECT_DIR$/SmartCities/SmartCities.iml" filepath="$PROJECT_DIR$/SmartCities/SmartCities.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SGIToolbox/SGIToolbox.iml" filepath="$PROJECT_DIR$/SGIToolbox/SGIToolbox.iml" />
       <module fileurl="file://$PROJECT_DIR$/Toolbox/Toolbox.iml" filepath="$PROJECT_DIR$/Toolbox/Toolbox.iml" />
     </modules>
   </component>
