@@ -21,14 +21,14 @@ public class BaseTestStateChart extends magritte.schema.Box.Ontology {
 
 	@Override
 	public void write() {
-		def("Fridge").type("Entity");
+		def("Fridge").type("Entity").set(Root);
 		def("SimpleStateChart").type("Behavior").set(Facet, Abstract);
 		def("SimpleStateChart+Fridge").type("Behavior").parent("SimpleStateChart").has($(3));
-		def(3).type("StateChart").set(Prototype).holds("StateChart.Off").holds("StateChart.On").holds($(6));
+		def(3).type("StateChart").set(Prototype).has("SimpleStateChart+Fridge.StateChart.Off").has("SimpleStateChart+Fridge.StateChart.On").has($(6));
 		def("SimpleStateChart+Fridge.StateChart.Off").type("StateChart.State").set(Prototype);
 		def("SimpleStateChart+Fridge.StateChart.On").type("StateChart.State").set(Prototype);
-		def(6).type("StateChart.Transition").set(Prototype).allows($(7)).set("*from", (ref(""))).set("*to", (ref("")));
-		def(7).type("StateChart.Transition.Condition").set(Prototype).let("*check", new Check_lutyi());
+		def(6).type("StateChart.Transition").set(Prototype).has($(7)).set("*from", (ref(""))).set("*to", (ref("")));
+		def(7).type("StateChart.Transition.Condition").set(Prototype).let("*check", new Check_pansan());
 	}
 
 	private Date asDate(String date){
@@ -39,7 +39,7 @@ public class BaseTestStateChart extends magritte.schema.Box.Ontology {
 		}
 	}
 
-	public static class Check_lutyi extends tafat.Behavior implements tafat.natives.Check {
+	public static class Check_pansan extends tafat.Behavior implements tafat.natives.Check {
 		@Override
 		public boolean check() {
 			return true;

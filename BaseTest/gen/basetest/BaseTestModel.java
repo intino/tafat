@@ -10,5 +10,11 @@ public class BaseTestModel extends magritte.wraps.Model {
 		super(graph);
 	}
 
+	public magritte.Set<basetest.Fridge> Fridges() {
+	    return _get("fridges", basetest.Fridge.class);
+	}
 
+	public basetest.Fridge Fridge(int index) {
+	    return Fridges().get(index);
+	}
 }

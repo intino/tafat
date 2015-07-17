@@ -1,6 +1,6 @@
 dsl Tafat
 
-Entity Fridge
+Entity Fridge is main
 
 Behavior SimpleStateChart
 	on Fridge

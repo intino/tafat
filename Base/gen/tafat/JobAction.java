@@ -14,7 +14,7 @@ public class JobAction extends magritte.wraps.Definition {
         return job().get(index);
     }
 
-    public void job(Tafat.Job... job) {
+    public void job(tafat.Job... job) {
         _edit().set("job", job);
     }
 
@@ -22,7 +22,7 @@ public class JobAction extends magritte.wraps.Definition {
         _edit().let("job", value);
     }
 
-    public void job(magritte.wraps.Operation operation, Tafat.Job... job) {
+    public void job(magritte.wraps.Operation operation, tafat.Job... job) {
         _edit(operation).set("job", job);
     }
 }

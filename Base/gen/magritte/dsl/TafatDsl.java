@@ -5,7 +5,7 @@ public class TafatDsl extends magritte.schema.Box.Dsl {
 
     protected magritte.schema.Box[] includes() {
         return new magritte.schema.Box[]{
-            Magritte.ontology.TafatMain.box
+            magritte.ontology.TafatMain.box
         };
     }
 }

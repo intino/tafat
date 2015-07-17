@@ -1,3 +1,4 @@
+import magritte.Tag;
 import magritte.handlers.NodeProducer;
 import magritte.ontology.BaseTestStateChart;
 import magritte.schema.MemoryGraph;
@@ -18,6 +19,7 @@ public class AcceptedStateChart {
     public void testName() throws Exception {
         StateChart stateChart = asStateChart(buildNode("Fridge", "SimpleStateChart+Fridge"));
         stateChart.current(stateChart.state(0));
+        System.out.println(stateChart.current().toString());
         assertThat(stateChart.current()._name(), is("Off"));
         StatechartUpdater.update(stateChart, 0);
         assertThat(stateChart.current()._name(), is("On"));

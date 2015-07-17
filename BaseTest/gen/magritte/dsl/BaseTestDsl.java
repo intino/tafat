@@ -5,7 +5,7 @@ public class BaseTestDsl extends magritte.schema.Box.Dsl {
 
     protected magritte.schema.Box[] includes() {
         return new magritte.schema.Box[]{
-            Magritte.ontology.BaseTestStateChart.box
+            magritte.ontology.BaseTestStateChart.box
         };
     }
 }

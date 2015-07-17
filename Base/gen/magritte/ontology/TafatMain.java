@@ -5,6 +5,8 @@ import java.text.ParseException;
 import java.util.*;
 
 import static magritte.Tag.*;
+
+import magritte.Node;
 import magritte.primitives.Date;
 
 import tafat.*;
@@ -26,27 +28,27 @@ public class TafatMain extends magritte.schema.Box.Ontology {
 		def("Entity").type("Concept").holds("Entity").holds("Entity.Feature");
 		def("Entity.Feature").type("Concept");
 		def("Facet").type("Concept").set(Abstract);
-		def("Behavior").type("Concept").parent("Facet").has("Behavior.Knol").allows("Action").has("EquationSystem").has("StateChart").has("Task").allows("TableFunction").allows("PointSet").allows("Job").allows("Map").set("**step", (1));
+		def("Behavior").type("Concept").parent("Facet").allows("Behavior.Knol").allows("Action").allows("EquationSystem").allows("StateChart").allows("Task").allows("TableFunction").allows("PointSet").allows("Job").allows("Map").set("**step", (1));
 		def("Behavior.Knol").type("Concept");
-		def("Action").type("Concept").let("*condition", new Condition_flarval());
-		def("EquationSystem").type("Concept").has("EquationSystem.Element").has("EquationSystem.Stock").has("EquationSystem.Flow").set("**solver", ("Euler")).set("**step", (0.1));
+		def("Action").type("Concept").let("*condition", new Condition_vecban());
+		def("EquationSystem").type("Concept").holds("EquationSystem.Element").holds("EquationSystem.Stock").holds("EquationSystem.Flow").set("**solver", ("Euler")).set("**step", (0.1));
 		def("EquationSystem.Element").type("Concept").set(Abstract);
 		def("EquationSystem.Stock").type("Concept").parent("EquationSystem.Element");
 		def("EquationSystem.Flow").type("Concept").parent("EquationSystem.Element");
-		def("StateChart").type("Concept").has("StateChart.State").has("StateChart.Transition").set("**message", ("")).let("**receiveMessage", new ReceiveMessage_rotkrotvet());
-		def("StateChart.State").type("Concept").parent("StateChart").has("StateChart.State").has("StateChart.Transition").has("StateChart.State.Action").has("StateChart.State.EntryAction").has("StateChart.State.ExitAction");
+		def("StateChart").type("Concept").allows("StateChart.State").holds("StateChart.Transition").set("**message", ("")).let("**receiveMessage", new ReceiveMessage_yoszet());
+		def("StateChart.State").type("Concept").parent("StateChart").allows("StateChart.State").holds("StateChart.Transition").holds("StateChart.State.Action").holds("StateChart.State.EntryAction").holds("StateChart.State.ExitAction");
 		def("StateChart.State.Action").type("Concept").set(Abstract);
 		def("StateChart.State.EntryAction").type("Concept").parent("StateChart.State.Action");
 		def("StateChart.State.ExitAction").type("Concept").parent("StateChart.State.Action");
-		def("StateChart.Transition").type("Concept").has("StateChart.Transition.Trigger").has("StateChart.Transition.Condition").has("StateChart.Transition.TimeBased").has("StateChart.Transition.Timeout").has("StateChart.Transition.After").has("StateChart.Transition.Rate").has("StateChart.Transition.Message");
+		def("StateChart.Transition").type("Concept").allows("StateChart.Transition.Trigger").allows("StateChart.Transition.Condition").allows("StateChart.Transition.TimeBased").allows("StateChart.Transition.Timeout").allows("StateChart.Transition.After").allows("StateChart.Transition.Rate").allows("StateChart.Transition.Message");
 		def("StateChart.Transition.Trigger").type("Concept").set(Abstract);
 		def("StateChart.Transition.Condition").type("Concept").parent("StateChart.Transition.Trigger");
-		def("StateChart.Transition.TimeBased").type("Concept").set(Abstract).parent("StateChart.Transition.Trigger").set("**timeLeft", ("0")).let("**check", new Check_bricgrenen());
-		def("StateChart.Transition.Timeout").type("Concept").parent("StateChart.Transition.TimeBased").let("**activate", new Activate_psizos());
-		def("StateChart.Transition.After").type("Concept").parent("StateChart.Transition.TimeBased").let("**activate", new Activate_nolsarfal());
-		def("StateChart.Transition.Rate").type("Concept").parent("StateChart.Transition.TimeBased").let("**activate", new Activate_brinpsu());
-		def("StateChart.Transition.Message").type("Concept").parent("StateChart.Transition.Trigger").let("**check", new Check_ruspsepes());
-		def("Task").type("Concept").has("Task.Start").has("Task.Finish").has("Task.End").has("Task.Duration").has("Task").allows("JobAction").set("**days", multiple("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"));
+		def("StateChart.Transition.TimeBased").type("Concept").set(Abstract).parent("StateChart.Transition.Trigger").set("**timeLeft", ("0")).let("**check", new Check_lunmitfror());
+		def("StateChart.Transition.Timeout").type("Concept").parent("StateChart.Transition.TimeBased").let("**activate", new Activate_drosnecvun());
+		def("StateChart.Transition.After").type("Concept").parent("StateChart.Transition.TimeBased").let("**activate", new Activate_nuncraton());
+		def("StateChart.Transition.Rate").type("Concept").parent("StateChart.Transition.TimeBased").let("**activate", new Activate_drosyuc());
+		def("StateChart.Transition.Message").type("Concept").parent("StateChart.Transition.Trigger").let("**check", new Check_ralnel());
+		def("Task").type("Concept").requires("Task.Start").allows("Task.Finish").allows("Task.End").allows("Task.Duration").allows("Task").allows("JobAction").set("**days", multiple("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"));
 		def("Task.Start").type("Concept").set("**deviation", ("0"));
 		def("Task.Finish").type("Concept").set(Abstract);
 		def("Task.End").type("Concept").parent("Task.Finish").set("**deviation", ("0"));
@@ -83,10 +85,10 @@ public class TafatMain extends magritte.schema.Box.Ontology {
 		def("PointSet.Point").type("Concept").parent("PointSet.Definition");
 		def("PointSet.X").type("Concept").parent("PointSet.Definition");
 		def("PointSet.Y").type("Concept").parent("PointSet.Definition");
-		def("Map").type("Concept").holds("Map.Entry").let("*get", new Get_tluviglis());
+		def("Map").type("Concept").holds("Map.Entry").let("*get", new Get_mucfrurti());
 		def("Map.Entry").type("Concept");
 		def("View").type("Concept").set(Abstract, Root);
-		def("HeatMap").type("Concept").set(Root).parent("View").has("HeatMap.Region");
+		def("HeatMap").type("Concept").set(Root).parent("View").holds("HeatMap.Region");
 		def("HeatMap.Region").type("Concept");
 	}
 
@@ -98,56 +100,74 @@ public class TafatMain extends magritte.schema.Box.Ontology {
 		}
 	}
 
-	public static class Condition_flarval extends tafat.Action implements tafat.natives.Check {
+	public static class Condition_vecban extends tafat.Action implements tafat.natives.Check {
 		@Override
 		public boolean check() {
 			return true;
 		}
 	}
 
-	public static class ReceiveMessage_rotkrotvet extends tafat.StateChart implements tafat.natives.Message {
+	public static class ReceiveMessage_yoszet extends tafat.StateChart implements tafat.natives.Message {
 		@Override
 		public void receiveMessage(String message) {
 			message(message);if(current() != null) current().receiveMessage(message);
 		}
 	}
 
-	public static class Check_bricgrenen extends tafat.StateChart.Transition.TimeBased implements tafat.natives.Check {
+	public static class Check_lunmitfror extends tafat.StateChart.Transition.TimeBased implements tafat.natives.Check {
 		@Override
 		public boolean check() {
 			return timeLeft() <= 0;
 		}
 	}
 
-	public static class Activate_psizos extends tafat.StateChart.Transition.Timeout implements tafat.natives.Action {
+	public static class Activate_drosnecvun extends tafat.StateChart.Transition.Timeout implements tafat.natives.Action {
 		@Override
 		public void execute() {
 			timeLeft(timeout());
 		}
 	}
 
-	public static class Activate_nolsarfal extends tafat.StateChart.Transition.After implements tafat.natives.Action {
+	public static class Activate_nuncraton implements tafat.natives.Action {
 		@Override
 		public void execute() {
 			timeLeft(time());
 		}
+
+        private void timeLeft(double time) {
+
+        }
+
+        private double time() {
+            return 0;
+        }
+
+        @Override
+		public void _target(Node node) {
+
+		}
+
+		@Override
+		public Object clone() throws CloneNotSupportedException {
+			return super.clone();
+		}
 	}
 
-	public static class Activate_brinpsu extends tafat.StateChart.Transition.Rate implements tafat.natives.Action {
+	public static class Activate_drosyuc extends tafat.StateChart.Transition.Rate implements tafat.natives.Action {
 		@Override
 		public void execute() {
 			timeLeft(unit() / times());
 		}
 	}
 
-	public static class Check_ruspsepes extends tafat.StateChart.Transition.Message implements tafat.natives.Check {
+	public static class Check_ralnel extends tafat.StateChart.Transition.Message implements tafat.natives.Check {
 		@Override
 		public boolean check() {
 			return _owner(StateChart.class).message().equals(expectedMessage());
 		}
 	}
 
-	public static class Get_tluviglis extends tafat.Map implements tafat.natives.Get {
+	public static class Get_mucfrurti extends tafat.Map implements tafat.natives.Get {
 		@Override
 		public double get(String key) {
 			return 0;
