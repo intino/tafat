@@ -22,12 +22,14 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
+        <module name="SGIExample" />
         <module name="SGIFramework" />
         <module name="SGISite" />
         <module name="SGIToolbox" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="SGIExample" target="1.8" />
       <module name="SGIFramework" target="1.8" />
       <module name="SGISite" target="1.8" />
       <module name="SGIToolbox" target="1.8" />

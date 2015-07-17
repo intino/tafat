@@ -1,0 +1,27 @@
+<component name="libraryTable">
+  <library name="xmlbeans-2.3.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/SGIExample/lib/xmlbeans-2.3.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SGIExample/lib/jade.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SGIExample/lib/poi-ooxml-schemas-3.7-20101029.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SGIExample/lib/opt4j-2.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SGIExample/lib/json_simple-1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SGIExample/lib/dom4j-1.6.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SGIExample/lib/osp.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SGIExample/lib/geronimo-stax-api_1.0_spec-1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SGIExample/lib/jackcess-1.2.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SGIExample/lib/commons-math-2.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SGIExample/lib/matlabcontrol-3.1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SGIExample/lib/simple-xml-2.5.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SGIExample/lib/poi-3.7-20101029.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SGIExample/lib/matlabcontrol-4.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SGIExample/lib/poi-ooxml-3.7-20101029.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/SGIExample/lib/osp.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SGIExample/lib/matlabcontrol-3.1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/SGIExample/lib/matlabcontrol-4.0.0.jar!/" />
+    </SOURCES>
+  </library>
+</component>

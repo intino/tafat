@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/BaseTest/BaseTest.iml" filepath="$PROJECT_DIR$/BaseTest/BaseTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/BaseTestM0/BaseTestM0.iml" filepath="$PROJECT_DIR$/BaseTestM0/BaseTestM0.iml" />
       <module fileurl="file://$PROJECT_DIR$/Cityx/Cityx.iml" filepath="$PROJECT_DIR$/Cityx/Cityx.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SGIExample/SGIExample.iml" filepath="$PROJECT_DIR$/SGIExample/SGIExample.iml" />
       <module fileurl="file://$PROJECT_DIR$/SGIFramework/SGIFramework.iml" filepath="$PROJECT_DIR$/SGIFramework/SGIFramework.iml" />
       <module fileurl="file://$PROJECT_DIR$/SGISite/SGISite.iml" filepath="$PROJECT_DIR$/SGISite/SGISite.iml" />
       <module fileurl="file://$PROJECT_DIR$/SGIToolbox/SGIToolbox.iml" filepath="$PROJECT_DIR$/SGIToolbox/SGIToolbox.iml" />

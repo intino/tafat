@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<result>
+  <export name="results" dataType="csv" step="10" from="15/01/1995 00:00:00" to="15/01/1995 23:59:59">
+    <select name="NeighboorhoodsControlAggregated" typeClass="LocationsGroupFull">
+      <drill typeClass="LightingFull" recursive="true">
+        <write_Serie attribute="activePower" type="sum" />
+        <!--write_Serie attribute="intensityRate" type="all" /-->
+      </drill>
+      <drill typeClass="RefrigeratorFull" recursive="true">
+        <write_Serie attribute="activePower" type="sum" />
+        <!--write_Serie attribute="mode" type="all" /-->
+      </drill>
+      <drill typeClass="FreezerFull" recursive="true">
+        <write_Serie attribute="activePower" type="sum" />
+        <!--write_Serie attribute="mode" type="all" /-->
+      </drill>
+    </select>
+    <!--<select name="NeighboorhoodsControlDisaggregated" typeClass="LocationsGroupFull"><drill typeClass="LightingFull" recursive="true"><write_Serie attribute="activePower" type="all" /></drill><drill typeClass="RefrigeratorFull" recursive="true"><write_Serie attribute="activePower" type="all" /></drill><drill typeClass="FreezerFull" recursive="true"><write_Serie attribute="activePower" type="all" /></drill></select>-->
+    <select name="totalConsumption" typeClass="BuildingFull">
+      <drill typeClass="PowerBusFull">
+        <write_Serie attribute="activePower" type="all" />
+      </drill>
+    </select>
+  </export>
+</result>
