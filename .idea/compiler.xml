@@ -27,8 +27,16 @@
         <module name="SGISite" />
         <module name="SGIToolbox" />
       </profile>
+      <profile default="false" name="Annotation profile for Base" enabled="true">
+        <sourceOutputDir name="..\out\build\tafat\generated-sources\annotations" />
+        <sourceTestOutputDir name="..\out\build\tafat\generated-test-sources\test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="Base" />
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="Base" target="1.8" />
       <module name="SGIExample" target="1.8" />
       <module name="SGIFramework" target="1.8" />
       <module name="SGISite" target="1.8" />

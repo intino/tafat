@@ -1,31 +1,81 @@
 package tafat.engine;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
+
+import static java.nio.file.StandardOpenOption.APPEND;
 
 public class Route {
 
     private static final String ADDRESS = "http://maps.googleapis.com/maps/api/directions/json?";
-    private final double[] from;
+    private static Map<String, Trip> trips = new HashMap<>();
 
-    private Route(double[] from) {
+    private static final File routeFile = new File("res/.route");
+    private static final String Separator = "@";
+    private static final int TripId = 0;
+    private static final int Distance = 1;
+    private static final int Duration = 2;
+
+    static {
+        try {
+            if (!routeFile.exists()) {
+                routeFile.getParentFile().mkdirs();
+                routeFile.createNewFile();
+            }
+            Files.readAllLines(routeFile.toPath()).stream()
+                    .map(s -> s.split(Separator)).forEach(s -> trips.put(s[TripId], new Trip(s[Distance], s[Duration])));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private final List<Double> from;
+
+    private Route(List<Double> from) {
         this.from = from;
     }
 
-    public static Route from(double... location) {
+    public static Route from(List<Double> location) {
+        trips.put(location.toString() + location.toString(), new Trip(0, 0));
         return new Route(location);
     }
 
-    public Trip to(double... location) {
-        return calculateTripTo(location);
+    public Trip to(List<Double> location) {
+        String tripKey = from.toString() + location.toString();
+        if (!trips.containsKey(tripKey)) addTrip(tripKey, location);
+        return trips.get(tripKey);
     }
 
-    private Trip calculateTripTo(double[] location) {
+    private void addTrip(String tripKey, List<Double> location) {
+        Trip trip = calculateTripTo(location);
+        trips.put(tripKey, trip);
+        try {
+            String record = tripKey + Separator + trip.distance() + Separator + trip.duration() + "\n";
+            Files.write(routeFile.toPath(), record.getBytes(), APPEND);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Trip calculateTripTo(List<Double> location) {
         String result = query(from, location);
+        while (result.contains("OVER_QUERY_LIMIT")) {
+            try {
+                Logger.getLogger(Route.class.getName()).warning("Waiting after over query limit of Google Maps");
+                Thread.sleep(2000);
+                result = query(from, location);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         return new Trip(distance(result), duration(result));
     }
 
@@ -36,10 +86,13 @@ public class Route {
 
     private double duration(String result) {
         result = result.substring(0, result.indexOf(" min"));
-        return Double.parseDouble(result.substring(result.lastIndexOf("\"") + 1).replace(",", "."));
+        result = result.substring(result.lastIndexOf("\"") + 1).replace(",", ".");
+        return result.contains(" hour ") ?
+                Double.parseDouble(result.split(" hour ")[0]) * 60 + Double.parseDouble(result.split(" hour ")[1]) :
+                Double.parseDouble(result);
     }
 
-    private String query(double[] from, double[] location) {
+    private String query(List<Double> from, List<Double> location) {
         return processResponse(doRequest(buildUrl(from, location)));
     }
 
@@ -69,7 +122,7 @@ public class Route {
         }
     }
 
-    private URL buildUrl(double[] from, double[] location) {
+    private URL buildUrl(List<Double> from, List<Double> location) {
         try {
             return new URL(ADDRESS + "origin=" + $(from) + "&destination=" + $(location));
         } catch (MalformedURLException e) {
@@ -78,8 +131,8 @@ public class Route {
         }
     }
 
-    private String $(double[] location) {
-        return location[0] + "," + location[1];
+    private String $(List<Double> location) {
+        return location.get(0) + "," + location.get(1);
     }
 
 }

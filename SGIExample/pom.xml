@@ -27,11 +27,11 @@
         </repository>
     </repositories>
     <dependencies>
-        <!--<dependency>-->
-            <!--<groupId>org.siani.tafat</groupId>-->
-            <!--<artifactId>sgi</artifactId>-->
-            <!--<version>[1.0.0,2.0.0)</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>org.siani.tafat</groupId>
+            <artifactId>sgi</artifactId>
+            <version>[1.0.0,2.0.0)</version>
+        </dependency>
     </dependencies>
 
 

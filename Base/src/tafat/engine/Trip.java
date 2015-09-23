@@ -10,6 +10,10 @@ public class Trip {
         this.duration = duration;
     }
 
+    public Trip(String distance, String duration) {
+        this(Double.parseDouble(distance), Double.parseDouble(duration));
+    }
+
     public double distance() {
         return distance;
     }

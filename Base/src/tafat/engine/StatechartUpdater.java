@@ -24,7 +24,7 @@ public class StatechartUpdater {
     }
 
     private static boolean transitionChangedStateChart(StateChart stateChart) {
-        return stateChart._owner() != null && stateChart._owner(StateChart.class).current() != stateChart;
+        return stateChart._owner(StateChart.class) != null && stateChart._owner(StateChart.class).current() != stateChart;
     }
 
     private static void updateChild(StateChart stateChart, long advancedTime) {
@@ -32,13 +32,13 @@ public class StatechartUpdater {
     }
 
     private static void stepTransitions(StateChart stateChart, long advancedTime) {
-        stateChart.transitionSet()
+        stateChart.transitionList().stream()
                 .filter(t -> t.timeBased() != null && t.from() == stateChart.current())
                 .forEach(t -> t.timeBased().timeLeft(t.timeBased().timeLeft() - advancedTime));
     }
 
     private static Transition findTransition(StateChart stateChart) {
-        return stateChart.transitionSet().asList().stream()
+        return stateChart.transitionList().stream()
                 .filter(t -> t.from() == stateChart.current() && t.trigger().check()).findFirst().orElse(null);
     }
 
@@ -61,16 +61,17 @@ public class StatechartUpdater {
     }
 
     private static void in(State state, StateChart fromParent) {
-        if (state._owner() == fromParent) doIn(state);
+        if (state._owner() == fromParent._declaration()) doIn(state);
         else if (state._owner() != null && state._owner().is(State.class))
             in(state._owner().as(State.class), fromParent);
         else doIn(state);
     }
 
     private static void updateParentsState(StateChart stateChart) {
-        if (stateChart._owner() == null) return;
-        stateChart._owner(StateChart.class).current(stateChart);
-        updateParentsState(stateChart._owner(StateChart.class));
+        StateChart owner = stateChart._owner(StateChart.class);
+        if (owner == null) return;
+        owner.current(stateChart);
+        updateParentsState(owner);
     }
 
     private static void activate(StateChart stateChart) {
@@ -79,26 +80,26 @@ public class StatechartUpdater {
     }
 
     private static void activateTransitions(StateChart stateChart) {
-        stateChart.transitionSet()
+        stateChart.transitionList().stream()
                 .filter(t -> t.trigger().is(TimeBased.class) && t.from() == stateChart.current())
                 .forEach(t -> t.timeBased().activate());
     }
 
     private static void activateState(State state) {
-        if (state.stateSet().size() > 0) {
-            state.current(state.stateSet().get(0));
+        if (state.stateList().size() > 0) {
+            state.current(state.stateList().get(0));
             activate(state);
         }
     }
 
     private static void doIn(State state) {
-        state.entryActionSet().forEach(State.Action::action);
+        state.entryActionList().forEach(State.Action::action);
         if (state.current() != null) doIn(state.current().as(State.class));
     }
 
     private static void doOut(State state, StateChart toParent) {
-        state.exitActionSet().forEach(State.Action::action);
-        if (state.current() != null && state._owner() != toParent && state._owner().is(State.class))
+        state.exitActionList().forEach(State.Action::action);
+        if (state.current() != null && state._owner() != toParent._declaration() && state._owner().is(State.class))
             doOut(state._owner(State.class), toParent);
     }
 }

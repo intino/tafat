@@ -1,8 +1,6 @@
 package tafat.natives;
 
-import magritte.NativeCode;
-
-public interface Get extends NativeCode {
+public interface Get {
 
     double get(String key);
 

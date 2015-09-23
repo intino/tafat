@@ -5,7 +5,6 @@
       <configuration>
         <dsl>BaseTest</dsl>
         <level>0</level>
-        <dslsDirectory>D:\Users\jevora\repositories\tafat\tafat\dsl\</dslsDirectory>
       </configuration>
     </facet>
   </component>

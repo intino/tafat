@@ -4,6 +4,13 @@
       <root url="jar://$PROJECT_DIR$/dsl/Proteo/Proteo.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../../tara/magritte/false-mirror/src" />
+      <root url="file://$PROJECT_DIR$/../../tara/magritte/false-mirror/src" />
+      <root url="file://$PROJECT_DIR$/../../tara/magritte/false-mirror/src" />
+      <root url="file://$PROJECT_DIR$/../../tara/magritte/false-mirror/src" />
+      <root url="file://$PROJECT_DIR$/../../tara/magritte/false-mirror/src" />
+      <root url="file://$PROJECT_DIR$/../../tara/magritte/false-mirror/src" />
+    </SOURCES>
   </library>
 </component>

@@ -11,9 +11,10 @@ Concept Entity
 Concept Facet into facet
 	sub Behavior
 		var integer step = 1 is terminal
-		var native:Action init = empty
-		Concept Knol is feature terminal final
+		Concept Start is feature final into prototype > var native:Action start
+		Concept Knol is feature final into prototype
 		has Action is final
+		has ConditionalAction is final
 		has EquationSystem is final
 		has StateChart is final
 		has Task is final
@@ -21,12 +22,18 @@ Concept Facet into facet
 		has PointSet is  final
 		has Job is final
 		has Map is final
+	sub Aspect
 
-Concept Action is feature
+Concept Knol
+
+Concept Action is feature into prototype
+	var native:Action action
+
+Concept ConditionalAction is feature into prototype
 	var native:Check condition = 'true'
 	var native:Action action
 
-Concept EquationSystem  is feature terminal
+Concept EquationSystem is feature terminal
 	var word:[Euler] solver = Euler
 	var double step = 0.1
 	Concept Element
@@ -34,9 +41,9 @@ Concept EquationSystem  is feature terminal
 		sub Stock
 		sub Flow
 
-Concept StateChart is feature terminal
+Concept StateChart into prototype
 	var string message = ""
-	var native:Message receiveMessage = 'message(message);if(current() != null) current().receiveMessage(message)'
+	var native:Message receiveMessage = '$.message(message);if($.current() != null) $.current().receiveMessage(message)'
 	var StateChart current = empty
 	Concept State extends StateChart
 		Concept Action
@@ -46,41 +53,62 @@ Concept StateChart is feature terminal
 	Concept Transition
 		var State from
 		var State to
-		var native:Action action = empty
+		var native:Action action = ''
 		Concept Trigger is single
 			var native:Check check
-			sub Condition >	var native:Check check
+			sub Condition > var native:Check check
 			sub TimeBased
 				var measure:Time timeLeft = 0
-				var native:Check check = 'timeLeft() <= 0'
+				var native:Check check = '$.timeLeft() <= 0'
 				var native:Action activate
 				sub Timeout
-					var native:Action activate = 'timeLeft(timeout())'
+					var native:Action activate = '$.timeLeft($.timeout())'
 					var native:Timeout timeout is final
 				sub After
-					var native:Action activate = 'timeLeft(time())'
-					var measure:Time time is final
+					var native:Action activate = '$.timeLeft($.fixedTime())'
+					var measure:Time fixedTime is final
 				sub Rate
-					var native:Action activate = 'timeLeft(unit() / times())'
-					var integer:time times; var integer unit
+					var native:Action activate = '$.timeLeft($.unit() / $.times())'
+					var integer:times times; var integer unit
 			sub Message
 				var string expectedMessage
-				var native:Check check = '_owner(StateChart.class).message().equals(expectedMessage())'
+				var native:Check check = '$._owner(StateChart.class).message().equals($.expectedMessage())'
 
-Concept Task  is feature terminal
-	var word:[Monday Tuesday Wednesday Thursday Friday Saturday Sunday]... days = Monday Tuesday Wednesday Thursday Friday Saturday Sunday
+Concept Task  is feature into prototype
+	var word:DayOfWeek... days = Monday Tuesday Wednesday Thursday Friday Saturday Sunday
+	var native:Check check =
+	--
+	if ($.launchedDate() != null && $.launchedDate().toLocalDate().compareTo(tafat.engine.Date.toLocalDate()) == 0) return false;
+	if (!$.isTodayScheduled()) return false;
+	if (tafat.engine.Date.toLocalTime().compareTo($.start().scheduledTime()) < 0) return false;
+	$.launchedDate(tafat.engine.Date.getDateTime());
+	return true;
+	--
+	var native:Check isTodayScheduled = '$.days().contains(tafat.words.DayOfWeek.values()[tafat.engine.Date.getDayOfWeek().ordinal() - 1])'
+	var native:Action program =
+	--
+	int deltaInSeconds = (int)($.start().deviation() * 60);
+	$.start().scheduledTime($.start().start().plusSeconds(deltaInSeconds == 0 ? 0 : new Random().nextInt(deltaInSeconds * 2) - deltaInSeconds));
+	--
+	var date launchedDate = ""
 	Concept Start is required single
-		var date time
+		var time start
 		var measure:Time deviation = 0
+		var time scheduledTime = ""
 	Concept Finish is single
 		sub End
-			var date time
+			var time end
 			var measure:Time deviation = 0
 		sub Duration
-			var measure:Time time
+			var measure:Time duration
 			var measure:Time deviation = 0
 	has Task
 	has JobAction
+	Concept Action
+		var native:Action action
+		sub StartAction
+		sub RecurrentAction
+		sub EndAction
 
 Concept JobAction is feature
 	var Job... job
@@ -90,10 +118,10 @@ Concept JobAction is feature
 
 Concept Job is feature
 	Concept Start is single
-		var measure:Time time
+		var measure:Time start
 		var measure:Time deviation = 0
 	Concept Duration is single
-		var measure:Time time
+		var measure:Time duration
 		var measure:Time deviation = 0
 	has Job
 	has JobAction

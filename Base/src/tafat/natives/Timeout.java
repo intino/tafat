@@ -1,8 +1,6 @@
 package tafat.natives;
 
-import magritte.NativeCode;
-
-public interface Timeout extends NativeCode {
+public interface Timeout {
 
     int calculate();
 }

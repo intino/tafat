@@ -1,8 +1,6 @@
 package tafat.natives;
 
-import magritte.NativeCode;
-
-public interface Function extends NativeCode {
+public interface Function {
 
     double calculate();
 }

@@ -1,8 +1,6 @@
 package tafat.natives;
 
-import magritte.NativeCode;
-
-public interface Check extends NativeCode {
+public interface Check {
 
     boolean check();
 
