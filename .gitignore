@@ -10,3 +10,4 @@ deploy/local
 */gen/*
 Base/res/
 Tafat.language
+dsl/Tafat.reload
