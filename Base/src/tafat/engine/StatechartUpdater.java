@@ -34,7 +34,7 @@ public class StatechartUpdater {
     private static void stepTransitions(StateChart stateChart, long advancedTime) {
         stateChart.transitionList().stream()
                 .filter(t -> t.timeBased() != null && t.from() == stateChart.current())
-                .forEach(t -> t.timeBased().timeLeft(t.timeBased().timeLeft() - advancedTime));
+                .forEach(t -> t.timeBased().timeLeft((int) (t.timeBased().timeLeft() - advancedTime)));
     }
 
     private static Transition findTransition(StateChart stateChart) {

@@ -7,3 +7,6 @@ SGISite/target
 .directory
 deploy/deployproject.xml
 deploy/local
+*/gen/*
+Base/res/
+Tafat.language
