@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="Tara -&gt; Proteo">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/dsl/Proteo/Proteo.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../../tara/magritte/false-mirror/src" />
+      <root url="file://$PROJECT_DIR$/../../tara/magritte/false-mirror/src" />
+      <root url="file://$PROJECT_DIR$/../../tara/magritte/false-mirror/src" />
+      <root url="file://$PROJECT_DIR$/../../tara/magritte/false-mirror/src" />
+      <root url="file://$PROJECT_DIR$/../../tara/magritte/false-mirror/src" />
+      <root url="file://$PROJECT_DIR$/../../tara/magritte/false-mirror/src" />
+    </SOURCES>
+  </library>
+</component>

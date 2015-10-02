@@ -41,7 +41,7 @@ class Updater {
     private static void processTransition(Transition transition, StateChart stateChart) {
         out(stateChart.state, transition.to.parent);
         doTransition(transition, transition.to.parent);
-        in(transition.to, stateChart.state.parent);
+        in(transition.to, stateChart);
     }
 
     private static void out(State state, StateChart toParent) {

@@ -1,30 +1,71 @@
 dsl Tafat
 use Residential
+use Electrical
 
-Behavior Thermal &000.002
+Behavior Thermal
 	on Building
-		var measure:Temperature temperature
-		var double:W/m2K floorAlpha
-		var double:W/m2K roofAlpha
-		var double:W/m2K wallAlpha
-		var double:W/m2K windowAlpha
-		var measure:Surface floorArea
-		var measure:Surface roofArea
-		var measure:Surface wallArea
-		var measure:Surface windowArea
-		var word mode > Off*; StandBy; On
-		var double:W/m2K airAlpha = 50
-		var double:W/m2K rho = 1.204
-		InitedValue XCoefficient > Calculator(N0)
-		CalculatedValue OutdoorHeatGains > Calculator(N0)
-		CalculatedValue SolarRadiationHeatGains > Calculator(N1)
-		CalculatedValue HvacHeatGains > Calculator(N2)
-		CalculatedValue AppliancesHeatGains > Calculator(N3)
-		CalculatedValue PeopleHeatGains > Calculator(N4)
-		CalculatedValue TransferHeatGains > Calculator(N4)
-		EquationSystem(Euler, 0.01)
-			Stock Temperature > Formula(N0)
-			Flow Hvac > Formula(N1)
-			Flow Transfers > Formula(N2)
-			Flow Outdoor > Formula(N3)
-			Flow Others > Formula(N4)
+		init =
+		--
+		xCoefficient(rho() * cCoefficient() * nCoefficient());
+		devices(add, find(ElectricalDevice.class).filter(!instanceOf(ElectricalHeater.class));
+		hvacs(add, find(ElectricalHeater.class));
+		--
+
+		var measure:Temperature temperature = 20 C
+		var double heatGainPerPerson = 100 W is final
+		var double:W/m2K floorAlpha is final
+		var measure:Surface floorArea is final
+		var double:W/m2K roofAlpha is final
+		var measure:Surface roofArea is final
+		var double:W/m2K wallAlpha is final
+		var measure:Surface wallArea is final
+		var double:W/m2K windowAlpha is final
+		var measure:Surface windowArea is final
+		var double:W/m2K airAlpha = 50 is final
+		var word:[Off StandBy On] mode = Off
+		var double:W/m2K rho = 1.204 is final
+		var double xCoefficient
+		var double nCoefficient = 0.9 is final
+		var double cCoefficient = 1012 is final
+        var ElectricalProsumer... devices
+        var ElectricalHeater... hvacs
+
+
+		var double qRoof = 'qRoof(q().calculate(roofArea(), roofAlpha())'
+		var double qWindow = 'qWindow(q().calculate(windowArea(), windowAlpha())'
+		var double qWall = 'qWall(q().calculate(wallArea(), wallAlpha())'
+		var double qFloor = 0 is final
+        Knol Q
+            var native:QCalculus calculate =
+            --
+            double outTemperature = owner().as(Environment.class).temperature() + 2;
+            double inTemperature = temperature() - 1
+            return ((outTemperature - inTemperature) * (area() * alpha()) +
+                    (-2 * area() / alphaAir()) +
+                    (inTemperature - es().temperature().value()) * (area() / alphaAir));
+            --
+
+
+        var double hvacHeatGains = 0
+        var double devicesHeatGains = 0
+        var double peopleHeatGains = 0
+        var double transferHeatGains = 0
+        var double outdoorHeatGains = 0
+        var double solarRadiationHeatGains = 0
+        Action('devicesHeatgains(devices.mapToDouble(c -> c.activePower() * c.heatGainFraction()).sum()')
+        Action('hvacHeatgains(hvacs.mapToDouble(c -> c.heatingAndCoolingGains()).sum())')
+        Action('peopleHeatGains(find(Agent.class).size * peopleHeatGains())')
+        Action('transferHeatGains(qRoof() + qWindows() + qWall() + qFloor())')
+        Action('outdoorHeatGains(qRoof() + qWindows() + qWall() + qFloor())')
+        Action('solarRadiationHeatGains(owner().as(Environment.class).solarRadiation() * 0.8 * windowArea() * 0.1)')
+
+
+		EquationSystem ES
+			Stock('hvac().value() + transfers().value() + outdoor().value() + others().value()') Temperature
+			Flow('hvacHeatGains() / xCoefficient()') Hvac
+			Flow('transferHeatGains() / xCoefficient()') Transfers
+			Flow('outdoorHeatGains() / xCoefficient()') Outdoor
+			Flow('(peopleHeatGains() + devicesHeatGains() + solarRadiationHeatGains()) / xCoefficient()') Others
+
+
+        Action('temperature(es().temperature().value)')

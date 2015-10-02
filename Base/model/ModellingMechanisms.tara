@@ -1,0 +1,134 @@
+dsl Proteo 
+
+Concept Action is feature into prototype
+	var native:Action action
+
+Concept ConditionalAction is feature into prototype
+	var native:Check condition = 'true'
+	var native:Action action
+
+Concept EquationSystem is feature terminal
+	var word:[Euler] solver = Euler
+	var double step = 0.1
+	Concept Element
+		var native:Function function
+		sub Stock
+		sub Flow
+
+Concept StateChart into prototype
+	var string message = ""
+	var native:Message receiveMessage = '$.message(message);if($.current() != null) $.current().receiveMessage(message)'
+	var StateChart current = empty
+	Concept State extends StateChart
+		Concept Action
+			var native:Action action
+			sub EntryAction
+			sub ExitAction
+	Concept Transition
+		var State from
+		var State to
+		var native:Action action = ''
+		Concept Trigger is single
+			var native:Check check
+			sub Condition > var native:Check check
+			sub TimeBased
+				var measure:Time timeLeft = 0 minute
+				var native:Check check = '$.timeLeft() <= 0'
+				var native:Action activate
+				sub Timeout
+					var native:Action activate = '$.timeLeft($.timeout())'
+					var native:Timeout timeout is final
+				sub After
+					var native:Action activate = '$.timeLeft($.fixedTime())'
+					var measure:Time fixedTime is final
+				sub Rate
+					var native:Action activate = '$.timeLeft($.unit() / $.times())'
+					var integer:times times; var integer unit
+			sub Message
+				var string expectedMessage
+				var native:Check check = '$._owner(StateChart.class).message().equals($.expectedMessage())'
+
+Concept Task  is feature into prototype
+	var word:DayOfWeek... days = Monday Tuesday Wednesday Thursday Friday Saturday Sunday
+	var native:Check check =
+	--
+	if ($.launchedDate() != null && $.launchedDate().toLocalDate().compareTo(tafat.engine.Date.toLocalDate()) == 0) return false;
+	if (!$.isTodayScheduled()) return false;
+	if (tafat.engine.Date.toLocalTime().compareTo($.start().scheduledTime()) < 0) return false;
+	$.launchedDate(tafat.engine.Date.getDateTime());
+	return true;
+	--
+	var native:Check isTodayScheduled = '$.days().contains(tafat.words.DayOfWeek.values()[tafat.engine.Date.getDayOfWeek().ordinal() - 1])'
+	var native:Action program =
+	--
+	int deltaInSeconds = (int)($.start().deviation() * 60);
+	$.start().scheduledTime($.start().start().plusSeconds(deltaInSeconds == 0 ? 0 : new Random().nextInt(deltaInSeconds * 2) - deltaInSeconds));
+	--
+	var date launchedDate = ""
+	Concept Start is required single
+		var time start
+		var measure:Time deviation = 0 minute
+		var time scheduledTime = ""
+	Concept Finish is single
+		sub End
+			var time end
+			var measure:Time deviation = 0 minute
+		sub Duration
+			var measure:Time duration
+			var measure:Time deviation = 0 minute
+	has Task
+	has JobAction
+	Concept Action
+		var native:Action action
+		sub StartAction
+		sub RecurrentAction
+		sub EndAction
+
+Concept JobAction is feature
+	var Job... job
+	sub StartJob
+	sub RecurrentJob
+	sub EndJob
+
+Concept Job is feature
+	Concept Start is single
+		var measure:Time start
+		var measure:Time deviation = 0 minute
+	Concept Duration is single
+		var measure:Time duration
+		var measure:Time deviation = 0 minute
+	has Job
+	has JobAction
+	Concept Action
+		var native:Action action
+		sub StartAction
+		sub RecurrentAction
+		sub EndAction
+
+Concept TableFunction is feature
+	var PointSet pointSet
+	Concept Interpolation is single
+		sub NoneInterpolation
+		sub LinearInterpolation
+		sub PolynomialInterpolation
+		sub SplineInterpolation
+		sub StepInterpolation
+	Concept Extrapolation is single
+		sub NoneExtrapolation
+		sub CustomExtrapolation > var native:Function function
+		sub NearestPointExtrapolation
+		sub RepeatSeriesExtrapolation
+		sub LinearExtrapolation
+		sub PolynomialExtrapolation
+		sub SplineExtrapolation
+		sub StepExtrapolation
+
+Concept PointSet  is feature
+	Concept Definition is final
+		sub Point > var double x is final; var double y is final
+		sub X is single > var double... values is final
+		sub Y is single > var double... values is final
+
+Concept Map is feature
+	var native:Get get = '0' is final
+	Concept Entry > var string key; var double value

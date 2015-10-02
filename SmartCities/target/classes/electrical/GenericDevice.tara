@@ -3,29 +3,29 @@ use PowerGrid
 use Residential
 
 
-Behavior Electrical #retes
+Behavior ElectricalConsumer
 	sub GenericDevice
 		var measure:Power activePower = 0
 		var measure:Power installedPower
 		var word:[Off On] mode = On
 		sub ElectricalNormal
-			Condition > Check(is_off); Action(power_0)
-			Condition > Check(is_on); Action(power_installed_power)
+			Action('mode() == Mode.Off', 'activePower(0)')
+			Action('mode() == Mode.On', 'activePower(installedPower)')
 			on Device
 			on Appliance
 		sub ElectricalPulse
 			var measure:Power standByPower
 			var measure:Time periodTime
-			var measure:Porcentage ratioInstalledPower
+			var measure:Percentage ratioInstalledPower
 			StateChart
-				State Off > EntryAction(power_0)
+				State Off > EntryAction('activePower(0)')
 				State On
-					State CycleOff > EntryAction(power_pulse_off_power)
-					State CycleOn > EntryAction(power_installedPower)
-					Transition(CycleOff, CycleOn) > Timeout(time_based_on_period_time_and_ratio_installed_power_to_on)
-					Transition(CycleOn, CycleOff) > Timeout(time_based_on_period_time_and_ratio_installed_power_to_off)
-				Transition(Off, On.CycleOn) > Boolean(is_on)
-				Transition(On, Off) > Boolean(is_off)
+					State CycleOff > EntryAction('activePower(standByPower())')
+					State CycleOn > EntryAction('activePower(installedPower())')
+					Transition(CycleOff, CycleOn) > Timeout('periodTime() * (1 - ratioInstalledPower())')
+					Transition(CycleOn, CycleOff) > Timeout('periodTime() * ratioInstalledPower()')
+				Transition(Off, On.CycleOn) > Condition('mode() == Mode.On')
+				Transition(On, Off) > Condition('mode() == Mode.Off')
 			on Device
 			on Appliance
 

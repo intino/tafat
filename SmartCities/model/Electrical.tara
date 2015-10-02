@@ -1,6 +1,10 @@
 dsl Tafat 
 
-Behavior ElectricalConsumer is abstract
+Behavior ElectricalDevice
 	step = 1
 	var measure:Power activePower
 	var measure:Power installedPower
+	var measure:Percentage dissipatedHeat
+	sub ElectricalConsumer is abstract
+	sub ElectricalProsumer is abstract
+	sub ElectricalProducer is abstract

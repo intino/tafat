@@ -1,0 +1,37 @@
+dsl Proteo
+use ModellingMechanisms
+use Output
+
+Concept Simulation is required single terminal main > var date from; var date to
+	has Output is single
+
+Concept Agent
+
+Concept Entity
+	has Entity
+	Concept Feature into feature
+
+Concept Facet into facet
+	sub Behavior
+		var integer step = 1 is terminal
+		Concept Start is feature final into prototype > var native:Action start
+		Concept Knol is feature final into prototype
+		has Action is final
+		has ConditionalAction is final
+		has EquationSystem is final
+		has StateChart is final
+		has Task is final
+		has TableFunction is final
+		has PointSet is  final
+		has Job is final
+		has Map is final
+	sub Aspect
+
+Concept Knol
+
+Concept View is main terminal
+	sub HeatMap
+		var string path
+		Concept Region
+			var double[2] coordinates
+			var native:Function calculate

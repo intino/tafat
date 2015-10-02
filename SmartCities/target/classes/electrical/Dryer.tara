@@ -2,14 +2,13 @@ dsl Tafat
 use Residential
 
 
-Behavior Electrical #gastas
+Behavior ElectricalConsumer
 	on Dryer
 		var measure:Power activePower = 0 W
 		var measure:Power installedPower = 2500 W
-		var measure:Time cycleTime = 72 m
 		var word:[Off On] mode = Off
-		StateChart X is feature
-			State Off > EntryAction(mode_off_and_power_0)
-			State On > EntryAction(power_installed_power)
-			Transition(Off, On) > Boolean(is_on)
-			Transition(On, Off) > Timeout(cycleTime)
+		StateChart
+			State Off > EntryAction('activePower(0)')
+			State On > EntryAction('activePower(installedPower())')
+			Transition(Off, On) > Condition('mode() == Mode.Off')
+			Transition(On, Off) > After(72 m)

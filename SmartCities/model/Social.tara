@@ -3,7 +3,7 @@ dsl Tafat
 use Residential
 
 Agent Social
-    var Household household
+    var Building.Household household
     sub Person
     sub FamilyUnit
         sub SingleJunior
