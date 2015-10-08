@@ -16,7 +16,7 @@ public class Fact {
     }
 
     public void reference(String name, String... reference) {
-        attributes.put(name, new ArrayList<>(Arrays.asList(reference).stream().map(s -> "Members#" + s).collect(toList())));
+        attributes.put(name, new ArrayList<>(Arrays.asList(reference).stream().map(s -> "Dimension#" + s).collect(toList())));
     }
 
     public void attribute(String name, Object... values) {

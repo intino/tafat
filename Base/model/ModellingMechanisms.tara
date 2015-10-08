@@ -58,7 +58,7 @@ Concept Task  is feature into prototype
 	$.launchedDate(tafat.engine.Date.getDateTime());
 	return true;
 	--
-	var native:Check isTodayScheduled = '$.days().contains(tafat.words.DayOfWeek.values()[tafat.engine.Date.getDayOfWeek().ordinal() - 1])'
+	var native:Check isTodayScheduled = '$.days().contains(tafat.words.DayOfWeek.values()[tafat.engine.Date.getDayOfWeek().ordinal()])'
 	var native:Action program =
 	--
 	int deltaInSeconds = (int)($.start().deviation() * 60);

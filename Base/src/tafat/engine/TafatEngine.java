@@ -6,6 +6,7 @@ import tara.io.Stash;
 import tara.io.StashSerializer;
 import tara.magritte.Model;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -23,7 +24,7 @@ public class TafatEngine {
 
     public TafatEngine(Model model) {
         this.model = model;
-        Date.setDateTime(model.viewer(TafatViewer.class).simulation().from());
+        Date.setDateTime(TafatViewer.simulation().from());
         this.behaviors = model.find(Behavior.class);
         init();
     }
@@ -45,13 +46,22 @@ public class TafatEngine {
     private void toStash(List<? extends Extractor> extractors) {
         try {
             if(extractors.isEmpty()) return;
-            Stash stash = new Stash();
-            stash.language = model.viewer(TafatViewer.class).simulation().output().language();
-            extractors.forEach(e -> stash.cases.addAll(e.buildStash()));
-            Files.write(Paths.get(extractors.get(0).path()), StashSerializer.serialize(stash));
+            writeStash(createStash(extractors), new File(extractors.get(0).path()));
         } catch (IOException e1) {
             e1.printStackTrace();
         }
+    }
+
+    private Stash createStash(List<? extends Extractor> extractors) {
+        Stash stash = new Stash();
+        stash.language = TafatViewer.simulation().output().language();
+        extractors.forEach(e -> stash.cases.addAll(e.buildStash()));
+        return stash;
+    }
+
+    private void writeStash(Stash stash, File file) throws IOException {
+        if(!file.getParentFile().exists()) file.getParentFile().mkdirs();
+        Files.write(file.toPath(), StashSerializer.serialize(stash));
     }
 
     private void initBehaviors() {
@@ -78,7 +88,7 @@ public class TafatEngine {
     }
 
     private long steps() {
-        return (model.viewer(TafatViewer.class).simulation().to().toEpochSecond(ZoneOffset.UTC) -
-                model.viewer(TafatViewer.class).simulation().from().toEpochSecond(ZoneOffset.UTC));
+        return (TafatViewer.simulation().to().toEpochSecond(ZoneOffset.UTC) -
+                TafatViewer.simulation().from().toEpochSecond(ZoneOffset.UTC));
     }
 }
