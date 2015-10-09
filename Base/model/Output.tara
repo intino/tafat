@@ -34,6 +34,16 @@ Concept Output is terminal
 
 		sub Plot
 			var word:TimeScale timeScale is final
+			var integer timeout = 0
+			var native:Check checkStep =
+			--
+			if($.timeout() == 0){
+				$.timeout($.timeScale().toSeconds() - 1);
+				return true;
+			}
+			$.timeout($.timeout() - 1);
+			return false;
+			--
 			var native:ExtractFact extract is final
 			var native:StashPath path =
 			--

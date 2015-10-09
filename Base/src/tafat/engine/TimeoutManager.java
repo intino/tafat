@@ -14,8 +14,8 @@ public class TimeoutManager {
         timeouts.add(new Timeout(duration, action));
     }
 
-    public static void update(int time) {
-        timeouts.forEach(t -> t.duration -= time);
+    public static void update() {
+        timeouts.forEach(t -> t.duration -= 1);
         List<Timeout> finishedTimeouts = timeouts.stream().filter(t -> t.duration <= 0).collect(Collectors.toList());
         finishedTimeouts.forEach(t -> t.action.execute());
         timeouts.removeAll(finishedTimeouts);

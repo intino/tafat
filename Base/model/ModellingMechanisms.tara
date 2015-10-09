@@ -1,11 +1,16 @@
-dsl Proteo 
+dsl Proteo
 
-Concept Action is feature into prototype
+Concept Periodic is abstract
+	var native:Execute execute is final
+
+Concept Action extends Periodic is feature into prototype
 	var native:Action action
+	var native:Execute execute = '$.action()' is final
 
-Concept ConditionalAction is feature into prototype
+Concept ConditionalAction extends Periodic is feature into prototype
 	var native:Check condition = 'true'
 	var native:Action action
+	var native:Execute execute = '{if($.condition()) $.action();}' is final
 
 Concept EquationSystem is feature terminal
 	var word:[Euler] solver = Euler
@@ -15,18 +20,19 @@ Concept EquationSystem is feature terminal
 		sub Stock
 		sub Flow
 
-Concept StateChart into prototype
+Concept StateChart extends Periodic into prototype
+	var native:Execute execute = 'tafat.engine.StatechartUpdater.update($, step)' is final
 	var string message = ""
-	var native:Message receiveMessage = '$.message(message);if($.current() != null) $.current().receiveMessage(message)'
+	var native:Message receiveMessage = '$.message(message);if($.current() != null) $.current().receiveMessage(message)' is final
 	var StateChart current = empty
 	Concept State extends StateChart
 		Concept Action
-			var native:Action action
+			var native:Action action is final
 			sub EntryAction
 			sub ExitAction
 	Concept Transition
-		var State from
-		var State to
+		var State from is final
+		var State to is final
 		var native:Action action = ''
 		Concept Trigger is single
 			var native:Check check
@@ -57,45 +63,45 @@ Concept Task  is feature into prototype
 	if (tafat.engine.Date.toLocalTime().compareTo($.start().scheduledTime()) < 0) return false;
 	$.launchedDate(tafat.engine.Date.getDateTime());
 	return true;
-	--
-	var native:Check isTodayScheduled = '$.days().contains(tafat.words.DayOfWeek.values()[tafat.engine.Date.getDayOfWeek().ordinal()])'
+	-- is final
+	var native:Check isTodayScheduled = '$.days().contains(tafat.words.DayOfWeek.values()[tafat.engine.Date.getDayOfWeek().ordinal()])' is final
 	var native:Action program =
 	--
 	int deltaInSeconds = (int)($.start().deviation() * 60);
 	$.start().scheduledTime($.start().start().plusSeconds(deltaInSeconds == 0 ? 0 : new Random().nextInt(deltaInSeconds * 2) - deltaInSeconds));
-	--
+	-- is final
 	var date launchedDate = ""
 	Concept Start is required single
-		var time start
+		var time start is final
 		var measure:Time deviation = 0 minute
 		var time scheduledTime = ""
 	Concept Finish is single
 		sub End
-			var time end
+			var time end is final
 			var measure:Time deviation = 0 minute
 		sub Duration
-			var measure:Time duration
+			var measure:Time duration is final
 			var measure:Time deviation = 0 minute
 	has Task
 	has JobAction
 	Concept Action
-		var native:Action action
+		var native:Action action is final
 		sub StartAction
 		sub RecurrentAction
 		sub EndAction
 
 Concept JobAction is feature
-	var Job... job
+	var Job... job is final
 	sub StartJob
 	sub RecurrentJob
 	sub EndJob
 
 Concept Job is feature
 	Concept Start is single
-		var measure:Time start
+		var measure:Time start is final
 		var measure:Time deviation = 0 minute
 	Concept Duration is single
-		var measure:Time duration
+		var measure:Time duration is final
 		var measure:Time deviation = 0 minute
 	has Job
 	has JobAction
@@ -106,7 +112,7 @@ Concept Job is feature
 		sub EndAction
 
 Concept TableFunction is feature
-	var PointSet pointSet
+	var PointSet pointSet is final
 	Concept Interpolation is single
 		sub NoneInterpolation
 		sub LinearInterpolation
@@ -123,7 +129,7 @@ Concept TableFunction is feature
 		sub SplineExtrapolation
 		sub StepExtrapolation
 
-Concept PointSet  is feature
+Concept PointSet is feature
 	Concept Definition is final
 		sub Point > var double x is final; var double y is final
 		sub X is single > var double... values is final

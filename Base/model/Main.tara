@@ -2,10 +2,13 @@ dsl Proteo
 use ModellingMechanisms
 use Output
 
-Concept Simulation is required single terminal main > var date from; var date to
+Concept Simulation is required single terminal main
+	var date from is final
+	var date to is final
 	has Output is single
 
 Concept Agent
+	has Knol
 
 Concept Entity
 	has Entity
@@ -14,8 +17,21 @@ Concept Entity
 Concept Facet into facet
 	sub Behavior
 		var integer step = 1 is terminal
-		Concept Start is feature final into prototype > var native:Action start
+		var integer timeout = 0
+		var native:Check checkStep =
+		--
+		if($.timeout() == 0){
+			$.timeout($.step() - 1);
+			return true;
+		}
+		$.timeout($.timeout() - 1);
+		return false;
+		-- is final
+		Concept Start is feature final into prototype
+			var native:Action start is final
 		Concept Knol is feature final into prototype
+			has Knol
+		has Periodic
 		has Action is final
 		has ConditionalAction is final
 		has EquationSystem is final
@@ -28,6 +44,7 @@ Concept Facet into facet
 	sub Aspect
 
 Concept Knol
+	has Knol
 
 Concept View is main terminal
 	sub HeatMap

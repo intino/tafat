@@ -13,19 +13,19 @@ import java.nio.file.Paths;
 import java.time.ZoneOffset;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
 import static tafat.Output.*;
 
 
 public class TafatEngine {
 
-    private final List<Behavior> behaviors;
+    private List<Behavior> behaviors;
     private List<Plot> plots;
     private Model model;
 
     public TafatEngine(Model model) {
         this.model = model;
         Date.setDateTime(TafatViewer.simulation().from());
-        this.behaviors = model.find(Behavior.class);
         init();
     }
 
@@ -65,26 +65,27 @@ public class TafatEngine {
     }
 
     private void initBehaviors() {
+        List<Behavior> behaviors = model.find(Behavior.class);
         behaviors.forEach(b -> TaskManager.addAll(b.taskList()));
         behaviors.forEach(behavior -> behavior.startList().forEach(Behavior.Start::start));
+        this.behaviors = behaviors.stream().filter(b -> !b.periodicList().isEmpty()).collect(toList());
     }
 
     public void execute() {
         long steps = steps();
-        for (int step = 0; step < steps; step++) run(step);
+        for (int step = 0; step < steps; step++) run();
     }
 
-    public void run(int step) {
-        Date.plusSeconds(1);
+    public void run() {
         TaskManager.update();
-        TimeoutManager.update(1);
-        behaviors.forEach(this::run);
-        if(step % 60 == 0) toStash(plots);
+        TimeoutManager.update();
+        behaviors.stream().filter(Behavior::checkStep).forEach(this::run);
+        toStash(plots.stream().filter(Plot::checkStep).collect(toList()));
+        Date.plusSeconds(1);
     }
 
     private void run(Behavior behavior) {
-        behavior.actionList().forEach(Action::action);
-        behavior.conditionalActionList().stream().filter(ConditionalAction::condition).forEach(ConditionalAction::action);
+        behavior.periodicList().forEach(p -> p.execute(behavior.step()));
     }
 
     private long steps() {
