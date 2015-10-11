@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Base/Base.iml" filepath="$PROJECT_DIR$/Base/Base.iml" />
-      <module fileurl="file://$PROJECT_DIR$/toolbox/toolbox.iml" filepath="$PROJECT_DIR$/toolbox/toolbox.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Toolbox/toolbox.iml" filepath="$PROJECT_DIR$/Toolbox/toolbox.iml" />
     </modules>
   </component>
 </project>

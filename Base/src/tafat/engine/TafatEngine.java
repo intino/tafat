@@ -37,6 +37,7 @@ public class TafatEngine {
 
     private void initPlots() {
         this.plots = model.find(Plot.class);
+        plots.forEach(p -> p.timeout(p.timeScale().toSeconds() - 1));
     }
 
     private void initExports() {

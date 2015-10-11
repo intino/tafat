@@ -7,12 +7,17 @@ import java.util.Map;
 
 import static java.util.stream.Collectors.toList;
 
-public class Fact {
+public class Element {
 
+    String id;
     Map<String, Object> attributes = new HashMap<>();
 
-    public Fact(String instant) {
-        attributes.put("instant", instant);
+    public String id() {
+        return id;
+    }
+
+    public void id(String id) {
+        this.id = id;
     }
 
     public void reference(String name, String... reference) {
@@ -25,5 +30,19 @@ public class Fact {
 
     public Map<String, Object> attributes() {
         return attributes;
+    }
+
+    public static class Fact extends Element{
+
+        static long index = 1l;
+
+        public Fact(String instant) {
+            id("f" + index++);
+            attribute("instant", instant);
+        }
+
+    }
+
+    public static class Member extends Element{
     }
 }

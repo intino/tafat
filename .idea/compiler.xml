@@ -22,7 +22,6 @@
         <sourceTestOutputDir name="..\out\build\tafat\generated-test-sources\test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="Base" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

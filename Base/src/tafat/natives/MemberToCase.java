@@ -2,6 +2,6 @@ package tafat.natives;
 
 public interface MemberToCase {
 
-    tara.io.Case toCase(tafat.engine.output.Member member);
+    tara.io.Case toCase(tafat.engine.output.Element.Member member);
 
 }

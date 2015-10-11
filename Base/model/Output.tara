@@ -3,6 +3,7 @@ dsl Proteo
 Concept Output is terminal
 	var string language
 	var string simulationId
+	var string rootPath = "res/out/"
 
 	Concept Extractor
 		var string label is final
@@ -12,12 +13,12 @@ Concept Output is terminal
 
 		sub Export
 			var native:ExtractMember extract is final
-			var native:StashPath path = '"res/out/Dimension.stash"' is final
+			var native:StashPath path = 'tafat.TafatViewer.simulation().output().rootPath() + "Dimension.stash"' is final
 			var native:Stash buildStash =
 			--
 			return $.collect().stream()
 						.map(l -> {
-							tafat.engine.output.Member member = new tafat.engine.output.Member();
+							tafat.engine.output.Element.Member member = new tafat.engine.output.Element.Member();
 							$.extract(member, l);
 							return $.toCase(member);
 						})
@@ -27,7 +28,7 @@ Concept Output is terminal
 			--
 			tara.io.Case aCase = new tara.io.Case();
             aCase.name = "Dimension#" + member.id();
-            aCase.types.add($.label());
+            aCase.types.addAll(java.util.Arrays.asList($.label().split(" ")));
             member.attributes().forEach((k, v) -> aCase.variables.add(new tara.io.Variable(k, v)));
             return aCase;
 			--is final
@@ -48,18 +49,17 @@ Concept Output is terminal
 			var native:StashPath path =
 			--
 			LocalDateTime date = tafat.engine.Date.getDateTime();
-			if($.timeScale() == tafat.words.TimeScale.Minutes)
-				return "res/out/" +
-					String.format("%04d", date.getYear()) + "/" +
-					String.format("%03d", date.getDayOfYear()) + "/" +
-					String.format("%04d", date.get(java.time.temporal.ChronoField.MINUTE_OF_DAY)) + ".stash";
-			return "";
+			return tafat.TafatViewer.simulation().output().rootPath() +
+				String.format("%04d", date.getYear()) + "/" +
+				String.format("%03d", date.getDayOfYear()) + "/" +
+				String.format("%04d", date.get(java.time.temporal.ChronoField.MINUTE_OF_DAY)) + "_" +
+				tafat.TafatViewer.simulation().output().simulationId() + ".stash";
 			--is final
 			var native:Stash buildStash =
 			--
 			return $.collect().stream()
 				.map(l -> {
-					tafat.engine.output.Fact fact = new tafat.engine.output.Fact(tafat.engine.Date.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
+					tafat.engine.output.Element.Fact fact = new tafat.engine.output.Element.Fact(tafat.engine.Date.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
 					$.extract(fact, l);
 					return $.toCase(fact);
 				})
@@ -70,6 +70,5 @@ Concept Output is terminal
 			tara.io.Case aCase = new tara.io.Case();
 			            aCase.types.add($.label());
 			            fact.attributes().forEach((k, v) -> aCase.variables.add(new tara.io.Variable(k, v)));
-            aCase.variables.add(new tara.io.Variable("source", new java.util.ArrayList<>(java.util.Arrays.asList($._owner(Output.class).simulationId()))));
 			            return aCase;
 			--is final
