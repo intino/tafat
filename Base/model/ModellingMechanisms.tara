@@ -30,6 +30,7 @@ Concept StateChart extends Periodic into prototype
 			var native:Action action is final
 			sub EntryAction
 			sub ExitAction
+			sub PeriodicAction
 	Concept Transition
 		var State from is final
 		var State to is final

@@ -11,6 +11,7 @@ public class StatechartUpdater {
         stepTransitions(stateChart, advancedTime);
         updateChild(stateChart.current(), advancedTime);
         update(stateChart, findTransition(stateChart));
+        doPeriodic(stateChart.current().as(State.class));
         stateChart.message("");
     }
 
@@ -90,6 +91,11 @@ public class StatechartUpdater {
             state.current(state.stateList().get(0));
             activate(state);
         }
+    }
+
+    private static void doPeriodic(State state) {
+        if (state.current() != null) doPeriodic(state.current().as(State.class));
+        state.periodicActionList().forEach(State.Action::action);
     }
 
     private static void doIn(State state) {
