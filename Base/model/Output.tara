@@ -16,7 +16,7 @@ Concept Output is terminal
 			var native:StashPath path = 'tafat.TafatViewer.simulation().output().rootPath() + "Dimension.stash"' is final
 			var native:Stash buildStash =
 			--
-			return $.collect().stream()
+			return $.collect().parallelStream()
 						.map(l -> {
 							tafat.engine.output.Element.Member member = new tafat.engine.output.Element.Member();
 							$.extract(member, l);
@@ -57,7 +57,7 @@ Concept Output is terminal
 			--is final
 			var native:Stash buildStash =
 			--
-			return $.collect().stream()
+			return $.collect().parallelStream()
 				.map(l -> {
 					tafat.engine.output.Element.Fact fact = new tafat.engine.output.Element.Fact(tafat.engine.Date.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
 					$.extract(fact, l);

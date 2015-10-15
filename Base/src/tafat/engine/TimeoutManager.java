@@ -2,34 +2,44 @@ package tafat.engine;
 
 import tafat.natives.Action;
 
+import java.time.LocalDateTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static tafat.engine.Date.getDateTime;
+import static tafat.engine.Date.plusSeconds;
+import static tafat.engine.Date.with;
 
 public class TimeoutManager {
 
     private static final List<Timeout> timeouts = new ArrayList<>();
 
     public static void timeout(double duration, Action action) {
-        timeouts.add(new Timeout(duration, action));
+        timeouts.add(new Timeout(getDateTime().plusSeconds((long) duration), action));
+        timeouts.sort((t1, t2) -> t1.duration.compareTo(t2.duration));
     }
 
     public static void update() {
-        timeouts.forEach(t -> t.duration -= 1);
-        List<Timeout> finishedTimeouts = timeouts.stream().filter(t -> t.duration <= 0).collect(Collectors.toList());
+        List<Timeout> finishedTimeouts = new ArrayList<>();
+        for (Timeout timeout : timeouts) {
+            if(!timeout.duration.isAfter(getDateTime()))
+                finishedTimeouts.add(timeout);
+            else
+                break;
+        }
         finishedTimeouts.forEach(t -> t.action.execute());
         timeouts.removeAll(finishedTimeouts);
     }
 
     private static class Timeout {
-        private double duration;
+        private LocalDateTime duration;
         private final Action action;
 
-        public Timeout(double duration, Action action) {
+        public Timeout(LocalDateTime duration, Action action) {
             this.duration = duration;
             this.action = action;
         }
-
-
     }
 }

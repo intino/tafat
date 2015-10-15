@@ -31,6 +31,7 @@ Concept StateChart extends Periodic into prototype
 			sub EntryAction
 			sub ExitAction
 			sub PeriodicAction
+		var Transition... exitTransitions = empty
 	Concept Transition
 		var State from is final
 		var State to is final

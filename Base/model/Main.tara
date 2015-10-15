@@ -52,3 +52,6 @@ Concept View is main terminal
 		Concept Region
 			var double[2] coordinates
 			var native:Function calculate
+
+Concept Parallelizable is facet
+	on Behavior

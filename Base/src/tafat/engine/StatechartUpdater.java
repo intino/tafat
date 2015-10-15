@@ -37,8 +37,13 @@ public class StatechartUpdater {
     }
 
     private static Transition findTransition(StateChart stateChart, int advancedTime) {
-        return stateChart.transitionList().stream()
-                .filter(t -> t.from() == stateChart.current() && t.trigger().check(advancedTime)).findFirst().orElse(null);
+//        return stateChart.transitionList().stream()
+//                .filter(t -> t.from() == stateChart.current() && t.trigger().check(advancedTime)).findFirst().orElse(null);
+        for (Transition transition : stateChart.transitionList()) {
+            if(transition.from() == stateChart.current() && transition.trigger().check(advancedTime))
+                return transition;
+        }
+        return null;
     }
 
     private static void processTransition(Transition transition, StateChart stateChart) {

@@ -33,7 +33,7 @@ public class TaskManager {
     }
 
     private static void prepareNextTasks() {
-        nextDate = taskList.stream().map(Task::scheduledDate).reduce((d1, d2) -> d1.isBefore(d2) ? d1 : d2).get();
-        nextTasks = taskList.stream().filter(t -> t.scheduledDate().isEqual(nextDate)).collect(toList());
+        nextDate = taskList.parallelStream().map(Task::scheduledDate).reduce((d1, d2) -> d1.isBefore(d2) ? d1 : d2).get();
+        nextTasks = taskList.parallelStream().filter(t -> t.scheduledDate().isEqual(nextDate)).collect(toList());
     }
 }
