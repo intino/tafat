@@ -7,20 +7,24 @@ import tafat.StateChart.Transition.TimeBased;
 
 public class StatechartUpdater {
 
-    public static void update(StateChart stateChart, long advancedTime) {
-        stepTransitions(stateChart, advancedTime);
-        updateChild(stateChart.current(), advancedTime);
-        update(stateChart, findTransition(stateChart));
+
+    public static void update(StateChart stateChart, int advancedTime){
+        updateStatechart(stateChart, advancedTime);
         doPeriodic(stateChart.current().as(State.class));
         stateChart.message("");
     }
 
-    private static void update(StateChart stateChart, Transition transition) {
+    private static void updateStatechart(StateChart stateChart, int advancedTime) {
+        updateChild(stateChart.current(), advancedTime);
+        updateStatechart(stateChart, findTransition(stateChart, advancedTime), advancedTime);
+    }
+
+    private static void updateStatechart(StateChart stateChart, Transition transition, int advancedTime) {
         while (transition != null) {
             processTransition(transition, stateChart);
             if (transitionChangedStateChart(stateChart)) break;
-            updateChild(stateChart, 0);
-            transition = findTransition(stateChart);
+            updateChild(stateChart.current(), 0);
+            transition = findTransition(stateChart, advancedTime);
         }
     }
 
@@ -28,19 +32,13 @@ public class StatechartUpdater {
         return stateChart._owner(StateChart.class) != null && stateChart._owner(StateChart.class).current() != stateChart;
     }
 
-    private static void updateChild(StateChart stateChart, long advancedTime) {
-        if (stateChart.current() != null) updateChild(stateChart.current(), advancedTime);
+    private static void updateChild(StateChart stateChart, int advancedTime) {
+        if (stateChart.current() != null) updateStatechart(stateChart.current(), advancedTime);
     }
 
-    private static void stepTransitions(StateChart stateChart, long advancedTime) {
-        stateChart.transitionList().stream()
-                .filter(t -> t.timeBased() != null && t.from() == stateChart.current())
-                .forEach(t -> t.timeBased().timeLeft((int) (t.timeBased().timeLeft() - advancedTime)));
-    }
-
-    private static Transition findTransition(StateChart stateChart) {
+    private static Transition findTransition(StateChart stateChart, int advancedTime) {
         return stateChart.transitionList().stream()
-                .filter(t -> t.from() == stateChart.current() && t.trigger().check()).findFirst().orElse(null);
+                .filter(t -> t.from() == stateChart.current() && t.trigger().check(advancedTime)).findFirst().orElse(null);
     }
 
     private static void processTransition(Transition transition, StateChart stateChart) {

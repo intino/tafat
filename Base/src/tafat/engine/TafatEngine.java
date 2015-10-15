@@ -1,7 +1,8 @@
 package tafat.engine;
 
-import tafat.*;
+import tafat.Behavior;
 import tafat.Output.Plot;
+import tafat.TafatViewer;
 import tara.io.Stash;
 import tara.io.StashSerializer;
 import tara.magritte.Model;
@@ -9,12 +10,12 @@ import tara.magritte.Model;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.ZoneOffset;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
-import static tafat.Output.*;
+import static tafat.Output.Export;
+import static tafat.Output.Extractor;
 
 
 public class TafatEngine {
@@ -46,7 +47,7 @@ public class TafatEngine {
 
     private void toStash(List<? extends Extractor> extractors) {
         try {
-            if(extractors.isEmpty()) return;
+            if (extractors.isEmpty()) return;
             writeStash(createStash(extractors), new File(extractors.get(0).path()));
         } catch (IOException e1) {
             e1.printStackTrace();
@@ -61,7 +62,7 @@ public class TafatEngine {
     }
 
     private void writeStash(Stash stash, File file) throws IOException {
-        if(!file.getParentFile().exists()) file.getParentFile().mkdirs();
+        if (!file.getParentFile().exists()) file.getParentFile().mkdirs();
         Files.write(file.toPath(), StashSerializer.serialize(stash));
     }
 
