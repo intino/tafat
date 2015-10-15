@@ -68,7 +68,7 @@ public class TafatEngine {
 
     private void initBehaviors() {
         List<Behavior> behaviors = model.find(Behavior.class);
-        behaviors.forEach(b -> TaskManager.addAll(b.taskList()));
+        TaskManager.addAll(behaviors.stream().flatMap(b -> b.taskList().stream()).collect(toList()));
         behaviors.forEach(behavior -> behavior.startList().forEach(Behavior.Start::start));
         this.behaviors = behaviors.stream().filter(b -> !b.periodicList().isEmpty()).collect(toList());
     }

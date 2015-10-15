@@ -61,25 +61,12 @@ Concept StateChart extends Periodic into prototype
 
 Concept Task  is feature into prototype
 	var word:DayOfWeek... days = Monday Tuesday Wednesday Thursday Friday Saturday Sunday
-	var native:Check check =
-	--
-	if ($.launchedDate() != null && $.launchedDate().toLocalDate().compareTo(tafat.engine.Date.toLocalDate()) == 0) return false;
-	if (!$.isTodayScheduled()) return false;
-	if (tafat.engine.Date.toLocalTime().compareTo($.start().scheduledTime()) < 0) return false;
-	$.launchedDate(tafat.engine.Date.getDateTime());
-	return true;
-	-- is final
-	var native:Check isTodayScheduled = '$.days().contains(tafat.words.DayOfWeek.values()[tafat.engine.Date.getDayOfWeek().ordinal()])' is final
-	var native:Action program =
-	--
-	int deltaInSeconds = (int)($.start().deviation() * 60);
-	$.start().scheduledTime($.start().start().plusSeconds(deltaInSeconds == 0 ? 0 : new Random().nextInt(deltaInSeconds * 2) - deltaInSeconds));
-	-- is final
-	var date launchedDate = ""
+	var date scheduledDate = ""
+	var native:Check check = '!$.scheduledDate().isAfter(tafat.engine.Date.getDateTime())' is final
+	var native:Action program = '$.scheduledDate(tafat.engine.helpers.TaskHelper.scheduledDate($))' is final
 	Concept Start is required single
 		var time start is final
 		var measure:Time deviation = 0 minute
-		var time scheduledTime = ""
 	Concept Finish is single
 		sub End
 			var time end is final
