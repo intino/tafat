@@ -36,11 +36,15 @@ Concept StateChart extends Periodic into prototype
 		var State to is final
 		var native:Action action = ''
 		Concept Trigger is single
-			var native:Check check
-			sub Condition > var native:Check check
+			var native:CheckTransition check
+			sub Condition > var native:CheckTransition check
 			sub TimeBased
 				var measure:Time timeLeft = 0 minute
-				var native:Check check = '$.timeLeft() <= 0'
+				var native:CheckTransition check =
+				--
+				$.timeLeft($.timeLeft() - advancedTime);
+				return $.timeLeft() <= 0;
+				--
 				var native:Action activate
 				sub Timeout
 					var native:Action activate = '$.timeLeft($.timeout())'
