@@ -71,11 +71,11 @@ public class TafatEngine {
         TaskManager.addAll(behaviors.stream().flatMap(b -> b.taskList().stream()).collect(toList()));
         behaviors.forEach(behavior -> behavior.startList().forEach(Behavior.Start::start));
         this.behaviors = behaviors.stream().filter(b -> !b.periodicList().isEmpty()).collect(toList());
-//        this.behaviors.stream()
-//                .flatMap(b -> b.stateChartList().stream())
-//                .forEach(sc -> sc.stateList()
-//                        .forEach(s -> s.exitActionList().addAll(sc.transitionList().stream()
-//                                .filter(t -> t.from().equals(s)).collect(toList()))));
+        this.behaviors.stream()
+                .flatMap(b -> b.stateChartList().stream())
+                .forEach(sc -> sc.stateList()
+                        .forEach(s -> s.exitTransitions().addAll(sc.transitionList().stream()
+                                .filter(t -> t.from().equals(s)).collect(toList()))));
     }
 
     public void execute() {

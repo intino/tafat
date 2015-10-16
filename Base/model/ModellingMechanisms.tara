@@ -25,13 +25,13 @@ Concept StateChart extends Periodic into prototype
 	var string message = ""
 	var native:Message receiveMessage = '$.message(message);if($.current() != null) $.current().receiveMessage(message)' is final
 	var StateChart current = empty
+	var StateChart.Transition... exitTransitions = empty
 	Concept State extends StateChart
 		Concept Action
 			var native:Action action is final
 			sub EntryAction
 			sub ExitAction
 			sub PeriodicAction
-		var Transition... exitTransitions = empty
 	Concept Transition
 		var State from is final
 		var State to is final
