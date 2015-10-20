@@ -2,6 +2,7 @@ package tafat.engine;
 
 import tafat.Behavior;
 import tafat.Output.Plot;
+import tafat.Parallelizable;
 import tafat.TafatViewer;
 import tara.io.Stash;
 import tara.io.StashSerializer;
@@ -20,6 +21,7 @@ import static tafat.Output.Extractor;
 
 public class TafatEngine {
 
+    private List<Behavior> parallelBehaviors;
     private List<Behavior> behaviors;
     private List<Plot> plots;
     private Model model;
@@ -70,7 +72,12 @@ public class TafatEngine {
         List<Behavior> behaviors = model.find(Behavior.class);
         TaskManager.addAll(behaviors.stream().flatMap(b -> b.taskList().stream()).collect(toList()));
         behaviors.forEach(behavior -> behavior.startList().forEach(Behavior.Start::start));
-        this.behaviors = behaviors.stream().filter(b -> !b.periodicList().isEmpty()).collect(toList());
+        this.behaviors = behaviors.stream().filter(b -> !b.periodicList().isEmpty() && !b.is(Parallelizable.class)).collect(toList());
+        this.parallelBehaviors = behaviors.stream().filter(b -> !b.periodicList().isEmpty() && b.is(Parallelizable.class)).collect(toList());
+        initStatecharts();
+    }
+
+    private void initStatecharts() {
         this.behaviors.stream()
                 .flatMap(b -> b.stateChartList().stream())
                 .forEach(sc -> sc.stateList()
@@ -86,6 +93,7 @@ public class TafatEngine {
     public void run() {
         TaskManager.update();
         TimeoutManager.update();
+        parallelBehaviors.parallelStream().filter(Behavior::checkStep).forEach(this::run);
         behaviors.stream().filter(Behavior::checkStep).forEach(this::run);
         toStash(plots.stream().filter(Plot::checkStep).collect(toList()));
         Date.plusSeconds(1);
