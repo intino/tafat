@@ -60,7 +60,7 @@ Concept StateChart extends Periodic into prototype
 				var string expectedMessage
 				var native:Check check = '$._owner(StateChart.class).message().equals($.expectedMessage())'
 
-Concept Task  is feature into prototype
+Concept Task  is feature terminal into prototype
 	var word:DayOfWeek... days = Monday Tuesday Wednesday Thursday Friday Saturday Sunday
 	var date scheduledDate = ""
 	var native:Check check = '!$.scheduledDate().isAfter(tafat.engine.Date.getDateTime())' is final

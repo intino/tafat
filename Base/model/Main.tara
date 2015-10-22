@@ -41,6 +41,18 @@ Concept Facet into facet
 		has PointSet is  final
 		has Job is final
 		has Map is final
+	sub FmuModel
+		var string fmuPath is terminal
+		var double step = 0.01 is terminal
+		Concept Input
+			var string fmuVariableName
+			var native:Write write
+		Concept Output
+			var string fmuVariableName
+			var native:Read read
+	sub ExternalModel
+		var native:Action doStep
+
 	sub Aspect
 
 Concept Knol
