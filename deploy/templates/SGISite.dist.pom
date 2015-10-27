@@ -150,7 +150,9 @@
     <testSourceDirectory>test</testSourceDirectory>
   </build>
 
-  #dependencies#  
+  <dependencies>
+    #dependencies#
+  </dependencies>
 </project>
 
 

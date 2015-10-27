@@ -149,7 +149,9 @@
     </repository>
   </distributionManagement>
 
-  #dependencies#  
+  <dependencies>
+    #dependencies#
+  </dependencies>
 </project>
 
 
