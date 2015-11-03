@@ -52,7 +52,7 @@ Concept Output is terminal
 			return tafat.TafatViewer.simulation().output().rootPath() +
 				String.format("%04d", date.getYear()) + "/" +
 				String.format("%03d", date.getDayOfYear()) + "/" +
-				String.format("%04d", date.get(java.time.temporal.ChronoField.MINUTE_OF_DAY)) + "_" +
+				String.format("%02d%02d", date.getHour(), date.getMinute()) + "_" +
 				tafat.TafatViewer.simulation().output().simulationId() + ".stash";
 			--is final
 			var native:Stash buildStash =
