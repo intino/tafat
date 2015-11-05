@@ -1,6 +1,8 @@
-package tafat.words;
+package tafat.rules;
 
-public enum TimeScale {
+import tara.lang.model.Rule;
+
+public enum TimeScale implements Rule<Enum> {
 
     Years(365 * 24 * 60 * 60),
     Quarters(91 * 24 * 60 * 60),
@@ -24,4 +26,10 @@ public enum TimeScale {
     public int toSeconds(int amount){
         return amount * toSeconds;
     }
+
+    @Override
+    public boolean accept(Enum value) {
+        return TimeScale.valueOf(value.name()) != null;
+    }
+
 }

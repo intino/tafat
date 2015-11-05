@@ -18,7 +18,7 @@
         <processorPath useClasspath="true" />
       </profile>
       <profile default="false" name="Annotation profile for Base" enabled="true">
-        <sourceOutputDir name="..\out\build\tafat\generated-sources\annotations" />
+        <sourceOutputDir name="../out/build/tafat/generated-sources/annotations" />
         <sourceTestOutputDir name="..\out\build\tafat\generated-test-sources\test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />

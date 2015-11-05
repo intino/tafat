@@ -71,18 +71,10 @@ public class TafatEngine {
     private void initBehaviors() {
         List<Behavior> behaviors = model.find(Behavior.class);
         TaskManager.addAll(behaviors.stream().flatMap(b -> b.taskList().stream()).collect(toList()));
+        model.find(Behavior.class).stream().filter(b -> !b.stateChartList().isEmpty()).map(b -> b.stateChart(0)).forEach(s -> s.current(s.state(0))); // TODO
         behaviors.forEach(behavior -> behavior.startList().forEach(Behavior.Start::start));
         this.behaviors = behaviors.stream().filter(b -> !b.periodicList().isEmpty() && !b.is(Parallelizable.class)).collect(toList());
         this.parallelBehaviors = behaviors.stream().filter(b -> !b.periodicList().isEmpty() && b.is(Parallelizable.class)).collect(toList());
-        initStatecharts();
-    }
-
-    private void initStatecharts() {
-        this.behaviors.stream()
-                .flatMap(b -> b.stateChartList().stream())
-                .forEach(sc -> sc.stateList()
-                        .forEach(s -> s.exitTransitions().addAll(sc.transitionList().stream()
-                                .filter(t -> t.from().equals(s)).collect(toList()))));
     }
 
     public void execute() {

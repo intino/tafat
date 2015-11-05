@@ -1,7 +1,7 @@
 package tafat.engine.helpers;
 
 import tafat.Task;
-import tafat.words.DayOfWeek;
+import tafat.rules.DayOfWeek;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;

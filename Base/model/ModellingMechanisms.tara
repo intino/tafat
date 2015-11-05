@@ -13,19 +13,18 @@ Concept ConditionalAction extends Periodic is feature into prototype
 	var native:Execute execute = '{if($.condition()) $.action();}' is final
 
 Concept EquationSystem is feature terminal
-	var word:[Euler] solver = Euler
+	var word:{Euler} solver = Euler
 	var double step = 0.1
 	Concept Element
 		var native:Function function
 		sub Stock
 		sub Flow
 
-Concept StateChart extends Periodic into prototype
+Concept StateChart extends Periodic is feature into prototype
 	var native:Execute execute = 'tafat.engine.StatechartUpdater.update($, step)' is final
 	var string message = ""
 	var native:Message receiveMessage = '$.message(message);if($.current() != null) $.current().receiveMessage(message)' is final
 	var StateChart current = empty
-	var StateChart.Transition... exitTransitions = empty
 	Concept State extends StateChart
 		Concept Action
 			var native:Action action is final
@@ -36,11 +35,11 @@ Concept StateChart extends Periodic into prototype
 		var State from is final
 		var State to is final
 		var native:Action action = ''
-		Concept Trigger is single
+		Concept:{1..1} Trigger
 			var native:CheckTransition check
 			sub Condition > var native:CheckTransition check
 			sub TimeBased
-				var measure:Time timeLeft = 0 minute
+				var integer:Time timeLeft = 0 minute
 				var native:CheckTransition check =
 				--
 				$.timeLeft($.timeLeft() - advancedTime);
@@ -52,29 +51,29 @@ Concept StateChart extends Periodic into prototype
 					var native:Timeout timeout is final
 				sub After
 					var native:Action activate = '$.timeLeft($.fixedTime())'
-					var measure:Time fixedTime is final
+					var integer:Time fixedTime is final
 				sub Rate
 					var native:Action activate = '$.timeLeft($.unit() / $.times())'
-					var integer:times times; var integer unit
+					var integer:{times} times; var integer unit
 			sub Message
 				var string expectedMessage
-				var native:Check check = '$._owner(StateChart.class).message().equals($.expectedMessage())'
+				var native:CheckTransition check = '$._owner(StateChart.class).message().equals($.expectedMessage())'
 
 Concept Task  is feature terminal into prototype
-	var word:DayOfWeek... days = Monday Tuesday Wednesday Thursday Friday Saturday Sunday
+	var word[]:DayOfWeek days = Monday Tuesday Wednesday Thursday Friday Saturday Sunday
 	var date scheduledDate = ""
 	var native:Check check = '!$.scheduledDate().isAfter(tafat.engine.Date.getDateTime())' is final
 	var native:Action program = '$.scheduledDate(tafat.engine.helpers.TaskHelper.scheduledDate($))' is final
-	Concept Start is required single
+	Concept:{1..1} Start
 		var time start is final
-		var measure:Time deviation = 0 minute
-	Concept Finish is single
+		var integer:Time deviation = 0 minute
+	Concept:{0..1} Finish
 		sub End
 			var time end is final
-			var measure:Time deviation = 0 minute
+			var integer:Time deviation = 0 minute
 		sub Duration
-			var measure:Time duration is final
-			var measure:Time deviation = 0 minute
+			var integer:Time duration is final
+			var integer:Time deviation = 0 minute
 	has Task
 	has JobAction
 	Concept Action
@@ -84,18 +83,18 @@ Concept Task  is feature terminal into prototype
 		sub EndAction
 
 Concept JobAction is feature
-	var Job... job is final
+	var Job[] job is final
 	sub StartJob
 	sub RecurrentJob
 	sub EndJob
 
 Concept Job is feature
-	Concept Start is single
-		var measure:Time start is final
-		var measure:Time deviation = 0 minute
-	Concept Duration is single
-		var measure:Time duration is final
-		var measure:Time deviation = 0 minute
+	Concept:{0..1} Start
+		var integer:Time start is final
+		var integer:Time deviation = 0 minute
+	Concept:{0..1} Duration
+		var integer:Time duration is final
+		var integer:Time deviation = 0 minute
 	has Job
 	has JobAction
 	Concept Action
@@ -106,13 +105,13 @@ Concept Job is feature
 
 Concept TableFunction is feature
 	var PointSet pointSet is final
-	Concept Interpolation is single
+	Concept:{0..1} Interpolation
 		sub NoneInterpolation
 		sub LinearInterpolation
 		sub PolynomialInterpolation
 		sub SplineInterpolation
 		sub StepInterpolation
-	Concept Extrapolation is single
+	Concept:{0..1} Extrapolation
 		sub NoneExtrapolation
 		sub CustomExtrapolation > var native:Function function
 		sub NearestPointExtrapolation
@@ -125,8 +124,8 @@ Concept TableFunction is feature
 Concept PointSet is feature
 	Concept Definition is final
 		sub Point > var double x is final; var double y is final
-		sub X is single > var double... values is final
-		sub Y is single > var double... values is final
+		sub:{0..1} X > var double[] values is final
+		sub:{0..1} Y > var double[] values is final
 
 Concept Map is feature
 	var native:Get get = '0' is final

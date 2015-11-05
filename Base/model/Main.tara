@@ -2,10 +2,10 @@ dsl Proteo
 use ModellingMechanisms
 use Output
 
-Concept Simulation is required single terminal main
+Concept:{1..1} Simulation is terminal main
 	var date from is final
 	var date to is final
-	has Output is single
+	has:{0..1} Output
 
 Concept Agent
 	has Knol
