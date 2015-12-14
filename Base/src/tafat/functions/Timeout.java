@@ -1,4 +1,4 @@
-package tafat.natives;
+package tafat.functions;
 
 public interface Timeout {
 

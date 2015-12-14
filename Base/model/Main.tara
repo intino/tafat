@@ -1,69 +1,72 @@
 dsl Proteo
+
 use ModellingMechanisms
 use Output
 
-Concept:{1..1} Simulation is terminal main
+Concept:{1..1} Simulation
 	var date from is final
 	var date to is final
 	has:{0..1} Output
 
-Concept Agent
+MetaConcept Agent
 	has Knol
 
-Concept Entity
+MetaConcept Entity
 	has Entity
 	Concept Feature into feature
 
-Concept Facet into facet
-	sub Behavior
-		var integer step = 1 is terminal
-		var integer timeout = 0
-		var native:Check checkStep =
-		--
-		if($.timeout() == 0){
-			$.timeout($.step() - 1);
-			return true;
-		}
-		$.timeout($.timeout() - 1);
-		return false;
-		-- is final
-		Concept Start is feature final into prototype
-			var native:Action start is final
-		Concept Knol is feature final into prototype
-			has Knol
-		has Periodic
-		has Action is final
-		has ConditionalAction is final
-		has EquationSystem is final
-		has StateChart is final
-		has Task is final
-		has TableFunction is final
-		has PointSet is  final
-		has Job is final
-		has Map is final
-	sub FmuModel
-		var string fmuPath is terminal
-		var double step = 0.01 is terminal
-		Concept Input
-			var string fmuVariableName
-			var native:Write write
-		Concept Output
-			var string fmuVariableName
-			var native:Read read
-	sub ExternalModel
-		var native:Action doStep
+MetaFacet Aspect > on Entity
 
-	sub Aspect
+MetaFacet Behavior
+	on Entity
+	on Agent
+	var integer step = 1 is terminal
+	var integer timeout = 0
+	var function:Check checkStep =
+	--
+	if ($.timeout() == 0) {
+		$.timeout($.step() - 1);
+		return true;
+	}
+	$.timeout($.timeout() - 1);
+	return false;
+	-- is final
+	MetaConcept Start is final into feature prototype
+		var function:Action start is final
+	MetaConcept Knol is final into prototype feature
+		has Knol
+	has Periodic
+	has Action is final
+	has ConditionalAction is final
+	has EquationSystem is final
+	has StateChart is final
+	has Task is final
+	has TableFunction is final
+	has PointSet is final
+	has Job is final
+	has Map is final
 
-Concept Knol
+MetaFacet FmuModel > on Entity
+	var string fmuPath is terminal
+	var double step = 0.01 is terminal
+	Concept Input
+		var string fmuVariableName
+		var function:Write write
+	Concept Output
+		var string fmuVariableName
+		var function:Read read
+
+MetaFacet ExternalModel > on Entity
+	var function:Action doStep
+
+MetaConcept Knol
 	has Knol
 
-Concept View is main terminal
+MetaConcept View
 	sub HeatMap
 		var string path
 		Concept Region
 			var double[2] coordinates
-			var native:Function calculate
+			var function:Function calculate
 
-Concept Parallelizable is facet
-	on Behavior
+Facet Parallelizable > on Behavior

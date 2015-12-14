@@ -1,15 +1,12 @@
 package tafat.engine;
 
-import tafat.natives.Action;
+import tafat.functions.Action;
 
 import java.time.LocalDateTime;
-import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static tafat.engine.Date.getDateTime;
-import static tafat.engine.Date.plusSeconds;
 import static tafat.engine.Date.with;
 
 public class TimeoutManager {

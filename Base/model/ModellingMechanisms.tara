@@ -1,69 +1,69 @@
 dsl Proteo
 
-Concept Periodic is abstract
-	var native:Execute execute is final
+MetaConcept Periodic is abstract
+	var function:Execute execute is final
 
-Concept Action extends Periodic is feature into prototype
-	var native:Action action
-	var native:Execute execute = '$.action()' is final
+MetaConcept Action extends Periodic into prototype feature
+	var function:Action action
+	var function:Execute execute = '$.action()' is final
 
-Concept ConditionalAction extends Periodic is feature into prototype
-	var native:Check condition = 'true'
-	var native:Action action
-	var native:Execute execute = '{if($.condition()) $.action();}' is final
+MetaConcept ConditionalAction extends Periodic into prototype feature
+	var function:Check condition = 'true'
+	var function:Action action
+	var function:Execute execute = '{if($.condition())$.action();}' is final
 
-Concept EquationSystem is feature terminal
+Concept EquationSystem is feature
 	var word:{Euler} solver = Euler
 	var double step = 0.1
 	Concept Element
-		var native:Function function
+		var function:Function elementFunction
 		sub Stock
 		sub Flow
 
-Concept StateChart extends Periodic is feature into prototype
-	var native:Execute execute = 'tafat.engine.StatechartUpdater.update($, step)' is final
+MetaConcept StateChart extends Periodic into prototype feature
+	var function:Execute execute = 'StatechartUpdater.update($, step)' is final
 	var string message = ""
-	var native:Message receiveMessage = '$.message(message);if($.current() != null) $.current().receiveMessage(message)' is final
+	var function:Message receiveMessage = '$.message(message);if($.current() != null) $.current().receiveMessage(message)' is final
 	var StateChart current = empty
-	Concept State extends StateChart
+	MetaConcept State extends StateChart
 		Concept Action
-			var native:Action action is final
+			var function:Action action is final
 			sub EntryAction
 			sub ExitAction
 			sub PeriodicAction
-	Concept Transition
+	MetaConcept Transition 
 		var State from is final
 		var State to is final
-		var native:Action action = ''
+		var function:Action action = ' '
 		Concept:{1..1} Trigger
-			var native:CheckTransition check
-			sub Condition > var native:CheckTransition check
+			var function:CheckTransition check
+			sub Condition >var function:CheckTransition check
 			sub TimeBased
 				var integer:Time timeLeft = 0 minute
-				var native:CheckTransition check =
+				var function:CheckTransition check =
 				--
 				$.timeLeft($.timeLeft() - advancedTime);
 				return $.timeLeft() <= 0;
 				--
-				var native:Action activate
+				var function:Action activate
 				sub Timeout
-					var native:Action activate = '$.timeLeft($.timeout())'
-					var native:Timeout timeout is final
+					var function:Action activate = '$.timeLeft($.timeout())'
+					var function:Timeout timeout is final
 				sub After
-					var native:Action activate = '$.timeLeft($.fixedTime())'
+					var function:Action activate = '$.timeLeft($.fixedTime())'
 					var integer:Time fixedTime is final
 				sub Rate
-					var native:Action activate = '$.timeLeft($.unit() / $.times())'
-					var integer:{times} times; var integer unit
+					var function:Action activate = '$.timeLeft($.unit() / $.times())'
+					var integer:{times} times;var integer unit
 			sub Message
 				var string expectedMessage
-				var native:CheckTransition check = '$._owner(StateChart.class).message().equals($.expectedMessage())'
+				var function:CheckTransition check = '$._owner(StateChart.class).message().equals($.expectedMessage())'
 
-Concept Task  is feature terminal into prototype
+MetaConcept Task into prototype feature
 	var word[]:DayOfWeek days = Monday Tuesday Wednesday Thursday Friday Saturday Sunday
 	var date scheduledDate = ""
-	var native:Check check = '!$.scheduledDate().isAfter(tafat.engine.Date.getDateTime())' is final
-	var native:Action program = '$.scheduledDate(tafat.engine.helpers.TaskHelper.scheduledDate($))' is final
+	var function:Check check = '!$.scheduledDate().isAfter(tafat.engine.Date.getDateTime())' is final
+	var function:Action program = '$.scheduledDate(tafat.engine.helpers.TaskHelper.scheduledDate($))' is final
 	Concept:{1..1} Start
 		var time start is final
 		var integer:Time deviation = 0 minute
@@ -77,7 +77,7 @@ Concept Task  is feature terminal into prototype
 	has Task
 	has JobAction
 	Concept Action
-		var native:Action action is final
+		var function:Action action is final
 		sub StartAction
 		sub RecurrentAction
 		sub EndAction
@@ -98,7 +98,7 @@ Concept Job is feature
 	has Job
 	has JobAction
 	Concept Action
-		var native:Action action
+		var function:Action action
 		sub StartAction
 		sub RecurrentAction
 		sub EndAction
@@ -113,20 +113,24 @@ Concept TableFunction is feature
 		sub StepInterpolation
 	Concept:{0..1} Extrapolation
 		sub NoneExtrapolation
-		sub CustomExtrapolation > var native:Function function
+		sub CustomExtrapolation > var function:Function extrapolationFunction
+
 		sub NearestPointExtrapolation
+
 		sub RepeatSeriesExtrapolation
+
 		sub LinearExtrapolation
+
 		sub PolynomialExtrapolation
 		sub SplineExtrapolation
 		sub StepExtrapolation
 
 Concept PointSet is feature
 	Concept Definition is final
-		sub Point > var double x is final; var double y is final
-		sub:{0..1} X > var double[] values is final
-		sub:{0..1} Y > var double[] values is final
+		sub Point >var double x is final;var double y is final
+		sub:{0..1} X >var double[] values is final
+		sub:{0..1} Y >var double[] values is final
 
-Concept Map is feature
-	var native:Get get = '0' is final
-	Concept Entry > var string key; var double value
+Concept Map
+	var function:Get get = '0' is final
+	Concept Entry >var string key;var double value

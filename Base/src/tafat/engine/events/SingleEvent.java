@@ -1,7 +1,7 @@
 package tafat.engine.events;
 
 import tafat.engine.Event;
-import tafat.natives.Action;
+import tafat.functions.Action;
 
 public class SingleEvent implements Event {
 

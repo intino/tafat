@@ -60,7 +60,7 @@ public class StatechartUpdater {
     }
 
     private static void in(State state, StateChart fromParent) {
-        if (state._owner() == fromParent._declaration()) doIn(state);
+        if (state._owner() == fromParent._instance()) doIn(state);
         else if (state._owner() != null && state._owner().is(State.class))
             in(state._owner().as(State.class), fromParent);
         else doIn(state);
@@ -103,7 +103,7 @@ public class StatechartUpdater {
 
     private static void doOut(State state, StateChart toParent) {
         state.exitActionList().forEach(State.Action::action);
-        if (state.current() != null && state._owner() != toParent._declaration() && state._owner().is(State.class))
+        if (state.current() != null && state._owner() != toParent._instance() && state._owner().is(State.class))
             doOut(state._owner(State.class), toParent);
     }
 }

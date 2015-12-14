@@ -1,10 +1,10 @@
 package tafat.engine.events;
 
 import tafat.engine.Event;
-import tafat.natives.Action;
-import tafat.natives.Timeout;
+import tafat.functions.Action;
+import tafat.functions.Timeout;
 
-public class CyclicEvent implements Event{
+public class CyclicEvent implements Event {
 
     private long timeout;
     private final Timeout timeoutCalculator;

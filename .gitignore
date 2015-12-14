@@ -12,3 +12,6 @@ Base/res/
 Tafat.language
 dsl/Tafat.reload
 dsl/Tafat/
+.tara/
+.idea/libraries/Maven__com_esotericsoftware_minlog_1_3_0.xml
+.idea/libraries/

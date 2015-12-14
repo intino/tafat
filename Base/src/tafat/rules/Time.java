@@ -10,8 +10,8 @@ public enum Time implements Metric<Integer> {
     private Converter<Integer> converter;
 
     @Override
-    public Integer value(Integer integer) {
-        return null;
+    public Integer value(Integer t) {
+        return this.converter.convert(t);
     }
 
     Time(Converter<Integer> converter) {

@@ -13,9 +13,10 @@ public class TaskManager {
 
     private static List<Task> taskList = new ArrayList<>();
     private static List<Task> nextTasks = new ArrayList<>();
-    private static LocalDateTime nextDate = null;
+    private static LocalDateTime nextDate = LocalDateTime.MAX;
 
     public static void addAll(List<Task> tasks) {
+        if(tasks.isEmpty()) return;
         tasks.forEach(Task::program);
         taskList.addAll(tasks);
         prepareNextTasks();

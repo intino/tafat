@@ -8,7 +8,9 @@ import java.time.LocalTime;
 import java.util.Random;
 
 import static java.time.temporal.TemporalAdjusters.next;
-import static tafat.engine.Date.*;
+import static tafat.engine.Date.getDayOfWeek;
+import static tafat.engine.Date.toLocalDate;
+import static tafat.engine.Date.with;
 
 public class TaskHelper {
     public static LocalDateTime scheduledDate(Task task) {
@@ -16,7 +18,7 @@ public class TaskHelper {
     }
 
     private static LocalDateTime nextDateTime(Task task) {
-        int deltaInSeconds = (int) (task.start().deviation() * 60);
+        int deltaInSeconds = task.start().deviation() * 60;
         LocalTime localTime = task.start().start().plusSeconds(deltaInSeconds == 0 ? 0 : new Random().nextInt(deltaInSeconds * 2) - deltaInSeconds);
         java.time.DayOfWeek dayOfWeek = nextDayOfWeek(task);
         return task.scheduledDate() == null && dayOfWeek.equals(getDayOfWeek()) ?
