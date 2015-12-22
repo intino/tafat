@@ -1,0 +1,12 @@
+dsl TestLanguage 
+
+Simulation(from = "01/01/2010 00:00:00", to = "02/01/2010 00:00:00")
+
+Fridge f1
+	as Electrical1
+
+Fridge f2
+	as Electrical2
+
+Fridge f3
+	as Electrical3

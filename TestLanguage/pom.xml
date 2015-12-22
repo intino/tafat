@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>tafat</groupId>
+    <artifactId>TestLanguage</artifactId>
+    <version>1.0</version>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+
+    <build>
+        <outputDirectory>../out/production/TestLanguage</outputDirectory>
+        <testOutputDirectory>../out/test/TestLanguage</testOutputDirectory>
+        <directory>../out/build/TestLanguage</directory>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.siani.magritte</groupId>
+            <artifactId>magritte</artifactId>
+            <scope>system</scope>
+            <version>1.0</version>
+            <systemPath>${project.basedir}/../.tara/framework/Proteo/Proteo.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+            <version>LATEST</version>
+        </dependency>
+    </dependencies>
+</project>
