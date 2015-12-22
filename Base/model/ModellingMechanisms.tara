@@ -26,7 +26,7 @@ MetaConcept StateChart extends Periodic into prototype feature
 	var function:Message receiveMessage = '$.message(message);if($.current() != null) $.current().receiveMessage(message)' is final
 	var StateChart current = empty
 	MetaConcept State extends StateChart
-		Concept Action
+		MetaConcept Action
 			var function:Action action is final
 			sub EntryAction
 			sub ExitAction
@@ -35,25 +35,21 @@ MetaConcept StateChart extends Periodic into prototype feature
 		var State from is final
 		var State to is final
 		var function:Action action = ' '
-		Concept:{1..1} Trigger
+		MetaConcept:{1..1} Trigger
 			var function:CheckTransition check
 			sub Condition >var function:CheckTransition check
 			sub TimeBased
-				var integer:Time timeLeft = 0 minute
-				var function:CheckTransition check =
-				--
-				$.timeLeft($.timeLeft() - advancedTime);
-				return $.timeLeft() <= 0;
-				--
-				var function:Action activate
+				var date when = "" is private
+				var function:CheckTransition check = '!$.when().isAfter(Date.getDateTime())' is private
+				var function:Action activate is private
 				sub Timeout
-					var function:Action activate = '$.timeLeft($.timeout())'
+					var function:Action activate = '$.when(Date.getDateTime().plusSeconds($.timeout()))'
 					var function:Timeout timeout is final
 				sub After
-					var function:Action activate = '$.timeLeft($.fixedTime())'
+					var function:Action activate = '$.when(Date.getDateTime().plusSeconds($.fixedTime()))'
 					var integer:Time fixedTime is final
 				sub Rate
-					var function:Action activate = '$.timeLeft($.unit() / $.times())'
+					var function:Action activate = '$.when(Date.getDateTime().plusSeconds($.unit() / $.times()))'
 					var integer:{times} times;var integer unit
 			sub Message
 				var string expectedMessage
@@ -64,10 +60,10 @@ MetaConcept Task into prototype feature
 	var date scheduledDate = ""
 	var function:Check check = '!$.scheduledDate().isAfter(tafat.engine.Date.getDateTime())' is final
 	var function:Action program = '$.scheduledDate(tafat.engine.helpers.TaskHelper.scheduledDate($))' is final
-	Concept:{1..1} Start
+	MetaConcept:{1..1} Start
 		var time start is final
 		var integer:Time deviation = 0 minute
-	Concept:{0..1} Finish
+	MetaConcept:{0..1} Finish
 		sub End
 			var time end is final
 			var integer:Time deviation = 0 minute
@@ -76,7 +72,7 @@ MetaConcept Task into prototype feature
 			var integer:Time deviation = 0 minute
 	has Task
 	has JobAction
-	Concept Action
+	MetaConcept Action
 		var function:Action action is final
 		sub StartAction
 		sub RecurrentAction

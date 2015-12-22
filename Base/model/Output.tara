@@ -13,7 +13,7 @@ Concept:{0..1} Output is component
 
 		sub Export
 			var function:Extractor extractMember is final
-			var function:StashPath path = '$.engine().simulation().output().rootPath() + "Dimension.stash"' is final
+			var function:StashPath path = 'return $._engine().simulation().output().rootPath() + "Dimension.stash";' is final
 			var function:Stash buildStash = '$.collect().parallelStream().map(l -> $.extractMember(l)).collect(toList());' is final
 
 		sub Plot
@@ -32,10 +32,10 @@ Concept:{0..1} Output is component
 			var function:StashPath path =
 			--
 			LocalDateTime date = Date.getDateTime();
-			return $.engine().simulation().output().rootPath() +
+			return $._engine().simulation().output().rootPath() +
 					String.format("%04d", date.getYear()) + "/" +
 					String.format("%03d", date.getDayOfYear()) + "/" +
 					String.format("%02d%02d", date.getHour(), date.getMinute()) + "_" +
-					$.engine().simulation().output().simulationId() + ".stash";
+					$._engine().simulation().output().simulationId() + ".stash";
 			-- is final
 			var function:Stash buildStash = '$.collect().parallelStream().map(l -> $.extractFact(l)).collect(toList())' is final

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+<module type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="Tara" name="Tara">
       <configuration>
         <dslKey>000.000.000</dslKey>
         <genDslKey>001.814.213</genDslKey>
-        <dslVersion>0011</dslVersion>
+        <dslVersion>0029</dslVersion>
         <genDslName>Tafat</genDslName>
       </configuration>
     </facet>

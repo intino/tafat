@@ -13,7 +13,8 @@ MetaConcept Agent
 
 MetaConcept Entity
 	has Entity
-	Concept Feature into feature
+	MetaConcept Feature into feature
+		has Feature
 
 MetaFacet Aspect > on Entity
 
