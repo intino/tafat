@@ -1,11 +1,9 @@
 package tafat;
 
 import tafat.Output.Plot;
-import tafat.behavior.BehaviorEntity;
 import tafat.engine.Date;
 import tafat.engine.TaskManager;
 import tafat.engine.TimeoutManager;
-import tafat.parallelizable.ParallelizableBehavior;
 import tara.io.Stash;
 import tara.io.StashSerializer;
 import tara.magritte.Model;
@@ -14,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.time.ZoneOffset;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -70,6 +69,7 @@ public class TafatEngine extends tafat.ModelHandler implements tara.magritte.Eng
 		return stash;
 	}
 
+	@SuppressWarnings("ResultOfMethodCallIgnored")
 	private void writeStash(Stash stash, File file) throws IOException {
 		if (!file.getParentFile().exists()) file.getParentFile().mkdirs();
 		Files.write(file.toPath(), StashSerializer.serialize(stash));
@@ -77,10 +77,18 @@ public class TafatEngine extends tafat.ModelHandler implements tara.magritte.Eng
 
 	private void initBehaviors() {
 		List<Behavior> behaviors = model.find(Behavior.class);
-        TaskManager.addAll(behaviors.stream().flatMap(b -> b.taskList().stream()).collect(Collectors.toList()));
-		behaviors.forEach(behavior -> behavior.startList().forEach(BehaviorEntity.Start::start));
-		this.behaviors = behaviors.stream().filter(b -> !b.periodicList().isEmpty() && !b.is(ParallelizableBehavior.class)).collect(toList());
-		this.parallelBehaviors = behaviors.stream().filter(b -> !b.periodicList().isEmpty() && b.is(ParallelizableBehavior.class)).collect(toList());
+		initStateCharts();
+		TaskManager.addAll(behaviors.stream().flatMap(b -> b.taskList().stream()).collect(Collectors.toList()));
+		behaviors.forEach(behavior -> behavior.startList().forEach(Behavior.Start::start));
+		this.behaviors = behaviors.stream().filter(b -> !b.periodicList().isEmpty() && !b.is(Parallelizable.class)).collect(toList());
+		this.parallelBehaviors = behaviors.stream().filter(b -> !b.periodicList().isEmpty() && b.is(Parallelizable.class)).collect(toList());
+	}
+
+	private void initStateCharts() {
+		model.find(Behavior.class).stream()
+				.map(Behavior::stateChartList)
+				.flatMap(Collection::stream)
+				.forEach(stateChart -> stateChart.current(stateChart.state(0)));
 	}
 
 	public void run() {
