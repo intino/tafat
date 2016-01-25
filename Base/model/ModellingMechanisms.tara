@@ -21,7 +21,7 @@ Concept EquationSystem is feature
 		sub Flow
 
 MetaConcept StateChart extends Periodic into prototype feature
-	var function:Execute execute = 'StatechartUpdater.update($, step)' is final
+	var function:Execute execute = 'update($, step)' is final
 	var string message = ""
 	var function:Message receiveMessage = '$.message(message);if($.current() != null) $.current().receiveMessage(message)' is final
 	var StateChart current = empty
@@ -40,16 +40,16 @@ MetaConcept StateChart extends Periodic into prototype feature
 			sub Condition >var function:CheckTransition check
 			sub TimeBased
 				var date when = "" is private
-				var function:CheckTransition check = '!$.when().isAfter(Date.getDateTime())' is private
+				var function:CheckTransition check = '!$.when().isAfter(getDateTime())' is private
 				var function:Action activate is private
 				sub Timeout
-					var function:Action activate = '$.when(Date.getDateTime().plusSeconds($.timeout()))'
+					var function:Action activate = '$.when(getDateTime().plusSeconds($.timeout()))'
 					var function:Timeout timeout is final
 				sub After
-					var function:Action activate = '$.when(Date.getDateTime().plusSeconds($.fixedTime()))'
+					var function:Action activate = '$.when(getDateTime().plusSeconds($.fixedTime()))'
 					var integer:Time fixedTime is final
 				sub Rate
-					var function:Action activate = '$.when(Date.getDateTime().plusSeconds($.unit() / $.times()))'
+					var function:Action activate = '$.when(getDateTime().plusSeconds($.unit() / $.times()))'
 					var integer:{times} times;var integer unit
 			sub Message
 				var string expectedMessage
@@ -58,8 +58,8 @@ MetaConcept StateChart extends Periodic into prototype feature
 MetaConcept Task into prototype feature
 	var word[]:DayOfWeek days = Monday Tuesday Wednesday Thursday Friday Saturday Sunday
 	var date scheduledDate = ""
-	var function:Check check = '!$.scheduledDate().isAfter(tafat.engine.Date.getDateTime())' is final
-	var function:Action program = '$.scheduledDate(tafat.engine.helpers.TaskHelper.scheduledDate($))' is final
+	var function:Check check = '!$.scheduledDate().isAfter(getDateTime())' is final
+	var function:Action program = '$.scheduledDate(scheduledDate($))' is final
 	MetaConcept:{1..1} Start
 		var time start is final
 		var integer:Time deviation = 0 minute
@@ -110,13 +110,9 @@ Concept TableFunction is feature
 	Concept:{0..1} Extrapolation
 		sub NoneExtrapolation
 		sub CustomExtrapolation > var function:Function extrapolationFunction
-
 		sub NearestPointExtrapolation
-
 		sub RepeatSeriesExtrapolation
-
 		sub LinearExtrapolation
-
 		sub PolynomialExtrapolation
 		sub SplineExtrapolation
 		sub StepExtrapolation

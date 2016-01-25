@@ -22,18 +22,10 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.siani.magritte</groupId>
-            <artifactId>magritte</artifactId>
-            <scope>system</scope>
+            <groupId>siani.tara</groupId>
+            <artifactId>tafat</artifactId>
             <version>1.0</version>
-            <systemPath>${project.basedir}/../.tara/framework/Proteo/Proteo.jar</systemPath>
-        </dependency>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-            <version>LATEST</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

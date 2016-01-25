@@ -1,0 +1,31 @@
+dsl Proteo 
+
+Concept UserInterface
+	var string data = 'buildJson($)' is native private
+	var string values = 'values($)' is native private
+	var string title
+	var resource:{jpg png} logo
+	var integer port = 8080
+	Concept:{0..1} GraphicalComponent
+		var function:BuildJson data is private
+		var string values is native private
+
+		sub Heatmap
+			var function:BuildJson data = 'tafat.natives.userinterface.heatmap.Data.buildJson($)' is private
+			var string values = 'tafat.natives.userinterface.heatmap.Values.values($)' is native private
+			var resource:{jpg png} background
+			var word:Color color
+			Concept Region
+				var function:BuildJson data is private
+				var double value is native
+				sub Square
+					var function:BuildJson data = 'tafat.natives.userinterface.heatmap.square.Data.buildJson($)' is private
+					var integer top
+					var integer left
+					var integer width
+					var integer height
+				sub Circle
+					var function:BuildJson data = 'tafat.natives.userinterface.heatmap.circle.Data.buildJson($)' is private
+					var integer centerX
+					var integer centerY
+					var integer diameter

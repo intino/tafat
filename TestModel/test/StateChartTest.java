@@ -3,6 +3,7 @@ import org.junit.Test;
 import tafat.TafatEngine;
 import tafat.behavior.BehaviorEntity;
 import tara.magritte.Model;
+import tara.magritte.stores.ResourcesStore;
 import testlanguage.Fridge;
 import testlanguage.TestLanguageDomain;
 import testlanguage.electrical2.Electrical2Fridge;

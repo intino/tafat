@@ -1,0 +1,17 @@
+dsl TestLanguage 
+
+Simulation(from = "01/01/2010 00:00:00", to = "02/01/2010 00:00:00")
+	UserInterface(title = "Fridges", logo = "ui/fridges.png", 8085)
+		Heatmap(background = "ui/fridgesmap.png", color = Green)
+			Square(value = '$._model().components(Fridge.class).get(0).power()', top = 19, left = 18, width = 250 , height = 450)
+			Square(value = '$._model().components(Fridge.class).get(1).power()', top = 19, left = 321, width = 250 , height = 450)
+			Square(value = '$._model().components(Fridge.class).get(2).power()', top = 19, left = 631, width = 250 , height = 450)
+			Square(value = '$._model().components(Fridge.class).get(3).power()', top = 19, left = 937, width = 250 , height = 450)
+			Square(value = '$._model().components(Fridge.class).get(4).power()', top = 19, left = 1247, width = 250 , height = 450)
+
+
+Fridge(power = 10) f0 > as Electrical4
+Fridge(power = 20) f1 > as Electrical4
+Fridge(power = 30) f2 > as Electrical4
+Fridge(power = 40) f3 > as Electrical4
+Fridge(power = 50) f4 > as Electrical4

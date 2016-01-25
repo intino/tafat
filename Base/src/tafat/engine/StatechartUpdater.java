@@ -7,7 +7,6 @@ import tafat.StateChart.Transition.TimeBased;
 
 public class StatechartUpdater {
 
-
     public static void update(StateChart stateChart, int advancedTime){
         updateStatechart(stateChart, advancedTime);
         doPeriodic(stateChart.current().as(State.class));

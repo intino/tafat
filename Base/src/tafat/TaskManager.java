@@ -1,6 +1,4 @@
-package tafat.engine;
-
-import tafat.Task;
+package tafat;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -11,9 +9,15 @@ import static tafat.engine.Date.getDateTime;
 
 public class TaskManager {
 
-    private static List<Task> taskList = new ArrayList<>();
-    private static List<Task> nextTasks = new ArrayList<>();
-    private static LocalDateTime nextDate = LocalDateTime.MAX;
+    private static List<Task> taskList;
+    private static List<Task> nextTasks;
+    private static LocalDateTime nextDate;
+
+	static void init(){
+		taskList = new ArrayList<>();
+		nextTasks = new ArrayList<>();
+		nextDate = LocalDateTime.MAX;
+	}
 
     public static void addAll(List<Task> tasks) {
         if(tasks.isEmpty()) return;
@@ -22,7 +26,7 @@ public class TaskManager {
         prepareNextTasks();
     }
 
-    public static void update() {
+    static void update() {
         if(nextDate.isAfter(getDateTime())) return;
         nextTasks.stream()
                 .filter(Task::check)

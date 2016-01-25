@@ -1,111 +1,88 @@
 package tafat;
 
-import tafat.Output.Plot;
-import tafat.engine.Date;
-import tafat.engine.TaskManager;
-import tafat.engine.TimeoutManager;
-import tara.io.Stash;
-import tara.io.StashSerializer;
 import tara.magritte.Model;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.time.ZoneOffset;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.logging.Logger;
 
-import static java.util.stream.Collectors.toList;
+import static java.lang.Thread.sleep;
+import static spark.Spark.*;
+import static tafat.engine.Date.getDateTime;
 
-public class TafatEngine extends tafat.ModelHandler implements tara.magritte.Engine {
-	private List<Behavior> parallelBehaviors;
-	private List<Behavior> behaviors;
-	private List<Plot> plots;
-	private Model model;
+public class TafatEngine extends tafat.ModelWrapper implements tara.magritte.Engine {
+
+	private static final Logger LOG = Logger.getLogger(TafatEngine.class.getName());
+	private static ExecutorService executorService = Executors.newFixedThreadPool(1);
+	private Future<?> submission;
+	private int speed = 1000;
+	Executor executor;
 
 	public TafatEngine(Model model) {
 		super(model);
-		this.model = model;
-	}
-
-
-	@Override
-	public void execute() {
-		long steps = steps();
-		for (int step = 0; step < steps; step++) run();
 	}
 
 	@Override
 	public void init() {
-		Date.setDateTime(simulation().from());
-		initExports();
-		initPlots();
-		initBehaviors();
+		executor = new Executor(_model);
+		executor.init();
+		initUserInterface();
 	}
 
-	private void initPlots() {
-		this.plots = model.find(Output.Plot.class);
-		plots.forEach(p -> p.timeout(p.timeScale().toSeconds() - 1));
-	}
-
-	private void initExports() {
-		toStash(model.find(Output.Export.class));
-	}
-
-	private void toStash(List<? extends Output.Extractor> extractors) {
-		try {
-			if (extractors.isEmpty()) return;
-			writeStash(createStash(extractors), new File(extractors.get(0).path()));
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-	}
-
-	private Stash createStash(List<? extends Output.Extractor> extractors) {
-		Stash stash = new Stash();
-		stash.language = simulation().output().language();
-		extractors.stream().forEach(e -> stash.instances.addAll(e.buildStash()));
-		return stash;
-	}
-
-	@SuppressWarnings("ResultOfMethodCallIgnored")
-	private void writeStash(Stash stash, File file) throws IOException {
-		if (!file.getParentFile().exists()) file.getParentFile().mkdirs();
-		Files.write(file.toPath(), StashSerializer.serialize(stash));
-	}
-
-	private void initBehaviors() {
-		List<Behavior> behaviors = model.find(Behavior.class);
-		initStateCharts();
-		TaskManager.addAll(behaviors.stream().flatMap(b -> b.taskList().stream()).collect(Collectors.toList()));
-		behaviors.forEach(behavior -> behavior.startList().forEach(Behavior.Start::start));
-		this.behaviors = behaviors.stream().filter(b -> !b.periodicList().isEmpty() && !b.is(Parallelizable.class)).collect(toList());
-		this.parallelBehaviors = behaviors.stream().filter(b -> !b.periodicList().isEmpty() && b.is(Parallelizable.class)).collect(toList());
-	}
-
-	private void initStateCharts() {
-		model.find(Behavior.class).stream()
-				.map(Behavior::stateChartList)
-				.flatMap(Collection::stream)
-				.forEach(stateChart -> stateChart.current(stateChart.state(0)));
+	@Override
+	public void execute() {
+		if (simulation().userInterface() != null) return;
+		executor.execute();
 	}
 
 	public void run() {
-		TaskManager.update();
-		TimeoutManager.update();
-		parallelBehaviors.parallelStream().filter(Behavior::checkStep).forEach(this::run);
-		behaviors.stream().filter(Behavior::checkStep).forEach(this::run);
-		toStash(plots.stream().filter(Output.Plot::checkStep).collect(toList()));
-		Date.plusSeconds(1);
+		if (simulation().userInterface() != null) return;
+		executor.run();
 	}
 
-	private void run(Behavior behavior) {
-		behavior.periodicList().forEach(p -> p.execute(behavior.step()));
+	private void initUserInterface() {
+		if (simulation().userInterface() != null) initServer();
 	}
 
-	private long steps() {
-		return (simulation().to().toEpochSecond(ZoneOffset.UTC) -
-				simulation().from().toEpochSecond(ZoneOffset.UTC));
+	private void initServer() {
+		port(simulation().userInterface().port());
+		staticFileLocation("/public");
+		get("/interfaceConfiguration", (req, res) -> simulation().userInterface().data());
+		get("/values", (req, res) -> simulation().userInterface().values());
+		get("/time", (req, res) -> getDateTime());
+		get("/state", (req, res) -> "OK");
+		get("/play", (req, res) -> {
+			LOG.info("Simulation play: " + req.session().id());
+			submission = executorService.submit((Runnable) () -> {
+				while (true) {
+					executor.run();
+					try {
+						sleep(speed);
+					} catch (InterruptedException ignored) {
+					}
+				}
+			});
+			return "OK";
+		});
+		get("/pause", (req, res) -> {
+			LOG.info("Simulation pause: " + req.session().id());
+			cancelSubmission();
+			return "OK";
+		});
+		get("/reset", (req, res) -> {
+			LOG.info("Simulation reloaded: " + req.session().id());
+			_model.reload();
+			cancelSubmission();
+			return "OK";
+		});
 	}
+
+	private void cancelSubmission() {
+		if(submission != null){
+			submission.cancel(false);
+			submission = null;
+		}
+	}
+
 }

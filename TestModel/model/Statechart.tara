@@ -1,6 +1,6 @@
 dsl TestLanguage 
 
-Simulation(from = "01/01/2010 00:00:00", to = "02/01/2010 00:00:00")
+//Simulation(from = "01/01/2010 00:00:00", to = "02/01/2010 00:00:00")
 
 Fridge f1
 	as Electrical1

@@ -1,6 +1,6 @@
 dsl Proteo
 
-Concept:{0..1} Output is component
+Concept Output is component
 	var string language
 	var string simulationId
 	var string rootPath = "res/out/"
@@ -31,7 +31,7 @@ Concept:{0..1} Output is component
 			var function:Extractor extractFact is final
 			var function:StashPath path =
 			--
-			LocalDateTime date = Date.getDateTime();
+			LocalDateTime date = getDateTime();
 			return $._engine().simulation().output().rootPath() +
 					String.format("%04d", date.getYear()) + "/" +
 					String.format("%03d", date.getDayOfYear()) + "/" +

@@ -1,5 +1,6 @@
 dsl Proteo
 
+use UserInterface
 use ModellingMechanisms
 use Output
 
@@ -7,20 +8,20 @@ Concept:{1..1} Simulation
 	var date from is final
 	var date to is final
 	has:{0..1} Output
+	has:{0..1} UserInterface
 
 MetaConcept Agent
 	has Knol
 
 MetaConcept Entity
 	has Entity
+	has Agent
 	MetaConcept Feature into feature
 		has Feature
 
-MetaFacet Aspect > on Entity
+MetaFacet Aspect on Entity
 
-MetaFacet Behavior
-	on Entity
-	on Agent
+MetaFacet Behavior is abstract
 	var integer step = 1 is terminal
 	var integer timeout = 0
 	var function:Check checkStep =
@@ -47,7 +48,11 @@ MetaFacet Behavior
 	has Job is final
 	has Map is final
 
-MetaFacet FmuModel > on Entity
+MetaFacet Behavior on Entity
+MetaFacet Behavior on Agent
+
+
+MetaFacet FmuModel
 	var string fmuPath is terminal
 	var double step = 0.01 is terminal
 	Concept Input
@@ -57,8 +62,14 @@ MetaFacet FmuModel > on Entity
 		var string fmuVariableName
 		var function:Read read
 
-MetaFacet ExternalModel > on Entity
+MetaFacet FmuModel on Entity
+MetaFacet FmuModel on Agent
+
+MetaFacet ExternalModel
 	var function:Action doStep
+
+MetaFacet ExternalModel on Entity
+MetaFacet ExternalModel on Agent
 
 MetaConcept Knol
 	has Knol
@@ -70,4 +81,4 @@ MetaConcept View
 			var double[2] coordinates
 			var function:Function calculate
 
-Facet Parallelizable > on Behavior
+Facet Parallelizable on Behavior

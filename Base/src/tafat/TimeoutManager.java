@@ -1,4 +1,4 @@
-package tafat.engine;
+package tafat;
 
 import tafat.functions.Action;
 
@@ -7,18 +7,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static tafat.engine.Date.getDateTime;
-import static tafat.engine.Date.with;
 
 public class TimeoutManager {
 
-    private static final List<Timeout> timeouts = new ArrayList<>();
+    private static List<Timeout> timeouts;
 
     public static void timeout(double duration, Action action) {
         timeouts.add(new Timeout(getDateTime().plusSeconds((long) duration), action));
         timeouts.sort((t1, t2) -> t1.duration.compareTo(t2.duration));
     }
 
-    public static void update() {
+	static void init(){
+		timeouts = new ArrayList<>();
+	}
+
+    static void update() {
         List<Timeout> finishedTimeouts = new ArrayList<>();
         for (Timeout timeout : timeouts) {
             if(!timeout.duration.isAfter(getDateTime()))

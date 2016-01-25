@@ -3,12 +3,21 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              http://maven.apache.org/maven-v4_0_0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
 
+<!--MERGE-->
+<!--    <groupId>Base</groupId>-->
+<!--    <artifactId>Base</artifactId>-->
     <groupId>siani.tara</groupId>
     <artifactId>tafat</artifactId>
     <version>1.0</version>
 
+<!--MERGE-->
+<!--    <build>-->
+<!--        <outputDirectory>../out/production</outputDirectory>-->
+<!--        <testOutputDirectory>../out/test</testOutputDirectory>-->
+<!--        <directory>../out/build</directory>-->
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -38,7 +47,19 @@
             <groupId>com.esotericsoftware</groupId>
             <artifactId>kryo</artifactId>
             <scope>runtime</scope>
+<!--MERGE-->
+<!--            <version>LATEST</version>-->
             <version>3.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sparkjava</groupId>
+            <artifactId>spark-core</artifactId>
+            <version>2.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.4</version>
         </dependency>
     </dependencies>
 
