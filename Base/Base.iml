@@ -5,7 +5,7 @@
       <configuration>
         <dslKey>000.000.000</dslKey>
         <genDslKey>001.814.213</genDslKey>
-        <dslVersion>0060</dslVersion>
+        <dslVersion>0065</dslVersion>
         <genDslName>Tafat</genDslName>
       </configuration>
     </facet>

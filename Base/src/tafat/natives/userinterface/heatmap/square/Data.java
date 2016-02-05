@@ -9,6 +9,7 @@ public class Data {
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.addProperty("id", $._simpleName());
 		jsonObject.addProperty("type", "square");
+		jsonObject.addProperty("zIndex", $.zIndex());
 		jsonObject.addProperty("top", $.top());
 		jsonObject.addProperty("left", $.left());
 		jsonObject.addProperty("height", $.height());

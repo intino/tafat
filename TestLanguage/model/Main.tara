@@ -35,4 +35,8 @@ Behavior Electrical3 on Fridge
 		Transition(s0, s1, '$.value($.value() + 20)') > Condition('true')
 
 Behavior Electrical4 on Fridge
-	Action('$.power(new Random().nextInt(100));')
+	Action > action =
+		--
+		if($.power() <= 100) $.power($.power() + 10);
+		else $.power(0);
+		--

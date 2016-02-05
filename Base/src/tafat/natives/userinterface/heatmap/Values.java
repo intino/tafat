@@ -7,10 +7,10 @@ import tafat.UserInterface;
 
 public class Values {
 
-	public static String values(tafat.UserInterface.Heatmap $) {
-		JsonArray jsonElements = new JsonArray();
-		$.regionList().forEach(r -> jsonElements.add(jsonObjectOf(r)));
-		return jsonElements.toString();
+	public static JsonArray values(tafat.UserInterface.Heatmap $) {
+		JsonArray array = new JsonArray();
+		$.regionList().forEach(r -> array.add(jsonObjectOf(r)));
+		return array;
 	}
 
 	private static JsonElement jsonObjectOf(UserInterface.Heatmap.Region region) {

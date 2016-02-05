@@ -9,14 +9,13 @@ import java.util.logging.Logger;
 
 import static java.lang.Thread.sleep;
 import static spark.Spark.*;
-import static tafat.engine.Date.getDateTime;
 
 public class TafatEngine extends tafat.ModelWrapper implements tara.magritte.Engine {
 
 	private static final Logger LOG = Logger.getLogger(TafatEngine.class.getName());
 	private static ExecutorService executorService = Executors.newFixedThreadPool(1);
 	private Future<?> submission;
-	private int speed = 1000;
+	private int delay = 1000;
 	Executor executor;
 
 	public TafatEngine(Model model) {
@@ -50,16 +49,16 @@ public class TafatEngine extends tafat.ModelWrapper implements tara.magritte.Eng
 		staticFileLocation("/public");
 		get("/interfaceConfiguration", (req, res) -> simulation().userInterface().data());
 		get("/values", (req, res) -> simulation().userInterface().values());
-		get("/time", (req, res) -> getDateTime());
 		get("/state", (req, res) -> "OK");
 		get("/play", (req, res) -> {
 			LOG.info("Simulation play: " + req.session().id());
 			submission = executorService.submit((Runnable) () -> {
 				while (true) {
-					executor.run();
 					try {
-						sleep(speed);
-					} catch (InterruptedException ignored) {
+						executor.run();
+						sleep(delay);
+					} catch (InterruptedException e) {
+						break;
 					}
 				}
 			});
@@ -72,15 +71,27 @@ public class TafatEngine extends tafat.ModelWrapper implements tara.magritte.Eng
 		});
 		get("/reset", (req, res) -> {
 			LOG.info("Simulation reloaded: " + req.session().id());
-			_model.reload();
 			cancelSubmission();
+			reloadModel();
+			return "OK";
+		});
+		post("/speed/:speed", (req, res) -> {
+			LOG.info("Simulation speed changed: " + req.session().id());
+			double speed = Double.parseDouble(req.params(":speed"));
+			delay = (int) (1000 / speed);
 			return "OK";
 		});
 	}
 
+	private void reloadModel() {
+		_model.reload();
+		executor = new Executor(_model);
+		executor.init();
+	}
+
 	private void cancelSubmission() {
 		if(submission != null){
-			submission.cancel(false);
+			submission.cancel(true);
 			submission = null;
 		}
 	}
