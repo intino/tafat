@@ -9,13 +9,13 @@
         }
     </style>
     <template>
-        <cotton-time-series style="height: 100%; width: 100%;" windowSize=250></cotton-time-series>
+        <cotton-time-series style="height: 100%; width: 100%;" window-size=250></cotton-time-series>
     </template>
     <script>
 
         Polymer({
             is: 'chart-component',
-            behaviors: [IsNamedBehavior, Polymer.IronResizableBehavior],
+            behaviors: [TafatBehaviors.IsNamedBehavior/*, Polymer.IronResizableBehavior*/],
 
             properties: {
                 chart: {

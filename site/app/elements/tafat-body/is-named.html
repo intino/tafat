@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <script>
-    var IsNamedBehavior = {
+    var TafatBehaviors = TafatBehaviors || {};
+    TafatBehaviors.IsNamedBehavior = {
         properties: {
             id: {
                 type: String
@@ -8,7 +9,7 @@
         },
 
         isNamedAs: function (name) {
-            return this.id == name;
+            return this.id === name;
         }
     };
 </script>

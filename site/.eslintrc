@@ -5,9 +5,11 @@
     "browser": true
   },
   "globals": {
+    "$": true,
     "Polymer": true,
     "PushService": true,
     "CottonBehaviors": true,
+    "TafatBehaviors": true,
     "Highcharts": true,
     "HighchartsFormatter": true,
     "vis": true,

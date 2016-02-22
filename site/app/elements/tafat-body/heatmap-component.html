@@ -37,7 +37,7 @@
 
         Polymer({
             is: 'heatmap-component',
-            behaviors: [IsNamedBehavior, Polymer.IronResizableBehavior],
+            behaviors: [TafatBehaviors.IsNamedBehavior, Polymer.IronResizableBehavior],
 
             properties: {
                 heatmap: {
@@ -62,12 +62,13 @@
 
             _process: function () {
                 this.id = this.heatmap.title;
-                this._image = "data:image/png;base64," + this.heatmap.background;
+                this._image = 'data:image/png;base64,' + this.heatmap.background;
             },
 
             _onIronResize: function () {
-                if (this.offsetHeight == 0) return;
-                this._setRegions()
+                if (this.offsetHeight !== 0) {
+                  this._setRegions();
+                }
             },
 
 
@@ -84,16 +85,17 @@
                 this._regions = this.heatmap.regions;
             },
 
-            _imageLoaded: function (e) {
-                if (this.offsetHeight == 0) return;
-                this._setRegions();
+            _imageLoaded: function () {
+                if (this.offsetHeight !== 0) {
+                  this._setRegions();
+                }
             },
 
             _processValues: function (regions) {
                 var min = this._calculateMin(regions);
                 var max = this._calculateMax(regions);
                 for (var i = 0; i < regions.length; i++)
-                    this.querySelector("#" + regions[i].id).style.opacity = this._shadeOf(regions[i].value, max, min);
+                    this.querySelector('#' + regions[i].id).style.opacity = this._shadeOf(regions[i].value, max, min);
             },
 
             _calculateMin: function (data) {
@@ -109,7 +111,7 @@
                     //if (i == 10) continue; //TODO remove outlayers http://stackoverflow.com/questions/20811131/javascript-remove-outlier-from-an-array
                     max = Math.max(data[i].value, max);
                 }
-                if (max == 0) max = 1;
+                if (max === 0) max = 1;
                 return max;
             },
 
@@ -119,7 +121,7 @@
             },
 
             _setRadius: function (regionType) {
-                return regionType == "square" ? 0 : 50;
+                return regionType === 'square' ? 0 : 50;
             }
         })
         ;

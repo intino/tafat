@@ -67,18 +67,18 @@
         Polymer({
             is: 'simulation-controls-dialog',
 
-            _handleSlider: function (event) {
-                if (!this.querySelector("#speedSlider")) return;
+            _handleSlider: function () {
+                if (!this.querySelector('#speedSlider')) return;
                 var newSpeed = eval(this._getSpeedValue());
-                $.post("/speed/" + newSpeed, function (data) {
-                    if (data !== "OK") return;
+                $.post('/speed/' + newSpeed, function (data) {
+                    if (data !== 'OK') return;
                     this.fire('speed-change', {speed: this._getSpeedString()});
                 }.bind(this));
             },
 
             _getSpeedString: function () {
                 var speedString = this._getSpeed();
-                return speedString === "1024x" ? "max" : speedString === "1/1024x" ? "min" : speedString;
+                return speedString === '1024x' ? 'max' : speedString === '1/1024x' ? 'min' : speedString;
             },
 
             _getSpeedValue: function () {
@@ -87,10 +87,10 @@
             },
 
             _getSpeed: function () {
-                var value = this.querySelector("#speedSlider").immediateValue;
-                if (value === 10) return "1x";
-                if (value < 10) return "1/" + Math.pow(2, 10 - value) + "x";
-                return Math.pow(2, value - 10) + "x";
+                var value = this.querySelector('#speedSlider').immediateValue;
+                if (value === 10) return '1x';
+                if (value < 10) return '1/' + Math.pow(2, 10 - value) + 'x';
+                return Math.pow(2, value - 10) + 'x';
             },
 
             _fastRewind: function () {
@@ -105,7 +105,7 @@
                 this.querySelector('#speedSlider').value = 10;
             },
 
-            _immediateChange: function (event) {
+            _immediateChange: function () {
                 this.fire('speed-change', {speed: this._getSpeedString()});
             },
 
@@ -115,9 +115,9 @@
 
             _move: function () {
                 this.async(function () {
-                    var speed = $("#speed");
-                    this.querySelector('paper-dialog').style.top = (speed.position().top + 22) + "px";
-                    this.querySelector('paper-dialog').style.left = (speed.position().left - 118) + "px";
+                    var speed = $('#speed');
+                    this.querySelector('paper-dialog').style.top = (speed.position().top + 22) + 'px';
+                    this.querySelector('paper-dialog').style.left = (speed.position().left - 118) + 'px';
                 });
             }
         });

@@ -70,18 +70,18 @@
             _play: function () {
                 if (this.$.play.icon === 'av:play-arrow') {
                     this.$.play.icon = 'av:pause';
-                    this.$.time.style.color = "blue";
+                    this.$.time.style.color = 'blue';
                     this.fire('play-simulation');
                 } else {
                     this.$.play.icon = 'av:play-arrow';
-                    this.$.time.style.color = "grey";
+                    this.$.time.style.color = 'grey';
                     this.fire('pause-simulation');
                 }
             },
 
             _replay: function () {
                 this.$.play.icon = 'av:play-arrow';
-                this.$.time.style.color = "grey";
+                this.$.time.style.color = 'grey';
                 this.fire('replay');
             },
 

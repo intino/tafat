@@ -1,15 +1,13 @@
 'use strict';
 
-// Include Gulp & tools we'll use
-var gulp = require('gulp');
-var $ = require('gulp-load-plugins')();
-var runSequence = require('run-sequence');
-var livereload = require('gulp-livereload');
-var merge = require('merge-stream');
-var path = require('path');
-var fs = require('fs');
+const gulp = require('gulp');
+const $ = require('gulp-load-plugins')();
+const runSequence = require('run-sequence');
+const merge = require('merge-stream');
+const path = require('path');
+const fs = require('fs');
 
-var AUTOPREFIXER_BROWSERS = [
+const AUTOPREFIXER_BROWSERS = [
     'ie >= 10',
     'ie_mob >= 10',
     'ff >= 30',
@@ -21,45 +19,42 @@ var AUTOPREFIXER_BROWSERS = [
     'bb >= 10'
 ];
 
-var PRODUCTION_PATH = '../out/production/tafat/web';
+const PRODUCTION_PATH = '../out/production/web';
 
-var styleTask = function (stylesPath, srcs) {
-    return gulp.src(srcs.map(function(src) {
-            return path.join('app', stylesPath, src);
-        }))
-        .pipe($.changed(stylesPath, {extension: '.css'}))
+const styleTask = (stylesPath, srcs) => {
+    return gulp.src(srcs.map(src => path.join('app', stylesPath, src)))
+.pipe($.changed(stylesPath, {extension: '.css'}))
         .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
         .pipe(gulp.dest('.tmp/' + stylesPath))
         .pipe($.cssmin())
         .pipe(gulp.dest('dist/' + stylesPath));
 };
 
-var jshintTask = function (src) {
+const lint = src => {
     return gulp.src(src)
-        .pipe($.jshint.extract()) // Extract JS from .html files
-        .pipe($.jshint())
-        .pipe($.jshint.reporter('jshint-stylish'))
-        .pipe($.jshint.reporter('fail'));
+        .pipe($.eslint())
+        .pipe($.eslint.format())
+        .pipe($.eslint.failAfterError());
 };
 
-var imageOptimizeTask = function(src, dest) {
-  return gulp.src(src)
-    .pipe($.imagemin({
-      progressive: true,
-      interlaced: true
-    }))
-    .pipe(gulp.dest(dest));
+const imageOptimizeTask = (src, dest) => {
+    return gulp.src(src)
+        .pipe($.imagemin({
+            progressive: true,
+            interlaced: true
+        }))
+        .pipe(gulp.dest(dest));
 };
 
-var optimizeHtmlTask = function (src, dest) {
-    var assets = $.useref.assets({searchPath: ['.tmp', 'app', 'dist']});
+const optimizeHtmlTask = (src, dest) => {
+    let assets = $.useref.assets({searchPath: ['.tmp', 'app', 'dist']});
 
     return gulp.src(src)
         // Replace path for vulcanized assets
         .pipe($.if('*.html', $.replace('elements/elements.html', 'elements/elements.vulcanized.html')))
         .pipe(assets)
         // Concatenate and minify JavaScript
-        .pipe($.if('*.js', $.uglify({preserveComments: 'some'})))
+        .pipe($.if('*.js', $.uglify({preserveComments: false})))
         // Concatenate and minify styles
         // In case you are still using useref build blocks
         .pipe($.if('*.css', $.cssmin()))
@@ -75,15 +70,11 @@ var optimizeHtmlTask = function (src, dest) {
         .pipe(gulp.dest(dest));
 };
 
-gulp.task('copy-styles', function () {
-    return styleTask('styles', ['**/*.css']);
-});
+gulp.task('copy-styles', () => styleTask('styles', ['**/*.css']));
 
-gulp.task('copy-element-styles', function () {
-    return styleTask('elements', ['**/*.css']);
-});
+gulp.task('copy-element-styles', () => styleTask('elements', ['**/*.css']));
 
-gulp.task('transpile-js', function () {
+gulp.task('transpile-js', () => {
     return gulp.src([
             'app/**/*.{js,html}',
             '!app/index.html'
@@ -96,8 +87,8 @@ gulp.task('transpile-js', function () {
         .pipe(gulp.dest('dist/'));
 });
 
-gulp.task('check-js', function () {
-    return jshintTask([
+gulp.task('check-js', () => {
+    return lint([
         'app/scripts/**/*.js',
         'app/elements/**/*.js',
         'app/elements/**/*.html',
@@ -106,39 +97,38 @@ gulp.task('check-js', function () {
 });
 
 // Optimize images
-gulp.task('copy-images', function() {
-  return imageOptimizeTask('app/images/**/*', 'dist/images');
+gulp.task('copy-images', () => {
+    return imageOptimizeTask('app/images/**/*', 'dist/images');
 });
 
 // Copy all files at the root level (app)
-gulp.task('generate-dist-folder', function () {
+gulp.task('generate-dist-folder', () => {
     return gulp.src([
         'app/*',
-        '!app/index.html'
+        '!app/test'
     ], {
         dot: true
     }).pipe(gulp.dest('dist'));
 });
 
-gulp.task('copy-dependencies', function () {
+gulp.task('copy-dependencies', () => {
     return gulp.src(['bower_components/**/*']).pipe(gulp.dest('dist/bower_components'));
 });
 
-gulp.task('copy-elements', function () {
-    var elements = gulp.src(['app/elements/**/*.html',
+gulp.task('copy-elements', () => {
+    let elements = gulp.src(['app/elements/**/*.html',
             'app/elements/**/*.css',
             'app/elements/**/*.js'])
         .pipe(gulp.dest('dist/elements'));
 
-    var vulcanized = gulp.src(['app/elements/elements.html'])
-        .pipe($.rename('elements.vulcanized.html'))
-        .pipe(gulp.dest('dist/elements'));
+let vulcanized = gulp.src(['app/elements/elements.html'])
+    .pipe($.rename('elements.vulcanized.html'))
+    .pipe(gulp.dest('dist/elements'));
 
-    return merge(elements, vulcanized);
+return merge(elements, vulcanized);
 });
 
-// Copy all files to res directory from server module
-gulp.task('copy-to-res', function () {
+gulp.task('copy-to-res', () => {
     return gulp.src([
         'dist/**/*'
     ], {
@@ -146,7 +136,7 @@ gulp.task('copy-to-res', function () {
     }).pipe(gulp.dest('../Base/res/web'));
 });
 
-gulp.task('copy-to-server', function () {
+gulp.task('copy-to-server', () => {
     return gulp.src([
         'dist/**/*'
     ], {
@@ -154,71 +144,78 @@ gulp.task('copy-to-server', function () {
     }).pipe(gulp.dest(PRODUCTION_PATH));
 });
 
-gulp.task('copy-fonts', function () {
+gulp.task('copy-fonts', () => {
     return gulp.src(['app/fonts/**'])
         .pipe(gulp.dest('dist/fonts'));
 });
 
-gulp.task('copy-js', function () {
-    return gulp.src(['app/**/*.js', '!app/{elements}/**/*.js']).pipe(gulp.dest('dist'));
+gulp.task('copy-js', () => {
+    return gulp.src(['app/**/*.js', '!app/{elements,test}/**/*.js']).pipe(gulp.dest('dist'));
 });
 
-gulp.task('copy-minified-html', function () {
-    return optimizeHtmlTask(['app/**/*.html', '!app/{elements}/**/*.html'], 'dist');
+gulp.task('copy-minified-html', () => {
+    return optimizeHtmlTask(['app/**/*.html', '!app/{elements,test}/**/*.html'], 'dist');
 });
 
-gulp.task('vulcanize', function () {
-    var DEST_DIR = 'dist/elements';
-    return gulp.src('dist/elements/elements.vulcanized.html')
-        .pipe($.vulcanize({
-            stripComments: true,
-            inlineCss: true,
-            inlineScripts: true
-        }))
-        .pipe(gulp.dest(DEST_DIR));
+gulp.task('vulcanize', () => {
+    const DEST_DIR = 'dist/elements';
+return gulp.src('dist/elements/elements.vulcanized.html')
+    .pipe($.vulcanize({
+        stripComments: true,
+        inlineCss: true,
+        inlineScripts: true
+    }))
+    .pipe(gulp.dest(DEST_DIR));
 });
 
 // Clean output directory
-gulp.task('clean', function (cb) {
-  fs.unlink('.tmp', function () {
-    fs.unlink('dist', function () {
-      cb();
-    });
-  });
+gulp.task('clean', cb => {
+    fs.unlink('.tmp', () => fs.unlink('dist', () => cb()));
 });
 
-gulp.task('dev', ['copy-dev-app-to-res'], function() {
-    livereload.listen({
-        basePath: 'app'
-    });
-
-    gulp.watch(['app/{styles,elements}/**/*.css'], ['refresh']);
-    gulp.watch(['app/{scripts,elements}/**/{*.js,*.html}'], ['refresh']);
+gulp.task('dev', ['copy-dev-app-to-res'], () => {
+    $.livereload.listen({
+    basePath: 'app'
 });
 
-gulp.task('refresh', function(cb) {
+gulp.watch(['app/{styles,elements}/**/*.css'], ['refresh']);
+gulp.watch(['app/{scripts,elements}/**/{*.js,*.html}'], ['refresh']);
+});
+
+gulp.task('refresh', (cb) => {
     runSequence('generate-dev-app', 'copy-to-server', 'reload', cb);
 });
 
-gulp.task('reload', function() {
-    gulp.src(PRODUCTION_PATH).pipe(livereload());
+gulp.task('reload', () => {
+    gulp.src(PRODUCTION_PATH).pipe($.livereload());
 });
 
-gulp.task('copy-dev-app-to-res', function(cb) {
+gulp.task('copy-dev-app-to-res', cb => {
     runSequence('generate-dev-app', 'copy-to-res', cb);
 });
 
-gulp.task('generate-dev-app', ['clean'], function(cb) {
+gulp.task('generate-dev-app', ['clean'], cb => {
     runSequence(
-        'generate-dist-folder', ['copy-styles', 'copy-dependencies', 'copy-images', 'copy-elements', 'copy-element-styles', 'copy-fonts'],
-        'transpile-js', 'copy-js', cb);
+    'generate-dist-folder', ['copy-styles', 'copy-dependencies', 'copy-images', 'copy-elements', 'copy-element-styles', 'copy-fonts'],
+'check-js', 'transpile-js', 'copy-js', cb);
 });
 
-gulp.task('default', ['clean'], function (cb) {
+gulp.task('default', ['clean'], cb => {
     runSequence(
-        'generate-dist-folder', ['copy-styles', 'copy-dependencies', 'copy-images', 'copy-elements', 'copy-element-styles', 'copy-fonts'],
-        'transpile-js',
-        //'copy-minified-html',
-        'copy-to-res',
-        cb);
+    'generate-dist-folder', ['copy-styles', 'copy-dependencies', 'copy-images', 'copy-elements', 'copy-element-styles', 'copy-fonts'],
+'check-js', 'transpile-js',
+    'test:local',
+    'copy-minified-html',
+    'vulcanize',
+    'copy-to-res',
+    cb);
 });
+
+gulp.task('test-dev', ['clean'], cb => {
+    runSequence(
+    'generate-dist-folder', ['copy-dependencies', 'copy-elements', 'copy-element-styles'],
+'check-js', 'transpile-js', 'copy-js', 'test:local', cb);
+gulp.watch(['app/{scripts,elements}/**/{*.js,*.html}', 'test/**/{*.js,*.html}'], ['test-dev']);
+});
+
+require('web-component-tester').gulp.init(gulp);
