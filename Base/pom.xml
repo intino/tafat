@@ -47,9 +47,7 @@
             <groupId>com.esotericsoftware</groupId>
             <artifactId>kryo</artifactId>
             <scope>runtime</scope>
-<!--MERGE-->
-<!--            <version>LATEST</version>-->
-            <version>3.0.0</version>
+            <version>LATEST</version>
         </dependency>
         <dependency>
             <groupId>com.sparkjava</groupId>

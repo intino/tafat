@@ -20,8 +20,8 @@ public class StateChartTest {
 	@Before
 	public void setUp() {
 		Model model = Model.load("StateChart").init(TestLanguageApplication.class, TafatPlatform.class);
-		this.engine = model.platform(TafatPlatform.class);
-		this.domain = model.application(TestLanguageApplication.class);
+		this.engine = model.platform();
+		this.domain = model.application();
 		this.engine.init();
 	}
 

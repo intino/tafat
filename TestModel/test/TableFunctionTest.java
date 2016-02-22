@@ -19,8 +19,8 @@ public class TableFunctionTest {
 	@Before
 	public void setUp() {
 		Model model = Model.load("TableFunction").init(TestLanguageApplication.class, TafatPlatform.class);
-		this.engine = model.platform(TafatPlatform.class);
-		this.domain = model.application(TestLanguageApplication.class);
+		this.engine = model.platform();
+		this.domain = model.application();
 		this.engine.init();
 	}
 

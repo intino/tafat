@@ -26,7 +26,7 @@ public class Executor {
 
 	public Executor(Model model) {
 		this.model = model;
-		this.engine = model.platform(TafatPlatform.class);
+		this.engine = model.platform();
 	}
 
 	public void init() {
