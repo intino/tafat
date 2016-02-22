@@ -1,0 +1,9 @@
+{
+  "[annonymous@Simulation].[annonymous@UserInterface].[annonymous@Heatmap].[annonymous@Square].value": [
+    "import testlanguage.Fridge;"
+  ],
+  "[annonymous@Simulation].[annonymous@UserInterface].[annonymous@LineChart].[annonymous@Line].value": [
+    "import testlanguage.electrical4.Electrical4Fridge;",
+    "import testlanguage.Fridge;"
+  ]
+}

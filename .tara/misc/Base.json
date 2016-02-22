@@ -1,0 +1,44 @@
+{
+  "Output.Plot.path": [
+    "import static tafat.engine.Date.getDateTime;",
+    "import java.time.LocalDateTime;"
+  ],
+  "StateChart.Transition.Timeout.activate": [
+    "import static tafat.engine.Date.getDateTime;"
+  ],
+  "StateChart.Transition.Message.check": [
+    "import tafat.StateChart;"
+  ],
+  "UserInterface.data": [
+    "import static tafat.natives.userinterface.Data.buildJson;"
+  ],
+  "StateChart.Transition.Rate.activate": [
+    "import static tafat.engine.Date.getDateTime;"
+  ],
+  "StateChart.Transition.After.activate": [
+    "import static tafat.engine.Date.getDateTime;"
+  ],
+  "UserInterface.values": [
+    "import static tafat.natives.userinterface.Values.values;"
+  ],
+  "StateChart.execute": [
+    "import static tafat.engine.StatechartUpdater.update;"
+  ],
+  "Output.Export.buildStash": [
+    "import static java.util.stream.Collectors.toList;"
+  ],
+  "StateChart.Transition.TimeBased.check": [
+    "import static tafat.engine.Date.getDateTime;"
+  ],
+  "Task.check": [
+    "import static tafat.engine.Date.getDateTime;",
+    "import tafat.engine.Date;"
+  ],
+  "Task.program": [
+    "import static tafat.engine.helpers.TaskHelper.scheduledDate;"
+  ],
+  "Output.Plot.buildStash": [
+    "import static java.util.stream.Collectors.toList;"
+  ],
+  "UserInterface.Heatmap.data": []
+}
