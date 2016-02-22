@@ -1,6 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/cotton-time-series/cotton-time-series.html">
-<link rel="import" href="is-named.html">
 
 <dom-module id="chart-component">
     <style>
@@ -15,7 +14,6 @@
 
         Polymer({
             is: 'chart-component',
-            behaviors: [TafatBehaviors.IsNamedBehavior, Polymer.IronResizableBehavior],
 
             properties: {
                 chart: {
@@ -24,13 +22,8 @@
                 chartElement: Object
             },
 
-            listeners: {
-                'iron-resize': '_onIronResize'
-            },
-
             attached: function () {
                 this._process();
-                this.async(() => window.dispatchEvent(new Event('resize')), 200);
                 setInterval(() => this.chartElement.redraw(), 1000);
             },
 
@@ -39,10 +32,6 @@
                     var newPoint = {instant: this._toMillis(data.time), value: point.value};
                     this.chartElement.addPointWithoutRedraw(point.id, newPoint);
                 }.bind(this));
-            },
-
-            _onIronResize: function(){
-                window.dispatchEvent(new Event('resize'));
             },
 
             _process: function () {

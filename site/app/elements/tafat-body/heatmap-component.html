@@ -1,6 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/iron-resizable-behavior/iron-resizable-behavior.html">
-<link rel="import" href="is-named.html">
 
 <dom-module id="heatmap-component">
     <style>
@@ -9,35 +8,38 @@
             position: relative;
         }
 
-        div {
+        img {
+          display: block;
+          max-width: 100%;
+          max-height: 100%;
+          width: auto;
+          height: auto;
+        }
+
+        div.region {
             position: absolute;
             opacity: 0
         }
 
-        img {
-            width: 80%;
-            height: 80%;
-        }
-
     </style>
     <template>
-        <img id="background" src="[[_image]]" on-load="_imageLoaded" onfocus="_resizeImage"/>
-        <template is="dom-repeat" items="{{_regions}}">
-            <div id={{item.id}} style$="
-                top: {{item.top}}%;
-                left: {{item.left}}%;
-                height: {{item.height}}%;
-                width: {{item.width}}%;
-                background-color: {{heatmap.color}};
-                z-index: {{item.zIndex}};
-                border-radius: {{_setRadius(item.type)}}"></div>
-        </template>
+      <img id="background" src="[[_image]]" on-load="_imageLoaded"/>
+      <template is="dom-repeat" items="{{_regions}}">
+          <div class="region" id={{item.id}} style$="
+              top: {{item.top}}%;
+              left: {{item.left}}%;
+              height: {{item.height}}%;
+              width: {{item.width}}%;
+              background-color: {{heatmap.color}};
+              z-index: {{item.zIndex}};
+              border-radius: {{_setRadius(item.type)}}"></div>
+      </template>
     </template>
     <script>
 
         Polymer({
             is: 'heatmap-component',
-            behaviors: [TafatBehaviors.IsNamedBehavior, Polymer.IronResizableBehavior],
+            behaviors: [Polymer.IronResizableBehavior],
 
             properties: {
                 heatmap: {
@@ -70,7 +72,6 @@
                   this._setRegions();
                 }
             },
-
 
             _setRegions: function () {
                 if (this._regionsLoaded) return;

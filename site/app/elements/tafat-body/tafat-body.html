@@ -10,18 +10,13 @@
             height: 100%;
         }
 
-        iron-pages > * {
-            @apply(--layout-horizontal);
-            @apply(--layout-center);
+        cotton-header {
+          --header-background: white;
         }
 
         iron-pages {
             margin: 20px;
             height: calc(100% - 147px);
-        }
-
-        cotton-header {
-            --header-background: white;
         }
 
         chart-component {
@@ -30,15 +25,15 @@
     </style>
     <template>
         <cotton-header title="[[title]]" logo="[[logo]]">
-            <simulation-controller></simulation-controller>
+            <simulation-controller on-play-simulation="_play" on-replay="_replay" on-pause-simulation="_pause"></simulation-controller>
         </cotton-header>
         <iron-pages selected="{{selected}}">
             <template is="dom-repeat" items="{{_components}}">
                 <template is="dom-if" if="{{_isHeatmap(item.type)}}">
-                    <heatmap-component heatmap="[[item]]"></heatmap-component>
+                    <heatmap-component name$="[[item.title]]" heatmap="[[item]]"></heatmap-component>
                 </template>
                 <template is="dom-if" if="{{_isChart(item.type)}}">
-                    <chart-component chart="[[item]]"></chart-component>
+                    <chart-component name$="[[item.title]]" chart="[[item]]"></chart-component>
                 </template>
             </template>
         </iron-pages>
@@ -53,11 +48,10 @@
                     type: Number
                 },
                 _components: Array,
-                interval: Object
+                _interval: Object
             },
 
             attached: function () {
-                this._initToolbar();
                 this._loadConfiguration();
             },
 
@@ -67,37 +61,40 @@
                     document.title = configuration.title;
                     this.querySelector('cotton-header').title = configuration.title;
                     this.querySelector('cotton-header').logo = 'data:image/png;base64,' + configuration.logo;
-                    $('#time').text(configuration.time);
+                    this.querySelector('simulation-controller').updateTime(configuration.time);
                     $('#favicon').attr('href', 'data:image/png;base64,' + configuration.logo);
                     this._process(configuration.components);
                 }.bind(this));
             },
 
-            _initToolbar: function () {
-                document.addEventListener('play-simulation', function () {
-                    $.get('/play', function (data) {
-                        if (data === 'OK')
-                            this.interval = setInterval(this._reload.bind(this), 100);
-                    }.bind(this));
-                }.bind(this));
-                document.addEventListener('pause-simulation', function () {
-                    $.get('/pause', function (data) {
-                        if (data === 'OK') clearInterval(this.interval);
-                    }.bind(this));
-                }.bind(this));
-                document.addEventListener('replay', function () {
-                    $.get('/reset', function (data) {
-                        if (data === 'OK') clearInterval(this.interval);
-                        this._loadConfiguration();
-                    }.bind(this));
-                }.bind(this));
+            _play: function () {
+              $.get('/play', data =>  {
+                  if (data === 'OK') {
+                    this._interval = setInterval(this._reload.bind(this), 100);
+                  }
+              });
+            },
+
+            _pause: function () {
+              $.get('/pause', data => {
+                  if (data === 'OK') {
+                    clearInterval(this._interval);
+                  }
+              });
+            },
+
+            _replay: function () {
+              $.get('/reset', data => {
+                  if (data === 'OK') {
+                    clearInterval(this._interval);
+                  }
+                  this._loadConfiguration();
+              });
             },
 
             _process: function (components) {
                 this._components = components;
-                var tabs = [];
-                for (var i = 0; i < components.length; i++) tabs.push(components[i].title);
-                this.querySelector('cotton-footer').tabs = tabs;
+                this.querySelector('cotton-footer').tabs = components.map(component => component.title);
             },
 
             _reload: function () {
@@ -106,11 +103,7 @@
                     this.querySelector('simulation-controller').updateTime(data.time);
                     data.values.forEach(function(component){
                         component.time = this.querySelector('simulation-controller').getTime();
-                        Polymer.dom(this.querySelector('iron-pages')).children.filter(function(child){
-                            return child.isNamedAs && child.isNamedAs(component.title);
-                        }).forEach(function (child){
-                            child.refresh(component);
-                        });
+                        this.querySelector('[name="' + component.title + '"]').refresh(component);
                     }.bind(this));
                 }.bind(this));
             },
