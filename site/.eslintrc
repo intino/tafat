@@ -9,13 +9,7 @@
     "Polymer": true,
     "PushService": true,
     "CottonBehaviors": true,
-    "TafatBehaviors": true,
-    "Highcharts": true,
-    "HighchartsFormatter": true,
-    "vis": true,
-    "navigationHandler": true,
-    "delayExecutor": true,
-    "dateFormatter": true
+    "TafatBehaviors": true
   },
   "parserOptions": {
     "ecmaVersion": 6,

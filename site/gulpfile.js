@@ -19,7 +19,7 @@ const AUTOPREFIXER_BROWSERS = [
     'bb >= 10'
 ];
 
-const PRODUCTION_PATH = '../out/production/web';
+const PRODUCTION_PATH = '..\\out\\production\\web';
 
 const styleTask = (stylesPath, srcs) => {
     return gulp.src(srcs.map(src => path.join('app', stylesPath, src)))
@@ -204,18 +204,8 @@ gulp.task('default', ['clean'], cb => {
     runSequence(
     'generate-dist-folder', ['copy-styles', 'copy-dependencies', 'copy-images', 'copy-elements', 'copy-element-styles', 'copy-fonts'],
 'check-js', 'transpile-js',
-    'test:local',
     'copy-minified-html',
     'vulcanize',
     'copy-to-res',
     cb);
 });
-
-gulp.task('test-dev', ['clean'], cb => {
-    runSequence(
-    'generate-dist-folder', ['copy-dependencies', 'copy-elements', 'copy-element-styles'],
-'check-js', 'transpile-js', 'copy-js', 'test:local', cb);
-gulp.watch(['app/{scripts,elements}/**/{*.js,*.html}', 'test/**/{*.js,*.html}'], ['test-dev']);
-});
-
-require('web-component-tester').gulp.init(gulp);
