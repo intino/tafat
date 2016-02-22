@@ -83,8 +83,8 @@
                 document.addEventListener('pause-simulation', function () {
                     $.get('/pause', function (data) {
                         if (data === 'OK') clearInterval(this.interval);
-                    });
-                });
+                    }.bind(this));
+                }.bind(this));
                 document.addEventListener('replay', function () {
                     $.get('/reset', function (data) {
                         if (data === 'OK') clearInterval(this.interval);
