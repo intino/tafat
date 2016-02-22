@@ -1,12 +1,18 @@
-import tafat.TafatEngine;
+import tafat.TafatPlatform;
 import tara.magritte.Model;
-import testlanguage.TestLanguageDomain;
+import testlanguage.TestLanguageApplication;
 
 public class UserInterfaceTest {
 
+	public void onlyHeatMap() throws Exception {
+		Model model = Model.load("UserInterface").init(TestLanguageApplication.class, TafatPlatform.class);
+		TafatPlatform engine = model.platform(TafatPlatform.class);
+		engine.init();
+	}
 
-	public static void main(String[] args) {
-		Model model = Model.load("UserInterface").init(TestLanguageDomain.class, TafatEngine.class);
-		model.engine().init();
+	public static void main(String[] args) throws Exception{
+		Model model = Model.load("UserInterface").init(TestLanguageApplication.class, TafatPlatform.class);
+		TafatPlatform engine = model.platform(TafatPlatform.class);
+		engine.init();
 	}
 }

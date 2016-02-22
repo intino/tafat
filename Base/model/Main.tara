@@ -20,19 +20,20 @@ MetaConcept Entity
 		has Feature
 
 MetaFacet Aspect on Entity
+	has TableFunction is final
 
 MetaFacet Behavior is abstract
 	var integer step = 1 is terminal
 	var integer timeout = 0
-	var function:Check checkStep =
-	--
-	if ($.timeout() == 0) {
-		$.timeout($.step() - 1);
-		return true;
-	}
-	$.timeout($.timeout() - 1);
-	return false;
-	-- is final
+	var function:Check checkStep is final
+		--
+		if ($.timeout() == 0) {
+			$.timeout($.step() - 1);
+			return true;
+		}
+		$.timeout($.timeout() - 1);
+		return false;
+		--
 	MetaConcept Start is final into feature prototype
 		var function:Action start is final
 	MetaConcept Knol is final into prototype feature
@@ -44,7 +45,6 @@ MetaFacet Behavior is abstract
 	has StateChart is final
 	has Task is final
 	has TableFunction is final
-	has PointSet is final
 	has Job is final
 	has Map is final
 

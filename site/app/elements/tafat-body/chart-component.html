@@ -1,0 +1,64 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/cotton-time-series/cotton-time-series.html">
+<link rel="import" href="is-named.html">
+
+<dom-module id="chart-component">
+    <style>
+        :host {
+            display: block;
+        }
+    </style>
+    <template>
+        <cotton-time-series style="height: 100%; width: 100%;" windowSize=250></cotton-time-series>
+    </template>
+    <script>
+
+        Polymer({
+            is: 'chart-component',
+            behaviors: [IsNamedBehavior, Polymer.IronResizableBehavior],
+
+            properties: {
+                chart: {
+                    type: Object
+                },
+                chartElement: Object
+            },
+
+            listeners: {
+                'iron-resize': '_onIronResize'
+            },
+
+            attached: function () {
+                this._process();
+                this.async(() => window.dispatchEvent(new Event('resize')), 200);
+                setInterval(() => this.chartElement.redraw(), 1000);
+            },
+
+            refresh: function (data) {
+                data.values.forEach(function (point) {
+                    var newPoint = {instant: this._toMillis(data.time), value: point.value};
+                    this.chartElement.addPointWithoutRedraw(point.id, newPoint);
+                }.bind(this));
+            },
+
+            _onIronResize: function(){
+                window.dispatchEvent(new Event('resize'));
+            },
+
+            _process: function () {
+                this.id = this.chart.title;
+                this.chartElement = this.querySelector('cotton-time-series');
+                this.chart.lines.forEach(function (line) {
+                    this.chartElement.addSeries(line.label);
+                }.bind(this));
+            },
+
+            _toMillis: function (time) {
+                return new Date(time).getTime();
+            }
+
+        })
+
+        ;
+    </script>
+</dom-module>

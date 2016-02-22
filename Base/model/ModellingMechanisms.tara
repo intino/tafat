@@ -99,15 +99,14 @@ Concept Job is feature
 		sub RecurrentAction
 		sub EndAction
 
-Concept TableFunction is feature
-	var PointSet pointSet is final
-	Concept:{0..1} Interpolation
+MetaConcept TableFunction into prototype feature
+	MetaConcept:{0..1} Interpolation
 		sub NoneInterpolation
 		sub LinearInterpolation
 		sub PolynomialInterpolation
 		sub SplineInterpolation
 		sub StepInterpolation
-	Concept:{0..1} Extrapolation
+	MetaConcept:{0..1} Extrapolation
 		sub NoneExtrapolation
 		sub CustomExtrapolation > var function:Function extrapolationFunction
 		sub NearestPointExtrapolation
@@ -116,12 +115,8 @@ Concept TableFunction is feature
 		sub PolynomialExtrapolation
 		sub SplineExtrapolation
 		sub StepExtrapolation
-
-Concept PointSet is feature
-	Concept Definition is final
-		sub Point >var double x is final;var double y is final
-		sub:{0..1} X >var double[] values is final
-		sub:{0..1} Y >var double[] values is final
+	var string data
+	var function:Calculate get = '0' is terminal
 
 Concept Map
 	var function:Get get = '0' is final

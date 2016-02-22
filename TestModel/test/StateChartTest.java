@@ -1,11 +1,10 @@
 import org.junit.Before;
 import org.junit.Test;
-import tafat.TafatEngine;
+import tafat.TafatPlatform;
 import tafat.behavior.BehaviorEntity;
 import tara.magritte.Model;
-import tara.magritte.stores.ResourcesStore;
 import testlanguage.Fridge;
-import testlanguage.TestLanguageDomain;
+import testlanguage.TestLanguageApplication;
 import testlanguage.electrical2.Electrical2Fridge;
 import testlanguage.electrical3.Electrical3Fridge;
 
@@ -15,14 +14,14 @@ import static org.hamcrest.core.Is.is;
 
 public class StateChartTest {
 
-	TafatEngine engine;
-	TestLanguageDomain domain;
+	TafatPlatform engine;
+	TestLanguageApplication domain;
 
 	@Before
 	public void setUp() {
-		Model model = Model.load("StateChart").init(TestLanguageDomain.class, TafatEngine.class);
-		this.engine = model.engine(TafatEngine.class);
-		this.domain = model.domain(TestLanguageDomain.class);
+		Model model = Model.load("StateChart").init(TestLanguageApplication.class, TafatPlatform.class);
+		this.engine = model.platform(TafatPlatform.class);
+		this.domain = model.application(TestLanguageApplication.class);
 		this.engine.init();
 	}
 

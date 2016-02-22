@@ -13,29 +13,29 @@ Concept Output is component
 
 		sub Export
 			var function:Extractor extractMember is final
-			var function:StashPath path = 'return $._engine().simulation().output().rootPath() + "Dimension.stash";' is final
+			var function:StashPath path = 'return $._platform().simulation().output().rootPath() + "Dimension.stash";' is final
 			var function:Stash buildStash = '$.collect().parallelStream().map(l -> $.extractMember(l)).collect(toList());' is final
 
 		sub Plot
 			var word:TimeScale timeScale is final
 			var integer timeout = 0
-			var function:Check checkStep =
-			--
-			if($.timeout() == 0){
-				$.timeout($.timeScale().toSeconds() - 1);
-				return true;
-			}
-			$.timeout($.timeout() - 1);
-			return false;
-			--
+			var function:Check checkStep is private
+				--
+				if($.timeout() == 0){
+					$.timeout($.timeScale().toSeconds() - 1);
+					return true;
+				}
+				$.timeout($.timeout() - 1);
+				return false;
+				--
 			var function:Extractor extractFact is final
-			var function:StashPath path =
-			--
-			LocalDateTime date = getDateTime();
-			return $._engine().simulation().output().rootPath() +
-					String.format("%04d", date.getYear()) + "/" +
-					String.format("%03d", date.getDayOfYear()) + "/" +
-					String.format("%02d%02d", date.getHour(), date.getMinute()) + "_" +
-					$._engine().simulation().output().simulationId() + ".stash";
-			-- is final
+			var function:StashPath path is private
+				--
+				LocalDateTime date = getDateTime();
+				return $._platform().simulation().output().rootPath() +
+						String.format("%04d", date.getYear()) + "/" +
+						String.format("%03d", date.getDayOfYear()) + "/" +
+						String.format("%02d%02d", date.getHour(), date.getMinute()) + "_" +
+						$._platform().simulation().output().simulationId() + ".stash";
+				--
 			var function:Stash buildStash = '$.collect().parallelStream().map(l -> $.extractFact(l)).collect(toList())' is final

@@ -10,20 +10,20 @@ import java.util.logging.Logger;
 import static java.lang.Thread.sleep;
 import static spark.Spark.*;
 
-public class TafatEngine extends tafat.ModelWrapper implements tara.magritte.Engine {
+public class TafatPlatform extends tafat.ModelWrapper implements tara.magritte.Platform {
 
-	private static final Logger LOG = Logger.getLogger(TafatEngine.class.getName());
+	private static final Logger LOG = Logger.getLogger(TafatPlatform.class.getName());
 	private static ExecutorService executorService = Executors.newFixedThreadPool(1);
 	private Future<?> submission;
 	private int delay = 1000;
 	Executor executor;
 
-	public TafatEngine(Model model) {
+	public TafatPlatform(Model model) {
 		super(model);
 	}
 
 	@Override
-	public void init() {
+	public void init(String... args) {
 		executor = new Executor(_model);
 		executor.init();
 		initUserInterface();
@@ -46,7 +46,7 @@ public class TafatEngine extends tafat.ModelWrapper implements tara.magritte.Eng
 
 	private void initServer() {
 		port(simulation().userInterface().port());
-		staticFileLocation("/public");
+		staticFileLocation("/web");
 		get("/interfaceConfiguration", (req, res) -> simulation().userInterface().data());
 		get("/values", (req, res) -> simulation().userInterface().values());
 		get("/state", (req, res) -> "OK");

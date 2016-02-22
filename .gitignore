@@ -15,3 +15,9 @@ dsl/Tafat/
 .tara/
 .idea/libraries/Maven__com_esotericsoftware_minlog_1_3_0.xml
 .idea/libraries/
+site/node_modules/
+site/dist/
+site/bower_components/
+site/.tmp/
+TestLanguage/res/
+TestModel/res/

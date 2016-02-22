@@ -1,0 +1,126 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="tafat-header.html">
+<link rel="import" href="heatmap-component.html">
+<link rel="import" href="chart-component.html">
+
+<dom-module id="tafat-body">
+    <style>
+        :host {
+            display: block;
+            height: 100%;
+        }
+
+        iron-pages > * {
+            @apply(--layout-horizontal);
+            @apply(--layout-center);
+        }
+
+        iron-pages {
+            margin: 20px;
+            height: calc(100% - 147px);
+        }
+
+        cotton-header {
+            --header-background: white;
+        }
+
+        chart-component {
+            height: 100%;
+        }
+    </style>
+    <template>
+        <cotton-header title="[[title]]" logo="[[logo]]"
+                       _user='{"name": "Jose Evora", "photo":"http://lorempixel.com/64/64/people"}'>
+            <simulation-controller></simulation-controller>
+        </cotton-header>
+        <iron-pages selected="{{selected}}">
+            <template is="dom-repeat" items="{{_components}}">
+                <template is="dom-if" if="{{_isHeatmap(item.type)}}">
+                    <heatmap-component heatmap="[[item]]"></heatmap-component>
+                </template>
+                <template is="dom-if" if="{{_isChart(item.type)}}">
+                    <chart-component chart="[[item]]"></chart-component>
+                </template>
+            </template>
+        </iron-pages>
+        <cotton-footer tabs='[[tabs]]' selected-tab="{{selected}}"></cotton-footer>
+    </template>
+    <script>
+        Polymer({
+            is: 'tafat-body',
+
+            properties: {
+                selected: {
+                    type: Number
+                },
+                _components: Array,
+                interval: Object
+            },
+
+            attached: function () {
+                this._initToolbar();
+                this._loadConfiguration();
+            },
+
+            _loadConfiguration: function () {
+                $.get("/interfaceConfiguration", function (data) {
+                    var configuration = JSON.parse(data);
+                    document.title = configuration.title;
+                    this.querySelector('cotton-header').title = configuration.title;
+                    this.querySelector('cotton-header').logo = "data:image/png;base64," + configuration.logo;
+                    $("#time").text(configuration.time);
+                    $("#favicon").attr("href", "data:image/png;base64," + configuration.logo);
+                    this._process(configuration.components);
+                }.bind(this));
+            },
+
+            _initToolbar: function () {
+                document.addEventListener('play-simulation', function () {
+                    $.get("/play", function (data) {
+                        if (data === "OK")
+                            this.interval = setInterval(this._reload.bind(this), 100);
+                    }.bind(this));
+                }.bind(this));
+                document.addEventListener('pause-simulation', function () {
+                    $.get("/pause", function (data) {
+                        if (data === "OK") clearInterval(this.interval);
+                    });
+                });
+                document.addEventListener('replay', function () {
+                    $.get("/reset", function (data) {
+                        if (data === "OK") clearInterval(this.interval);
+                        this._loadConfiguration();
+                    }.bind(this));
+                }.bind(this));
+            },
+
+            _process: function (components) {
+                this._components = components;
+                var tabs = [];
+                for (var i = 0; i < components.length; i++) tabs.push(components[i].title);
+                this.querySelector('cotton-footer').tabs = tabs;
+            },
+
+            _reload: function () {
+                $.get("/values", function (input) {
+                    var data = JSON.parse(input);
+                    this.querySelector('simulation-controller').updateTime(data.time);
+                    data.values.forEach(function(component){
+                        component.time = this.querySelector('simulation-controller').getTime();
+                        Polymer.dom(this.querySelector('iron-pages')).children.filter(function(child){
+                            return child.isNamedAs && child.isNamedAs(component.title);
+                        }).forEach(function (child){
+                            child.refresh(component);
+                        })
+                    }.bind(this));
+                }.bind(this));
+            },
+            _isHeatmap: function (type) {
+                return type === "heatmap";
+            },
+            _isChart: function (type) {
+                return type === "chart";
+            }
+        });
+    </script>
+</dom-module>

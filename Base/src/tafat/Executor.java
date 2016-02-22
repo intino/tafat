@@ -19,14 +19,14 @@ import static java.util.stream.Collectors.toList;
 public class Executor {
 
 	private final Model model;
-	private final TafatEngine engine;
+	private final TafatPlatform engine;
 	private List<Behavior> parallelBehaviors;
 	private List<Behavior> behaviors;
 	private List<Output.Plot> plots;
 
 	public Executor(Model model) {
 		this.model = model;
-		this.engine = model.engine(TafatEngine.class);
+		this.engine = model.platform(TafatPlatform.class);
 	}
 
 	public void init() {

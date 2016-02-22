@@ -5,7 +5,7 @@
       <configuration>
         <dslKey>000.000.000</dslKey>
         <genDslKey>001.814.213</genDslKey>
-        <dslVersion>0065</dslVersion>
+        <dslVersion>0070</dslVersion>
         <genDslName>Tafat</genDslName>
       </configuration>
     </facet>
@@ -19,6 +19,8 @@
       <sourceFolder url="file://$MODULE_DIR$/res" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/gen" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/res/site/node_modules" />
+      <excludeFolder url="file://$MODULE_DIR$/res/web" />
     </content>
     <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />

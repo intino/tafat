@@ -1,0 +1,127 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-resizable-behavior/iron-resizable-behavior.html">
+<link rel="import" href="is-named.html">
+
+<dom-module id="heatmap-component">
+    <style>
+        :host {
+            display: block;
+            position: relative;
+        }
+
+        div {
+            position: absolute;
+            opacity: 0
+        }
+
+        img {
+            width: 80%;
+            height: 80%;
+        }
+
+    </style>
+    <template>
+        <img id="background" src="[[_image]]" on-load="_imageLoaded" onfocus="_resizeImage"/>
+        <template is="dom-repeat" items="{{_regions}}">
+            <div id={{item.id}} style$="
+                top: {{item.top}}%;
+                left: {{item.left}}%;
+                height: {{item.height}}%;
+                width: {{item.width}}%;
+                background-color: {{heatmap.color}};
+                z-index: {{item.zIndex}};
+                border-radius: {{_setRadius(item.type)}}"></div>
+        </template>
+    </template>
+    <script>
+
+        Polymer({
+            is: 'heatmap-component',
+            behaviors: [IsNamedBehavior, Polymer.IronResizableBehavior],
+
+            properties: {
+                heatmap: {
+                    type: Object,
+                    observer: '_process'
+                },
+                _regions: Array,
+                _regionsLoaded: {
+                    type: Boolean,
+                    value: false
+                }
+            },
+
+            listeners: {
+                'iron-resize': '_onIronResize'
+            },
+
+            refresh: function (values) {
+                if (!this._regionsLoaded) return;
+                this._processValues(values.values);
+            },
+
+            _process: function () {
+                this.id = this.heatmap.title;
+                this._image = "data:image/png;base64," + this.heatmap.background;
+            },
+
+            _onIronResize: function () {
+                if (this.offsetHeight == 0) return;
+                this._setRegions()
+            },
+
+
+            _setRegions: function () {
+                if (this._regionsLoaded) return;
+                var ratio = this.$.background.height / this.$.background.naturalHeight;
+                this.heatmap.regions.forEach(function (region) {
+                    region.top = (this.$.background.offsetTop + region.top * ratio) * 100 / this.offsetHeight;
+                    region.left = (this.$.background.offsetLeft + region.left * ratio) * 100 / this.offsetWidth;
+                    region.height = (region.height * ratio) * 100 / this.offsetHeight;
+                    region.width = (region.width * ratio) * 100 / this.offsetWidth;
+                }.bind(this));
+                this._regionsLoaded = true;
+                this._regions = this.heatmap.regions;
+            },
+
+            _imageLoaded: function (e) {
+                if (this.offsetHeight == 0) return;
+                this._setRegions();
+            },
+
+            _processValues: function (regions) {
+                var min = this._calculateMin(regions);
+                var max = this._calculateMax(regions);
+                for (var i = 0; i < regions.length; i++)
+                    this.querySelector("#" + regions[i].id).style.opacity = this._shadeOf(regions[i].value, max, min);
+            },
+
+            _calculateMin: function (data) {
+                var min = Number.MAX_VALUE;
+                for (var i = 0; i < data.length; i++)
+                    min = Math.min(data[i].value, min);
+                return min;
+            },
+
+            _calculateMax: function (data) {
+                var max = 0;
+                for (var i = 0; i < data.length; i++) {
+                    //if (i == 10) continue; //TODO remove outlayers http://stackoverflow.com/questions/20811131/javascript-remove-outlier-from-an-array
+                    max = Math.max(data[i].value, max);
+                }
+                if (max == 0) max = 1;
+                return max;
+            },
+
+            _shadeOf: function (value, max, min) {
+                var result = (0.6 * (value - min) / (max - min)) + 0.2;
+                return result > 0.8 ? 0.8 : result;
+            },
+
+            _setRadius: function (regionType) {
+                return regionType == "square" ? 0 : 50;
+            }
+        })
+        ;
+    </script>
+</dom-module>

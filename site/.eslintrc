@@ -1,0 +1,28 @@
+{
+  "plugins": [ "html" ],
+  "env": {
+    "node": true,
+    "browser": true
+  },
+  "globals": {
+    "Polymer": true,
+    "PushService": true,
+    "CottonBehaviors": true,
+    "Highcharts": true,
+    "HighchartsFormatter": true,
+    "vis": true,
+    "navigationHandler": true,
+    "delayExecutor": true,
+    "dateFormatter": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module"
+  },
+  "extends": "eslint:recommended",
+  "rules": {
+    "semi": 2,
+    "quotes": [2, "single"],
+    "eqeqeq": [2, "smart"]
+  }
+}

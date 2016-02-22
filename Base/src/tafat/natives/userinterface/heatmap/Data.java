@@ -13,6 +13,7 @@ public class Data {
 	public static JsonObject buildJson(UserInterface.Heatmap $) {
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.addProperty("type", "heatmap");
+		jsonObject.addProperty("title", $.title());
 		jsonObject.addProperty("background", base64($.background()));
 		jsonObject.addProperty("color", $.color().code());
 		jsonObject.add("regions", arrayOf($.regionList()));

@@ -6,7 +6,8 @@ Concept UserInterface
 	var string title
 	var resource:{jpg png} logo
 	var integer port = 8080
-	Concept:{0..1} GraphicalComponent
+	Concept GraphicalComponent
+		var string title
 		var function:BuildJson data is private
 		var function:BuildJson values is private
 
@@ -30,3 +31,11 @@ Concept UserInterface
 					var integer centerX
 					var integer centerY
 					var integer diameter
+
+		sub LineChart
+			var function:BuildJson data = 'tafat.natives.userinterface.linechart.Data.buildJson($);' is private
+			var function:BuildJson values = 'tafat.natives.userinterface.linechart.Values.values($)' is private
+			Concept Line
+				var function:BuildJson data = 'tafat.natives.userinterface.linechart.line.Data.buildJson($);' is private
+				var string label
+				var double value is native

@@ -1,0 +1,125 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="simulation-controls-dialog">
+    <style>
+        :host {
+            display: block;
+        }
+
+        paper-dialog {
+            height: 90px;
+            width: 210px;
+            position: absolute !important;
+            background-color: white;
+        }
+
+        paper-dialog > * {
+            padding: 5px;
+            margin: 0;
+        }
+
+        #speedLabels, .controls {
+            height: 10px;
+            width: 200px;
+            @apply(--layout-horizontal);
+            @apply(--layout-center);
+        }
+
+        #speedLabels > span {
+            margin-top: 12px;
+        }
+
+        .max {
+            margin-right: 4px;
+        }
+
+        .min {
+            margin-left: 4px;
+        }
+
+        .flexchild {
+            @apply(--layout-flex);
+        }
+
+        div.controls > .flexchild {
+            text-align: center;
+        }
+    </style>
+    <template>
+        <paper-dialog id="dialog" on-iron-overlay-opened="_move">
+            <div id="speedLabels">
+                <span class="min">min</span>
+                <span class="flexchild"></span>
+                <span class="max">max</span>
+            </div>
+            <paper-slider id="speedSlider" min="0" max="20" step="1" value="10" on-value-change="_handleSlider"
+                          on-immediate-value-change="_immediateChange"></paper-slider>
+            <div class="controls">
+                <paper-icon-button id="slower" class="control" icon="av:fast-rewind"
+                                   on-tap="_fastRewind"></paper-icon-button>
+                <paper-button class="flexchild" on-tap="_setSliderTo1x">1x</paper-button>
+                <paper-icon-button id="faster" class="control" icon="av:fast-forward"
+                                   on-tap="_fastForward"></paper-icon-button>
+            </div>
+        </paper-dialog>
+    </template>
+    <script>
+        Polymer({
+            is: 'simulation-controls-dialog',
+
+            _handleSlider: function (event) {
+                if (!this.querySelector("#speedSlider")) return;
+                var newSpeed = eval(this._getSpeedValue());
+                $.post("/speed/" + newSpeed, function (data) {
+                    if (data !== "OK") return;
+                    this.fire('speed-change', {speed: this._getSpeedString()});
+                }.bind(this));
+            },
+
+            _getSpeedString: function () {
+                var speedString = this._getSpeed();
+                return speedString === "1024x" ? "max" : speedString === "1/1024x" ? "min" : speedString;
+            },
+
+            _getSpeedValue: function () {
+                var speedString = this._getSpeed();
+                return speedString.substring(0, speedString.length - 1);
+            },
+
+            _getSpeed: function () {
+                var value = this.querySelector("#speedSlider").immediateValue;
+                if (value === 10) return "1x";
+                if (value < 10) return "1/" + Math.pow(2, 10 - value) + "x";
+                return Math.pow(2, value - 10) + "x";
+            },
+
+            _fastRewind: function () {
+                this.querySelector('#speedSlider').decrement();
+            },
+
+            _fastForward: function () {
+                this.querySelector('#speedSlider').increment();
+            },
+
+            _setSliderTo1x: function () {
+                this.querySelector('#speedSlider').value = 10;
+            },
+
+            _immediateChange: function (event) {
+                this.fire('speed-change', {speed: this._getSpeedString()});
+            },
+
+            show: function () {
+                this.querySelector('paper-dialog').open();
+            },
+
+            _move: function () {
+                this.async(function () {
+                    var speed = $("#speed");
+                    this.querySelector('paper-dialog').style.top = (speed.position().top + 22) + "px";
+                    this.querySelector('paper-dialog').style.left = (speed.position().left - 118) + "px";
+                });
+            }
+        });
+    </script>
+</dom-module>
