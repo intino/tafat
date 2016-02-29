@@ -1,26 +1,27 @@
 dsl Proteo
 
-MetaConcept Periodic is abstract
+MetaConcept PeriodicActivity is abstract
 	var function:Execute execute is final
 
-MetaConcept Action extends Periodic into prototype feature
+MetaConcept Action extends PeriodicActivity into prototype feature
 	var function:Action action
 	var function:Execute execute = '$.action()' is final
 
-MetaConcept ConditionalAction extends Periodic into prototype feature
+MetaConcept ConditionalAction extends PeriodicActivity into prototype feature
 	var function:Check condition = 'true'
 	var function:Action action
 	var function:Execute execute = '{if($.condition())$.action();}' is final
 
-Concept EquationSystem is feature
+MetaConcept EquationSystem is prototype
 	var word:{Euler} solver = Euler
 	var double step = 0.1
-	Concept Element
-		var function:Function elementFunction
-		sub Stock
-		sub Flow
+	MetaConcept Element into feature
+		var function:Function calculus
+		var double value = 0 is terminal
+		sub Stock:{0..1}
+		sub Flow:{0..1}
 
-MetaConcept StateChart extends Periodic into prototype feature
+MetaConcept StateChart extends PeriodicActivity into prototype feature
 	var function:Execute execute = 'update($, step)' is final
 	var string message = ""
 	var function:Message receiveMessage = '$.message(message);if($.current() != null) $.current().receiveMessage(message)' is final
@@ -116,6 +117,9 @@ MetaConcept TableFunction into prototype feature
 		sub SplineExtrapolation
 		sub StepExtrapolation
 	var string data
+	MetaConcept Data
+		var double[] input
+		var double output
 	var function:Calculate get = '0' is terminal
 
 Concept Map

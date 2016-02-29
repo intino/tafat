@@ -1,6 +1,6 @@
 dsl Proteo 
 
-Concept UserInterface
+Concept:{0..1} UserInterface
 	var string data = 'buildJson($)' is native private
 	var string values = 'values($)' is native private
 	var string title

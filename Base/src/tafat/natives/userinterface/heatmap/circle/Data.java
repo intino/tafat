@@ -10,9 +10,10 @@ public class Data {
 		jsonObject.addProperty("id", $._simpleName());
 		jsonObject.addProperty("type", "circle");
 		jsonObject.addProperty("zIndex", $.zIndex());
-		jsonObject.addProperty("centerX", $.centerX());
-		jsonObject.addProperty("centerY", $.centerY());
-		jsonObject.addProperty("diameter", $.diameter());
+		jsonObject.addProperty("top", $.centerY() - $.diameter() / 2);
+		jsonObject.addProperty("left", $.centerX() - $.diameter() / 2);
+		jsonObject.addProperty("height", $.diameter());
+		jsonObject.addProperty("width", $.diameter());
 		return jsonObject;
 	}
 }

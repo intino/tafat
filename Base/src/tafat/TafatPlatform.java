@@ -1,5 +1,6 @@
 package tafat;
 
+import tafat.utils.Random;
 import tara.magritte.Model;
 
 import java.util.concurrent.ExecutorService;
@@ -14,16 +15,24 @@ public class TafatPlatform extends tafat.ModelWrapper implements tara.magritte.P
 
 	private static final Logger LOG = Logger.getLogger(TafatPlatform.class.getName());
 	private static ExecutorService executorService = Executors.newFixedThreadPool(1);
+	Executor executor;
 	private Future<?> submission;
 	private int delay = 1000;
-	Executor executor;
 
 	public TafatPlatform(Model model) {
 		super(model);
+		Random.init(simulation().seed());
+	}
+
+	private void runProfiling() {
+		if(profiling() == null) return;
+		java.util.Random random = profiling().seed() == -1 ? new java.util.Random() : new java.util.Random(profiling().seed());
+		profiling().profilerList().forEach(p -> p.execute(_model, random));
 	}
 
 	@Override
 	public void init(String... args) {
+		runProfiling();
 		executor = new Executor(_model);
 		executor.init();
 		initUserInterface();
@@ -31,24 +40,28 @@ public class TafatPlatform extends tafat.ModelWrapper implements tara.magritte.P
 
 	@Override
 	public void execute() {
-		if (simulation().userInterface() != null) return;
+		if (userInterface() != null) return;
 		executor.execute();
 	}
 
 	public void run() {
-		if (simulation().userInterface() != null) return;
+		if (userInterface() != null) return;
 		executor.run();
 	}
 
+	public void stop() {
+		System.exit(0);
+	}
+
 	private void initUserInterface() {
-		if (simulation().userInterface() != null) initServer();
+		if (userInterface() != null) initServer();
 	}
 
 	private void initServer() {
-		port(simulation().userInterface().port());
+		port(userInterface().port());
 		staticFileLocation("/web");
-		get("/interfaceConfiguration", (req, res) -> simulation().userInterface().data());
-		get("/values", (req, res) -> simulation().userInterface().values());
+		get("/interfaceConfiguration", (req, res) -> userInterface().data());
+		get("/values", (req, res) -> userInterface().values());
 		get("/state", (req, res) -> "OK");
 		get("/play", (req, res) -> {
 			LOG.info("Simulation play: " + req.session().id());
@@ -90,7 +103,7 @@ public class TafatPlatform extends tafat.ModelWrapper implements tara.magritte.P
 	}
 
 	private void cancelSubmission() {
-		if(submission != null){
+		if (submission != null) {
 			submission.cancel(true);
 			submission = null;
 		}

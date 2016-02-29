@@ -1,17 +1,28 @@
 dsl Proteo
 
+use Control
 use UserInterface
 use ModellingMechanisms
-use Output
 
 Concept:{1..1} Simulation
 	var date from is final
 	var date to is final
-	has:{0..1} Output
-	has:{0..1} UserInterface
+	var integer seed = -1
+	var integer times = 1
+	has Assertion
+	has Trace
+	has Stop
+
+Concept Output
+	var function:Action init is private final
+	var function:Action process is private final
+	var function:Action terminate is private final
 
 MetaConcept Agent
 	has Knol
+
+Facet Listener on Agent
+	var function:Action receiveMessage
 
 MetaConcept Entity
 	has Entity
@@ -38,7 +49,7 @@ MetaFacet Behavior is abstract
 		var function:Action start is final
 	MetaConcept Knol is final into prototype feature
 		has Knol
-	has Periodic
+	has PeriodicActivity
 	has Action is final
 	has ConditionalAction is final
 	has EquationSystem is final
@@ -50,7 +61,6 @@ MetaFacet Behavior is abstract
 
 MetaFacet Behavior on Entity
 MetaFacet Behavior on Agent
-
 
 MetaFacet FmuModel
 	var string fmuPath is terminal
@@ -65,20 +75,16 @@ MetaFacet FmuModel
 MetaFacet FmuModel on Entity
 MetaFacet FmuModel on Agent
 
-MetaFacet ExternalModel
-	var function:Action doStep
-
-MetaFacet ExternalModel on Entity
-MetaFacet ExternalModel on Agent
-
 MetaConcept Knol
 	has Knol
 
-MetaConcept View
-	sub HeatMap
-		var string path
-		Concept Region
-			var double[2] coordinates
-			var function:Function calculate
-
 Facet Parallelizable on Behavior
+
+Concept Event
+	var date instant
+	var function:Action execute
+
+Concept:{0..1} Profiling
+	var integer seed = -1
+	Concept Profiler
+		var function:Profile execute

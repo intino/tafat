@@ -1,7 +1,8 @@
 {
-  "Output.Plot.path": [
+  "SumusOutput.Plot.path": [
     "import static tafat.engine.Date.getDateTime;",
-    "import java.time.LocalDateTime;"
+    "import java.time.LocalDateTime;",
+    "import tafat.SumusOutput;"
   ],
   "StateChart.Transition.Timeout.activate": [
     "import static tafat.engine.Date.getDateTime;"
@@ -37,8 +38,57 @@
   "Task.program": [
     "import static tafat.engine.helpers.TaskHelper.scheduledDate;"
   ],
-  "Output.Plot.buildStash": [
+  "SumusOutput.Plot.buildStash": [
     "import static java.util.stream.Collectors.toList;"
   ],
-  "UserInterface.Heatmap.data": []
+  "UserInterface.Heatmap.data": [],
+  "LogOutput.init": [
+    "import java.util.List;",
+    "import static java.util.stream.Collectors.toList;"
+  ],
+  "LogOutput.process": [
+    "import java.util.List;",
+    "import static java.time.format.DateTimeFormatter.ofPattern;",
+    "import static tafat.engine.Date.getDateTime;",
+    "import static java.util.stream.Collectors.toList;"
+  ],
+  "SumusOutput.Export.buildStash": [
+    "import java.util.stream.Collectors;",
+    "import static java.util.stream.Collectors.toList;"
+  ],
+  "SumusOutput.Export.path": [
+    "import tafat.SumusOutput;"
+  ],
+  "SumusOutput.createStash": [
+    "import tara.io.Stash;"
+  ],
+  "SumusOutput.toStash": [
+    "import java.io.File;"
+  ],
+  "SumusOutput.writeStash": [
+    "import tara.io.StashSerializer;",
+    "import java.nio.file.Files;",
+    "import java.io.IOException;"
+  ],
+  "SumusOutput.init": [],
+  "SumusOutput.process": [
+    "import java.util.stream.Collectors;",
+    "import static java.util.stream.Collectors.toList;"
+  ],
+  "HeatConsumerDistrict.[annonymous@Action].action": [
+    "import static tafat.engine.Date.getDateTime;",
+    "import tafat.engine.Date;",
+    "import chplogic.electrical.ElectricalDistrictHeatingNetwork;"
+  ],
+  "EvolvingDistrictHeatingNetwork.[annonymous@Action].action": [
+    "import static java.lang.Math.PI;",
+    "import static java.lang.Math.pow;"
+  ],
+  "Simulation.Stop.execute": [
+    "import tafat.TafatPlatform;"
+  ],
+  "PeriodicSimulation.Trace.checkStep": [],
+  "Stop.execute": [
+    "import tafat.TafatPlatform;"
+  ]
 }

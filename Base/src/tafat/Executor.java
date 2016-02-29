@@ -1,28 +1,30 @@
 package tafat;
 
+import tafat.conditional.ConditionalTrace;
 import tafat.engine.Date;
+import tafat.instant.InstantTrace;
 import tafat.parallelizable.ParallelizableBehavior;
-import tara.io.Stash;
-import tara.io.StashSerializer;
+import tafat.periodic.PeriodicTrace;
 import tara.magritte.Model;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.time.ZoneOffset;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
+import static tafat.TimeoutManager.cyclicTimeout;
+import static tafat.TimeoutManager.timeout;
 
 public class Executor {
+
+	private static final Logger LOG = Logger.getLogger(Executor.class.getName());
 
 	private final Model model;
 	private final TafatPlatform engine;
 	private List<Behavior> parallelBehaviors;
 	private List<Behavior> behaviors;
-	private List<Output.Plot> plots;
 
 	public Executor(Model model) {
 		this.model = model;
@@ -32,13 +34,14 @@ public class Executor {
 	public void init() {
 		Date.setDateTime(engine.simulation().from());
 		initEngine();
-		initExports();
-		initPlots();
+		initEvents();
+		initAssertions();
+		initTraces();
+		initOutputs();
 		initBehaviors();
 	}
 
 	public void execute() {
-		if (engine.simulation().userInterface() != null) return;
 		long steps = steps();
 		for (int step = 0; step < steps; step++) run();
 	}
@@ -48,44 +51,47 @@ public class Executor {
 		TimeoutManager.init();
 	}
 
-	private void initPlots() {
-		plots = model.find(Output.Plot.class);
-		plots.forEach(p -> p.timeout(p.timeScale().toSeconds() - 1));
+	private void initEvents() {
+		engine.eventList().forEach(e -> timeout(e.instant(), e::execute));
 	}
 
-	private void initExports() {
-		toStash(model.find(Output.Export.class));
+	private void initTraces() {
+		model.find(PeriodicTrace.class)
+				.forEach(p -> cyclicTimeout(p.timeScale(), traceAction(p.as(Trace.class))));
+		model.find(InstantTrace.class)
+				.forEach(p -> p.instants().forEach(i -> timeout(i, traceAction(p.as(Trace.class)))));
 	}
 
-	private void toStash(List<? extends Output.Extractor> extractors) {
-		try {
-			if (extractors.isEmpty()) return;
-			writeStash(createStash(extractors), new File(extractors.get(0).path()));
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
+	private tafat.functions.Action traceAction(Trace trace) {
+		return () -> {
+			if (!trace.is(ConditionalTrace.class))
+				LOG.info(trace.print());
+			else if (trace.as(ConditionalTrace.class).check())
+				LOG.info(trace.print());
+		};
 	}
 
-	private Stash createStash(List<? extends Output.Extractor> extractors) {
-		Stash stash = new Stash();
-		stash.language = engine.simulation().output().language();
-		extractors.stream().forEach(e -> stash.instances.addAll(e.buildStash()));
-		return stash;
+	private void initAssertions() {
+		engine.simulation().assertionList().forEach(a -> {
+			timeout(a.at(), () -> {
+				if (a.that().equals(a.shouldBe())) return;
+				LOG.info(a.at() + ": assertion " + a._simpleName() + " failed. Expected: " + a.shouldBe() + ". Was: " + a.that());
+			});
+		});
 	}
 
-	@SuppressWarnings("ResultOfMethodCallIgnored")
-	private void writeStash(Stash stash, File file) throws IOException {
-		if (!file.getParentFile().exists()) file.getParentFile().mkdirs();
-		Files.write(file.toPath(), StashSerializer.serialize(stash));
+	private void initOutputs() {
+		engine.outputList().forEach(Output::init);
 	}
 
 	private void initBehaviors() {
 		List<Behavior> behaviors = model.find(Behavior.class);
 		initStateCharts();
+		initTableFunctions();
 		TaskManager.addAll(behaviors.stream().flatMap(b -> b.taskList().stream()).collect(Collectors.toList()));
 		behaviors.forEach(behavior -> behavior.startList().forEach(Behavior.Start::start));
-		this.behaviors = behaviors.stream().filter(b -> !b.periodicList().isEmpty() && !b.is(ParallelizableBehavior.class)).collect(toList());
-		this.parallelBehaviors = behaviors.stream().filter(b -> !b.periodicList().isEmpty() && b.is(ParallelizableBehavior.class)).collect(toList());
+		this.behaviors = behaviors.stream().filter(b -> !b.periodicActivityList().isEmpty() && !b.is(ParallelizableBehavior.class)).collect(toList());
+		this.parallelBehaviors = behaviors.stream().filter(b -> !b.periodicActivityList().isEmpty() && b.is(ParallelizableBehavior.class)).collect(toList());
 	}
 
 	private void initStateCharts() {
@@ -95,17 +101,30 @@ public class Executor {
 				.forEach(stateChart -> stateChart.current(stateChart.state(0)));
 	}
 
+	private void initTableFunctions() {
+		model.find(TableFunction.class).stream()
+				.forEach(t -> {
+					try {
+						TableFunctionProvider tableFunctionProvider = new TableFunctionProvider(t);
+						t.getClass().getDeclaredField("get").set(t, tableFunctionProvider.getter());
+					} catch (IllegalAccessException | NoSuchFieldException e) {
+						e.printStackTrace();
+					}
+				});
+	}
+
 	public void run() {
 		TaskManager.update();
 		TimeoutManager.update();
+		engine.simulation().stopList().stream().filter(Stop::when).forEach(Stop::execute);
 		parallelBehaviors.parallelStream().filter(Behavior::checkStep).forEach(this::run);
 		behaviors.stream().filter(Behavior::checkStep).forEach(this::run);
-		toStash(plots.stream().filter(Output.Plot::checkStep).collect(toList()));
+		engine.outputList().forEach(Output::process);
 		Date.plusSeconds(1);
 	}
 
 	private void run(Behavior behavior) {
-		behavior.periodicList().forEach(p -> p.execute(behavior.step()));
+		behavior.periodicActivityList().forEach(p -> p.execute(behavior.step()));
 	}
 
 	private long steps() {
