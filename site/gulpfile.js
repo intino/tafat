@@ -19,7 +19,7 @@ const AUTOPREFIXER_BROWSERS = [
     'bb >= 10'
 ];
 
-const PRODUCTION_PATH = '..\\out\\production\\web';
+const PRODUCTION_PATH = '..\\out\\production\\tafat\\web';
 
 const styleTask = (stylesPath, srcs) => {
     return gulp.src(srcs.map(src => path.join('app', stylesPath, src)))
@@ -183,7 +183,7 @@ gulp.watch(['app/{scripts,elements}/**/{*.js,*.html}'], ['refresh']);
 });
 
 gulp.task('refresh', (cb) => {
-    runSequence('generate-dev-app', 'copy-to-server', 'reload', cb);
+    runSequence('generate-dev-app', 'copy-to-server', 'copy-to-res', 'reload', cb);
 });
 
 gulp.task('reload', () => {
@@ -191,7 +191,7 @@ gulp.task('reload', () => {
 });
 
 gulp.task('copy-dev-app-to-res', cb => {
-    runSequence('generate-dev-app', 'copy-to-res', cb);
+    runSequence('generate-dev-app', 'copy-to-res', 'copy-to-server', cb);
 });
 
 gulp.task('generate-dev-app', ['clean'], cb => {
