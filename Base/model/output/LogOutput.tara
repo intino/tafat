@@ -1,0 +1,38 @@
+dsl Proteo 
+
+use Main
+
+Concept LogOutput extends Output is component
+	var word:TimeScale timeScale is final
+	var function:Action init is private final
+		--
+		StringBuilder builder = new StringBuilder("%19s |");
+		List<String> names = $.lineList().stream().map(l -> l.name()).collect(toList());
+		names.forEach(n -> builder.append(" %").append(n.length()).append("f |"));
+		names.add(0, "Time");
+		$.format(builder.append("%n").toString());
+		System.out.format($.format().replace("f", "s"), names.toArray(new String[names.size()]));
+		--
+	var function:Action process is private final
+		--
+		if ($.checkStep()) {
+			List<Object> collect = $.lineList().stream().map(l -> l.value()).collect(toList());
+			collect.add(0, getDateTime().format(ofPattern("dd/MM/yyyy HH:mm:ss")));
+			System.out.format($.format(), collect.toArray(new Object[collect.size()]));
+		}
+		--
+	var function:Action terminate is private final
+	var string format is private
+	var integer timeout = 0
+	var function:Check checkStep is private
+		--
+		if($.timeout() == 0){
+			$.timeout($.timeScale().toSeconds() - 1);
+			return true;
+		}
+		$.timeout($.timeout() - 1);
+		return false;
+		--
+	Concept Line
+		var string name
+		var double value is native

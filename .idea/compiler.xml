@@ -24,17 +24,31 @@
         <processorPath useClasspath="true" />
       </profile>
       <profile default="false" name="Annotation profile for TestLanguage" enabled="true">
-        <sourceOutputDir name="../out/build/TestLanguage/generated-sources/annotations" />
-        <sourceTestOutputDir name="../out/build/TestLanguage/generated-test-sources/test-annotations" />
+        <sourceOutputDir name="../out/build/testlanguage/generated-sources/annotations" />
+        <sourceTestOutputDir name="../out/build/testlanguage/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
       </profile>
       <profile default="false" name="Annotation profile for TestModel" enabled="true">
-        <sourceOutputDir name="../out/build/TestModel/generated-sources/annotations" />
-        <sourceTestOutputDir name="../out/build/TestModel/generated-test-sources/test-annotations" />
+        <sourceOutputDir name="../out/build/testmodel/generated-sources/annotations" />
+        <sourceTestOutputDir name="../out/build/testmodel/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
         <module name="TestModel" />
+      </profile>
+      <profile default="false" name="Annotation profile for toolbox" enabled="true">
+        <sourceOutputDir name="../out/build/toolbox/generated-sources/annotations" />
+        <sourceTestOutputDir name="../out/build/toolbox/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="toolbox" />
+      </profile>
+      <profile default="false" name="Annotation profile for Toolbox" enabled="true">
+        <sourceOutputDir name="../out/build/toolbox/generated-sources/annotations" />
+        <sourceTestOutputDir name="../out/build/toolbox/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="Toolbox" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -45,6 +59,8 @@
       <module name="SGIToolbox" target="1.8" />
       <module name="TestLanguage" target="1.8" />
       <module name="TestModel" target="1.8" />
+      <module name="Toolbox" target="1.8" />
+      <module name="toolbox" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

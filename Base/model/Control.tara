@@ -1,0 +1,30 @@
+dsl Proteo 
+
+Concept Assertion is component
+	var function:Thing that
+	var function:Thing shouldBe
+	var date at
+Concept Trace is component
+	var function:Trace print
+Concept Stop is component
+	var boolean when is native
+	var function:Action execute = '$._model().<TafatPlatform>platform().stop()' is private final
+
+Facet Periodic on Trace
+	var integer timeout = 0 is private
+	var function:Check checkStep is private final
+		--
+		if ($.timeout() == 0) {
+			$.timeout($.timeScale().toSeconds() - 1);
+			return true;
+		}
+		$.timeout($.timeout() - 1);
+		return false;
+		--
+	var word:TimeScale timeScale is final
+
+Facet Instant on Trace
+	var date[] instants
+
+Facet Conditional on Trace
+	var boolean check is native

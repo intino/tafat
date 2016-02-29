@@ -1,0 +1,75 @@
+dsl Proteo
+
+use Main
+
+Concept SumusOutput extends Output is component
+	var string language
+	var string simulationId
+	var string rootPath = "res/out/"
+
+	var function:Action init is private final
+		--
+		$.plotList().forEach(p -> p.timeout(p.timeScale().toSeconds() - 1));
+		$.toStash($.exportList())
+		--
+	var function:Action process = '$.toStash($.plotList().stream().filter(p -> p.checkStep()).collect(toList()));' is private final
+	var function:Action terminate is private final
+
+	var function:ToStash toStash is private final
+		--
+		if (extractors.isEmpty()) return;
+		$.writeStash($.createStash(extractors), new File(extractors.get(0).path()));
+		--
+
+	var function:CreateStash createStash is private final
+		--
+		Stash stash = new Stash();
+		stash.language = $.language();
+		extractors.stream().forEach(e -> stash.instances.addAll(e.buildStash()));
+		return stash;
+		--
+
+	var function:WriteStash writeStash is private final
+		--
+		if (!file.getParentFile().exists()) file.getParentFile().mkdirs();
+		try {
+			Files.write(file.toPath(), StashSerializer.serialize(stash));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		--
+
+	Concept Extractor
+		var string label is final
+		var function:StashPath path is final
+		var function:Collect collect is final
+		var function:Stash buildStash is final
+
+		sub Export
+			var function:Extractor extractMember is final
+			var function:StashPath path = 'return $._owner(SumusOutput.class).rootPath() + "Dimension.stash";' is final
+			var function:Stash buildStash = '$.collect().parallelStream().map(l -> $.extractMember(l)).collect(toList());' is final
+
+		sub Plot
+			var word:TimeScale timeScale is final
+			var integer timeout = 0
+			var function:Check checkStep is private
+				--
+				if($.timeout() == 0){
+					$.timeout($.timeScale().toSeconds() - 1);
+					return true;
+				}
+				$.timeout($.timeout() - 1);
+				return false;
+				--
+			var function:Extractor extractFact is final
+			var function:StashPath path is private
+				--
+				LocalDateTime date = getDateTime();
+				return $._owner(SumusOutput.class).rootPath() +
+						String.format("%04d", date.getYear()) + "/" +
+						String.format("%03d", date.getDayOfYear()) + "/" +
+						String.format("%02d%02d", date.getHour(), date.getMinute()) + "-" +
+						$._owner(SumusOutput.class).simulationId() + ".stash";
+				--
+			var function:Stash buildStash = '$.collect().parallelStream().map(l -> $.extractFact(l)).collect(toList())' is final

@@ -1,0 +1,16 @@
+dsl TestLanguage 
+
+Simulation(from = "01/01/2010 00:00:00", to = "01/01/2010 00:00:10")
+
+LogOutput(timeScale = Seconds)
+	Line(name = "Fridge 1", value = 'return $._model().<TestLanguageApplication>application().fridgeList().get(0).power();')
+	Line(name = "Fridge 2", value = 'return $._model().<TestLanguageApplication>application().fridgeList().get(1).power();')
+	Line(name = "Fridge 3", value = 'return $._model().<TestLanguageApplication>application().fridgeList().get(2).power();')
+	Line(name = "Fridge 4", value = 'return $._model().<TestLanguageApplication>application().fridgeList().get(3).power();')
+	Line(name = "Fridge 5", value = 'return $._model().<TestLanguageApplication>application().fridgeList().get(4).power();')
+
+Fridge(power = 10) f0 > as Electrical4
+Fridge(power = 20) f1 > as Electrical4
+Fridge(power = 30) f2 > as Electrical4
+Fridge(power = 40) f3 > as Electrical4
+Fridge(power = 50) f4 > as Electrical4
