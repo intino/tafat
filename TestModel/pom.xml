@@ -15,18 +15,12 @@
     </properties>
 
     <build>
-        <outputDirectory>../out/production/TestModel</outputDirectory>
-        <testOutputDirectory>../out/test/TestModel</testOutputDirectory>
-        <directory>../out/build/TestModel</directory>
+        <outputDirectory>../out/production/testmodel</outputDirectory>
+        <testOutputDirectory>../out/test/testmodel</testOutputDirectory>
+        <directory>../out/build/testmodel</directory>
     </build>
 
     <dependencies>
-        <dependency>
-            <groupId>com.esotericsoftware</groupId>
-            <artifactId>kryo</artifactId>
-            <scope>runtime</scope>
-            <version>LATEST</version>
-        </dependency>
         <dependency>
             <groupId>tafat</groupId>
             <artifactId>TestLanguage</artifactId>
