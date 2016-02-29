@@ -15,17 +15,16 @@
     </properties>
 
     <build>
-        <outputDirectory>../out/production/TestLanguage</outputDirectory>
-        <testOutputDirectory>../out/test/TestLanguage</testOutputDirectory>
-        <directory>../out/build/TestLanguage</directory>
+        <outputDirectory>../out/production/testlanguage</outputDirectory>
+        <testOutputDirectory>../out/test/testlanguage</testOutputDirectory>
+        <directory>../out/build/testlanguage</directory>
     </build>
 
     <dependencies>
         <dependency>
             <groupId>siani.tara</groupId>
             <artifactId>tafat</artifactId>
-            <version>1.0</version>
-            <scope>compile</scope>
+            <version>2.0.0</version>
         </dependency>
     </dependencies>
 </project>
