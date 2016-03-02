@@ -3,9 +3,9 @@ dsl Tafat
 Entity System
 
 Behavior Evolver on System
-	var double potentialAdopters
 	EquationSystem eq
+		var double potentialAdopters
 		Flow('$.potentialAdopters()') adoptionFromAd
 		Flow('$.potentialAdopters() + $.adopters().value()') adoptionFromWOM
-		Flow('$.adoptionFromAd().value() + $.adoptionFromWON().value()') adoptionRate
+		Flow('return $.adoptionFromAd().value() + $.adoptionFromWOM().value();') adoptionRate
 		Stock('$.adoptionRate().value()') adopters

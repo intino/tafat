@@ -1,0 +1,14 @@
+dsl Tafat 
+
+Entity Router
+	var word:{On Off} mode = off
+
+Behavior Electrical on Router
+	StateChart
+		State Idle > EntryAction('System.out.println("Idle")')
+		State Working > EntryAction('System.out.println("Working")')
+			State Connecting > EntryAction('System.out.println("Connecting")')
+			State Connected > EntryAction('System.out.println("Connected")')
+			Transition(Connecting, Connected) > After(15 seconds)
+		Transition(Idle, Working) > Condition('$.mode() == On')
+		Transition(Working, Idle) > Condition('$.mode() == Off')

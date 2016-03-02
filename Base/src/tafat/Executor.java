@@ -103,6 +103,7 @@ public class Executor {
 
 	private void initTableFunctions() {
 		model.find(TableFunction.class).stream()
+				.filter(t -> !t.dataList().isEmpty())
 				.forEach(t -> {
 					try {
 						TableFunctionProvider tableFunctionProvider = new TableFunctionProvider(t);

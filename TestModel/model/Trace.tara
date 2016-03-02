@@ -1,4 +1,4 @@
 dsl TestLanguage 
 
 Simulation(from = "01/01/2010 00:00:00", to = "01/01/2010 00:00:20")
-//	Trace(print = '"I\'m tracing here"') > as Periodic(Minute); as Conditional('true')
+////	Trace(print = '"I\'m tracing here"') > as Periodic(Minute); as Conditional('true')

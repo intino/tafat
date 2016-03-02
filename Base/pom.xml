@@ -8,7 +8,7 @@
 
     <groupId>siani.tara</groupId>
     <artifactId>tafat</artifactId>
-    <version>2.0.0-SNAPSHOT</version>
+    <version>2.0.0</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -47,7 +47,7 @@
         <dependency>
             <groupId>org.siani.tara</groupId>
             <artifactId>proteo</artifactId>
-            <version>1.0</version>
+            <version>1.0.2</version>
         </dependency>
         <dependency>
             <groupId>com.sparkjava</groupId>

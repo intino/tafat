@@ -3,6 +3,8 @@ dsl Tafat
 Entity Fridge
 	var double power = 0
 
+Agent Family
+
 Behavior Electrical1 on Fridge
 	StateChart
 		State On

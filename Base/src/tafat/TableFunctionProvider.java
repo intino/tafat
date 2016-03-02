@@ -29,23 +29,21 @@ public class TableFunctionProvider {
 
 	public TableFunctionProvider(TableFunction tableFunction) {
 		this.tableFunction = tableFunction;
-		List<Record> records = recordsOf(tableFunction.data());
+		List<Record> records = recordsOf(tableFunction.dataList());
+		new ArrayList<>(tableFunction.dataList()).stream().forEach(Layer::_remove);
 		dimensions.addAll(dimensionsOf(records));
 	}
 
-	private List<Record> recordsOf(String tableContent) {
-		String[] content = tableContent.replace("\r","").replace("\t", "").split("\n");
-		if(content.length < 2) return new ArrayList<>();
-		return asList(content).subList(2, content.length).stream()
-				.filter(line -> !line.isEmpty())
-				.map(line -> new Record(numbersAt(line.split(";"))))
+	private List<Record> recordsOf(List<TableFunction.Data> tableContent) {
+		return tableContent.stream()
+				.map(data -> new Record(numbersAt(data)))
 				.collect(toList());
 	}
 
-	private List<Double> numbersAt(String[] elements) {
-		return asList(elements).stream()
-				.map(Double::parseDouble)
-				.collect(toList());
+	private List<Double> numbersAt(TableFunction.Data elements) {
+		ArrayList<Double> numbers = new ArrayList<>(elements.input());
+		numbers.add(elements.output());
+		return numbers;
 	}
 
 	private List<Dimension> dimensionsOf(List<Record> records, double... inputs) {

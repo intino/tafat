@@ -7,8 +7,10 @@
     "import testlanguage.Fridge;"
   ],
   "[anonymous@Profiling].[anonymous@Profiler].execute": [
+    "import static java.util.stream.IntStream.range;",
     "import testlanguage.TestLanguageApplication;",
     "import tara.magritte.Model;",
+    "import java.util.stream.IntStream;",
     "import testlanguage.Fridge;",
     "import java.util.Random;"
   ],

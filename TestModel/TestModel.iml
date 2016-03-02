@@ -24,7 +24,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="TestLanguage" />
     <orderEntry type="module" module-name="Base" />
-    <orderEntry type="library" name="Maven: org.siani.tara:proteo:1.0" level="project" />
+    <orderEntry type="library" name="Maven: org.siani.tara:proteo:1.0.2" level="project" />
     <orderEntry type="library" name="Maven: org.siani.tara:io:1.0" level="project" />
     <orderEntry type="library" name="Maven: com.esotericsoftware:kryo:3.0.3" level="project" />
     <orderEntry type="library" name="Maven: com.esotericsoftware:reflectasm:1.10.1" level="project" />

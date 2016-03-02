@@ -11,7 +11,7 @@
         }
 
         cotton-header {
-          --header-background: white;
+          --header-background-color: white;
         }
 
         iron-pages {
@@ -42,7 +42,7 @@
     </style>
     <template>
         <cotton-header title="[[title]]" logo="[[logo]]">
-            <simulation-controller on-play-simulation="_play" on-replay="_replay" on-pause-simulation="_pause"></simulation-controller>
+            <simulation-controller id="header-content" on-play-simulation="_play" on-replay="_replay" on-pause-simulation="_pause"></simulation-controller>
         </cotton-header>
         <iron-pages selected="{{selected}}">
             <template is="dom-repeat" items="{{_components}}">

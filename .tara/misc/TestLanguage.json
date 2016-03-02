@@ -1,5 +1,13 @@
 {
   "Electrical4Fridge.[anonymous@Action].action": [
     "import java.util.Random;"
-  ]
+  ],
+  "ElectricalRouter.[anonymous@StateChart].Idle.[anonymous@EntryAction].action": [],
+  "ElectricalRouter.[anonymous@StateChart].[anonymous@Transition].[anonymous@Condition].check": [
+    "import testlanguage.Router;",
+    "import static testlanguage.Router.Mode.Off;",
+    "import static testlanguage.Router.Mode.On;"
+  ],
+  "ConsumerFamily.[anonymous@Task].[anonymous@StartAction].action": [],
+  "EvolverSystem.eq.adoptionRate.": []
 }
