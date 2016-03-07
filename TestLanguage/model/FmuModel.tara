@@ -1,0 +1,9 @@
+dsl Tafat 
+
+use Main
+
+FmuModel("thermalFridge.fmu") Thermal on Fridge
+	var double power
+	var double temperature
+	Input("temperatura", '$.temperature()')
+	Output("potencia", '$.power(value)')

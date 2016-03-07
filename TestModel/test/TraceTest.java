@@ -21,4 +21,10 @@ public class TraceTest {
 	public void should_trace_message() throws Exception {
 		this.platform.execute();
 	}
+
+	public static void main(String[] args) {
+		Model model = Model.load("Trace").init(TestLanguageApplication.class, TafatPlatform.class);
+		model.platform().init();
+		model.platform().execute();
+	}
 }

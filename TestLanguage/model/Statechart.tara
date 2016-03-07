@@ -1,7 +1,7 @@
 dsl Tafat 
 
 Entity Router
-	var word:{On Off} mode = off
+	var word:{On Off} mode = Off
 
 Behavior Electrical on Router
 	StateChart
@@ -10,5 +10,5 @@ Behavior Electrical on Router
 			State Connecting > EntryAction('System.out.println("Connecting")')
 			State Connected > EntryAction('System.out.println("Connected")')
 			Transition(Connecting, Connected) > After(15 seconds)
-		Transition(Idle, Working) > Condition('$.mode() == On')
-		Transition(Working, Idle) > Condition('$.mode() == Off')
+		Transition(Idle, Working) > Condition('return $.mode() == On;')
+		Transition(Working, Idle) > Condition('return $.mode() == Off;')

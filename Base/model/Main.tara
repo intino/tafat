@@ -22,7 +22,7 @@ MetaConcept Agent
 	has Knol
 
 Facet Listener on Agent
-	var function:Action receiveMessage
+	var function:Message receiveMessage
 
 MetaConcept Entity
 	has Entity
@@ -62,7 +62,7 @@ MetaFacet Behavior is abstract
 MetaFacet Behavior on Entity
 MetaFacet Behavior on Agent
 
-MetaFacet FmuModel
+MetaFacet FmuModel is abstract
 	var string fmuPath is terminal
 	var double step = 0.01 is terminal
 	Concept Input

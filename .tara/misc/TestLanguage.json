@@ -9,5 +9,9 @@
     "import static testlanguage.Router.Mode.On;"
   ],
   "ConsumerFamily.[anonymous@Task].[anonymous@StartAction].action": [],
-  "EvolverSystem.eq.adoptionRate.": []
+  "EvolverSystem.eq.adoptionRate.": [],
+  "ElectricalRouter.sc.[anonymous@Transition].[anonymous@Condition].check": [
+    "import static testlanguage.Router.Mode.Off;"
+  ],
+  "Bot.BotListener.receiveMessage": []
 }

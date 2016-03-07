@@ -116,7 +116,6 @@ MetaConcept TableFunction into prototype feature
 		sub PolynomialExtrapolation
 		sub SplineExtrapolation
 		sub StepExtrapolation
-	var string data
 	MetaConcept Data
 		var double[] input
 		var double output

@@ -4,7 +4,7 @@ use Main
 
 Behavior Consumer on Family
 	sub SimpleConsumer
-		TableFunction(data = "") > LinearInterpolation; NoneExtrapolation
+		TableFunction > LinearInterpolation; NoneExtrapolation
 			Data(0, 0)
 			Data(6, 0)
 			Data(8, 200)
@@ -12,5 +12,5 @@ Behavior Consumer on Family
 			Data(20, 300)
 			Data(23, 0)
 	sub ComplexConsumer
-		TableFunction(data = "") > LinearInterpolation; LinearExtrapolation
+		TableFunction > LinearInterpolation; LinearExtrapolation
 			Data... with Consumption(hour, power)
