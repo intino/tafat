@@ -27,13 +27,13 @@ public class TafatPlatform extends tafat.ModelWrapper implements tara.magritte.P
 	private void runProfiling() {
 		if(profiling() == null) return;
 		java.util.Random random = profiling().seed() == -1 ? new java.util.Random() : new java.util.Random(profiling().seed());
-		profiling().profilerList().forEach(p -> p.execute(_model, random));
+		profiling().profilerList().forEach(p -> p.execute(model, random));
 	}
 
 	@Override
 	public void init(String... args) {
 		runProfiling();
-		executor = new Executor(_model);
+		executor = new Executor(model);
 		executor.init();
 		initUserInterface();
 	}
@@ -97,8 +97,8 @@ public class TafatPlatform extends tafat.ModelWrapper implements tara.magritte.P
 	}
 
 	private void reloadModel() {
-		_model.reload();
-		executor = new Executor(_model);
+		model.reload();
+		executor = new Executor(model);
 		executor.init();
 	}
 

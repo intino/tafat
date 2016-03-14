@@ -16,7 +16,6 @@ import java.util.Set;
 import static java.lang.Double.NaN;
 import static java.lang.Double.isNaN;
 import static java.lang.Math.abs;
-import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toCollection;
 import static java.util.stream.Collectors.toList;
@@ -30,7 +29,7 @@ public class TableFunctionProvider {
 	public TableFunctionProvider(TableFunction tableFunction) {
 		this.tableFunction = tableFunction;
 		List<Record> records = recordsOf(tableFunction.dataList());
-		new ArrayList<>(tableFunction.dataList()).stream().forEach(Layer::_remove);
+		new ArrayList<>(tableFunction.dataList()).stream().forEach(Layer::remove);
 		dimensions.addAll(dimensionsOf(records));
 	}
 
@@ -128,11 +127,11 @@ public class TableFunctionProvider {
 		}
 
 		@Override
-		public void $(Layer layer) {
+		public void self(Layer layer) {
 		}
 
 		@Override
-		public Class<? extends Layer> $Class() {
+		public Class<? extends Layer> selfClass() {
 			return TableFunction.class;
 		}
 

@@ -1,0 +1,11 @@
+dsl Tafat 
+
+Entity System
+
+Behavior Evolver on System
+	EquationSystem eq
+		var double potentialAdopters
+		Flow('self.potentialAdopters()') adoptionFromAd
+		Flow('self.potentialAdopters() + self.adopters().value()') adoptionFromWOM
+		Flow('self.adoptionFromAd().value() + self.adoptionFromWOM().value();') adoptionRate
+		Stock('self.adoptionRate().value()') adopters

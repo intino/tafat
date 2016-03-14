@@ -10,5 +10,5 @@ Behavior Electrical on Router
 			State Connecting > EntryAction('System.out.println("Connecting")')
 			State Connected > EntryAction('System.out.println("Connected")')
 			Transition(Connecting, Connected) > After(15 seconds)
-		Transition(Idle, Working) > Condition('return $.mode() == On;')
-		Transition(Working, Idle) > Condition('return $.mode() == Off;')
+		Transition(Idle, Working) > Condition('self.mode() == On;')
+		Transition(Working, Idle) > Condition('self.mode() == Off;')

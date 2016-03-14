@@ -5,5 +5,5 @@ use Main
 FmuModel("thermalFridge.fmu") Thermal on Fridge
 	var double power
 	var double temperature
-	Input("temperatura", '$.temperature()')
-	Output("potencia", '$.power(value)')
+	Input("temperatura", 'self.temperature()')
+	Output("potencia", 'self.power(value)')

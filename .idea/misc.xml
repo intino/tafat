@@ -7,9 +7,9 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/TestLanguage/pom.xml" />
-        <option value="$PROJECT_DIR$/TestModel/pom.xml" />
         <option value="$PROJECT_DIR$/Base/pom.xml" />
         <option value="$PROJECT_DIR$/Toolbox/pom.xml" />
+        <option value="$PROJECT_DIR$/test/pom.xml" />
       </list>
     </option>
   </component>

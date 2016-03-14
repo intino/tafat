@@ -5,8 +5,8 @@
                              http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>tafat</groupId>
-    <artifactId>TestModel</artifactId>
+    <groupId>org.siani.tafat</groupId>
+    <artifactId>test</artifactId>
     <version>1.0</version>
 
     <properties>
@@ -15,17 +15,16 @@
     </properties>
 
     <build>
-        <outputDirectory>../out/production/testmodel</outputDirectory>
-        <testOutputDirectory>../out/test/testmodel</testOutputDirectory>
-        <directory>../out/build/testmodel</directory>
+        <outputDirectory>../out/production/test</outputDirectory>
+        <testOutputDirectory>../out/test/test</testOutputDirectory>
+        <directory>../out/build/test</directory>
     </build>
 
     <dependencies>
         <dependency>
-            <groupId>tafat</groupId>
-            <artifactId>TestLanguage</artifactId>
-            <scope>compile</scope>
-            <version>1.0</version>
+            <groupId>org.siani.tafat</groupId>
+            <artifactId>tafat-platform</artifactId>
+            <version>2.0.0</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

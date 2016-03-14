@@ -3,28 +3,28 @@
   <component name="FacetManager">
     <facet type="Tara" name="Tara">
       <configuration>
-        <dsl>TestLanguage</dsl>
-        <testModule>true</testModule>
-        <level>0</level>
+        <dsl>Tafat</dsl>
+        <genDslName>TestLanguage</genDslName>
+        <level>1</level>
       </configuration>
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">
-    <output url="file://$MODULE_DIR$/../out/production/TestModel" />
-    <output-test url="file://$MODULE_DIR$/../out/test/TestModel" />
+    <output url="file://$MODULE_DIR$/../out/production/test" />
+    <output-test url="file://$MODULE_DIR$/../out/test/test" />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/model" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/gen" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/res" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/definitions" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/test-res" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/test-model" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="TestLanguage" />
-    <orderEntry type="module" module-name="Base" />
-    <orderEntry type="library" name="Maven: org.siani.tara:proteo:1.0.2" level="project" />
+    <orderEntry type="module" module-name="base" />
+    <orderEntry type="library" name="Maven: org.siani.tara:proteo:1.0.5-Snapshot" level="project" />
     <orderEntry type="library" name="Maven: org.siani.tara:io:1.0" level="project" />
     <orderEntry type="library" name="Maven: com.esotericsoftware:kryo:3.0.3" level="project" />
     <orderEntry type="library" name="Maven: com.esotericsoftware:reflectasm:1.10.1" level="project" />
