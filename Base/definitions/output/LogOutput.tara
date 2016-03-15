@@ -7,18 +7,18 @@ Concept LogOutput extends Output is component
 	var function:Action init is private final
 		--
 		StringBuilder builder = new StringBuilder("%19s |");
-		List<String> names = $.lineList().stream().map(l -> l.name()).collect(toList());
+		List<String> names = self.lineList().stream().map(l -> l.name()).collect(toList());
 		names.forEach(n -> builder.append(" %").append(n.length()).append("f |"));
 		names.add(0, "Time");
-		$.format(builder.append("%n").toString());
-		System.out.format($.format().replace("f", "s"), names.toArray(new String[names.size()]));
+		self.format(builder.append("%n").toString());
+		System.out.format(self.format().replace("f", "s"), names.toArray(new String[names.size()]));
 		--
 	var function:Action process is private final
 		--
-		if ($.checkStep()) {
-			List<Object> collect = $.lineList().stream().map(l -> l.value()).collect(toList());
+		if (self.checkStep()) {
+			List<Object> collect = self.lineList().stream().map(l -> l.value()).collect(toList());
 			collect.add(0, getDateTime().format(ofPattern("dd/MM/yyyy HH:mm:ss")));
-			System.out.format($.format(), collect.toArray(new Object[collect.size()]));
+			System.out.format(self.format(), collect.toArray(new Object[collect.size()]));
 		}
 		--
 	var function:Action terminate is private final
@@ -26,11 +26,11 @@ Concept LogOutput extends Output is component
 	var integer timeout = 0
 	var function:Check checkStep is private
 		--
-		if($.timeout() == 0){
-			$.timeout($.timeScale().toSeconds() - 1);
+		if(self.timeout() == 0){
+			self.timeout(self.timeScale().toSeconds() - 1);
 			return true;
 		}
-		$.timeout($.timeout() - 1);
+		self.timeout(self.timeout() - 1);
 		return false;
 		--
 	Concept Line

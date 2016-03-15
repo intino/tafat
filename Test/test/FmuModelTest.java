@@ -12,8 +12,8 @@ public class FmuModelTest {
 	@Before
 	public void setUp() {
 		Model model = Model.load("FmuModel").init(TestLanguageApplication.class, TafatPlatform.class);
-		this.platform = model.platform(TafatPlatform.class);
-		this.application = model.application(TestLanguageApplication.class);
+		this.platform = model.platform();
+		this.application = model.application();
 		this.platform.init();
 	}
 

@@ -5,12 +5,12 @@ MetaConcept PeriodicActivity is abstract
 
 MetaConcept Action extends PeriodicActivity into prototype feature
 	var function:Action action
-	var function:Execute execute = '$.action()' is final
+	var function:Execute execute = 'self.action()' is final
 
 MetaConcept ConditionalAction extends PeriodicActivity into prototype feature
 	var function:Check condition = 'true'
 	var function:Action action
-	var function:Execute execute = '{if($.condition())$.action();}' is final
+	var function:Execute execute = '{if(self.condition())self.action();}' is final
 
 MetaConcept EquationSystem is prototype
 	var word:{Euler} solver = Euler
@@ -22,9 +22,9 @@ MetaConcept EquationSystem is prototype
 		sub Flow:{0..1}
 
 MetaConcept StateChart extends PeriodicActivity into prototype feature
-	var function:Execute execute = 'update($, step)' is final
+	var function:Execute execute = 'update(self, step)' is final
 	var string message = ""
-	var function:Message receiveMessage = '$.message(message);if($.current() != null) $.current().receiveMessage(message)' is final
+	var function:Message receiveMessage = 'self.message(message);if(self.current() != null) self.current().receiveMessage(message)' is final
 	var StateChart current = empty
 	MetaConcept State extends StateChart
 		MetaConcept Action
@@ -41,26 +41,26 @@ MetaConcept StateChart extends PeriodicActivity into prototype feature
 			sub Condition >var function:CheckTransition check
 			sub TimeBased
 				var date when = "" is private
-				var function:CheckTransition check = '!$.when().isAfter(getDateTime())' is private
+				var function:CheckTransition check = '!self.when().isAfter(getDateTime())' is private
 				var function:Action activate is private
 				sub Timeout
-					var function:Action activate = '$.when(getDateTime().plusSeconds($.timeout()))'
+					var function:Action activate = 'self.when(getDateTime().plusSeconds(self.timeout()))'
 					var function:Timeout timeout is final
 				sub After
-					var function:Action activate = '$.when(getDateTime().plusSeconds($.fixedTime()))'
+					var function:Action activate = 'self.when(getDateTime().plusSeconds(self.fixedTime()))'
 					var integer:Time fixedTime is final
 				sub Rate
-					var function:Action activate = '$.when(getDateTime().plusSeconds($.unit() / $.times()))'
+					var function:Action activate = 'self.when(getDateTime().plusSeconds(self.unit() / self.times()))'
 					var integer:{times} times;var integer unit
 			sub Message
 				var string expectedMessage
-				var function:CheckTransition check = '$._owner(StateChart.class).message().equals($.expectedMessage())'
+				var function:CheckTransition check = 'self._owner(StateChart.class).message().equals(self.expectedMessage())'
 
 MetaConcept Task into prototype feature
 	var word[]:DayOfWeek days = Monday Tuesday Wednesday Thursday Friday Saturday Sunday
 	var date scheduledDate = ""
-	var function:Check check = '!$.scheduledDate().isAfter(getDateTime())' is final
-	var function:Action program = '$.scheduledDate(scheduledDate($))' is final
+	var function:Check check = '!self.scheduledDate().isAfter(getDateTime())' is final
+	var function:Action program = 'self.scheduledDate(scheduledDate(self))' is final
 	MetaConcept:{1..1} Start
 		var time start is final
 		var integer:Time deviation = 0 minute

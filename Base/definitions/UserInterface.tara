@@ -1,8 +1,8 @@
 dsl Proteo 
 
 Concept:{0..1} UserInterface
-	var string data = 'buildJson($)' is native private
-	var string values = 'values($)' is native private
+	var string data = 'buildJson(self)' is native private
+	var string values = 'values(self)' is native private
 	var string title
 	var resource:{jpg png} logo
 	var integer port = 8080
@@ -12,8 +12,8 @@ Concept:{0..1} UserInterface
 		var function:BuildJson values is private
 
 		sub Heatmap
-			var function:BuildJson data = 'tafat.natives.userinterface.heatmap.Data.buildJson($)' is private
-			var function:BuildJson values = 'tafat.natives.userinterface.heatmap.Values.values($)' is private
+			var function:BuildJson data = 'tafat.natives.userinterface.heatmap.Data.buildJson(self)' is private
+			var function:BuildJson values = 'tafat.natives.userinterface.heatmap.Values.values(self)' is private
 			var resource:{jpg png} background
 			var word:Color color
 			Concept Region
@@ -21,21 +21,21 @@ Concept:{0..1} UserInterface
 				var double value is native
 				var integer zIndex = 1
 				sub Square
-					var function:BuildJson data = 'tafat.natives.userinterface.heatmap.square.Data.buildJson($)' is private
+					var function:BuildJson data = 'tafat.natives.userinterface.heatmap.square.Data.buildJson(self)' is private
 					var integer top
 					var integer left
 					var integer width
 					var integer height
 				sub Circle
-					var function:BuildJson data = 'tafat.natives.userinterface.heatmap.circle.Data.buildJson($)' is private
+					var function:BuildJson data = 'tafat.natives.userinterface.heatmap.circle.Data.buildJson(self)' is private
 					var integer centerX
 					var integer centerY
 					var integer diameter
 
 		sub LineChart
-			var function:BuildJson data = 'tafat.natives.userinterface.linechart.Data.buildJson($);' is private
-			var function:BuildJson values = 'tafat.natives.userinterface.linechart.Values.values($)' is private
+			var function:BuildJson data = 'tafat.natives.userinterface.linechart.Data.buildJson(self);' is private
+			var function:BuildJson values = 'tafat.natives.userinterface.linechart.Values.values(self)' is private
 			Concept Line
-				var function:BuildJson data = 'tafat.natives.userinterface.linechart.line.Data.buildJson($);' is private
+				var function:BuildJson data = 'tafat.natives.userinterface.linechart.line.Data.buildJson(self);' is private
 				var string label
 				var double value is native
