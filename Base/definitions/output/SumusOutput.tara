@@ -13,7 +13,7 @@ Concept SumusOutput extends Output is component
 		self.toStash(self.exportList())
 		--
 	var function:Action process = 'self.toStash(self.plotList().stream().filter(p -> p.checkStep()).collect(toList()));' is private final
-	var function:Action terminate is private final
+	var function:Action terminate = '' is private final
 
 	var function:ToStash toStash is private final
 		--

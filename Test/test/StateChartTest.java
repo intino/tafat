@@ -14,8 +14,8 @@ import static org.hamcrest.core.Is.is;
 
 public class StateChartTest {
 
-	TafatPlatform engine;
-	TestLanguageApplication domain;
+	private TafatPlatform engine;
+	private TestLanguageApplication domain;
 
 	@Before
 	public void setUp() {

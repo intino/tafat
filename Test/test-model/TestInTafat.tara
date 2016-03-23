@@ -1,8 +1,8 @@
 dsl TestLanguage 
 
 Simulation(from = "01/01/2010 00:00:00", to = "01/01/2010 00:00:20")
-	Assertion(that = 'self._model().first(Fridge.class).power()', shouldBe = '20.0', at = "01/01/2010 00:00:01") a1
-	Assertion(that = 'self._model().first(Fridge.class).power()', shouldBe = '30.0', at = "01/01/2010 00:00:02") a2
-	Assertion(that = 'self._model().first(Fridge.class).power()', shouldBe = '100.0', at = "01/01/2010 00:00:15") a3
+	Assertion(that = 'self.model().first(Fridge.class).power()', shouldBe = '20.0', at = "01/01/2010 00:00:01") a1
+	Assertion(that = 'self.model().first(Fridge.class).power()', shouldBe = '30.0', at = "01/01/2010 00:00:02") a2
+	Assertion(that = 'self.model().first(Fridge.class).power()', shouldBe = '100.0', at = "01/01/2010 00:00:15") a3
 
 Fridge(power = 10) f0 > as Electrical4

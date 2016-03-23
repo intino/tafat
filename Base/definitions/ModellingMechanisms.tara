@@ -10,7 +10,7 @@ MetaConcept Action extends PeriodicActivity into prototype feature
 MetaConcept ConditionalAction extends PeriodicActivity into prototype feature
 	var function:Check condition = 'true'
 	var function:Action action
-	var function:Execute execute = '{if(self.condition())self.action();}' is final
+	var function:Execute execute = 'if(self.condition())self.action();' is final
 
 MetaConcept EquationSystem is prototype
 	var word:{Euler} solver = Euler

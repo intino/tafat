@@ -13,7 +13,7 @@ Concept:{1..1} Simulation
 	has Trace
 	has Stop
 
-Concept Output
+Concept Output is abstract
 	var function:Action init is private final
 	var function:Action process is private final
 	var function:Action terminate is private final
@@ -65,10 +65,10 @@ MetaFacet Behavior on Agent
 MetaFacet FmuModel is abstract
 	var string fmuPath is terminal
 	var double step = 0.01 is terminal
-	Concept Input
+	MetaConcept Input into prototype feature
 		var string fmuVariableName
 		var function:Write write
-	Concept Output
+	MetaConcept Output into prototype feature
 		var string fmuVariableName
 		var function:Read read
 

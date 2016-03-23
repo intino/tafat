@@ -21,8 +21,8 @@ Concept LogOutput extends Output is component
 			System.out.format(self.format(), collect.toArray(new Object[collect.size()]));
 		}
 		--
-	var function:Action terminate is private final
-	var string format is private
+	var function:Action terminate = '' is private final
+	var string format = "" is private
 	var integer timeout = 0
 	var function:Check checkStep is private
 		--
@@ -35,4 +35,4 @@ Concept LogOutput extends Output is component
 		--
 	Concept Line
 		var string name
-		var double value is native
+		var double value is reactive

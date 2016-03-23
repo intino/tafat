@@ -1,8 +1,8 @@
 dsl Proteo 
 
 Concept:{0..1} UserInterface
-	var string data = 'buildJson(self)' is native private
-	var string values = 'values(self)' is native private
+	var string data = 'buildJson(self)' is reactive private
+	var string values = 'values(self)' is reactive private
 	var string title
 	var resource:{jpg png} logo
 	var integer port = 8080
@@ -18,7 +18,7 @@ Concept:{0..1} UserInterface
 			var word:Color color
 			Concept Region
 				var function:BuildJson data is private
-				var double value is native
+				var double value is reactive
 				var integer zIndex = 1
 				sub Square
 					var function:BuildJson data = 'tafat.natives.userinterface.heatmap.square.Data.buildJson(self)' is private
@@ -38,4 +38,4 @@ Concept:{0..1} UserInterface
 			Concept Line
 				var function:BuildJson data = 'tafat.natives.userinterface.linechart.line.Data.buildJson(self);' is private
 				var string label
-				var double value is native
+				var double value is reactive

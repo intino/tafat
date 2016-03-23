@@ -26,6 +26,11 @@
             <name>siani-maven-releases</name>
             <url>http://artifactory.siani.es/artifactory/libs-release</url>
         </repository>
+        <repository>
+            <id>siani-maven-snapshot</id>
+            <name>siani-maven-snapshot</name>
+            <url>http://artifactory.siani.es/artifactory/libs-snapshot</url>
+        </repository>
     </repositories>
 
     <build>
@@ -44,7 +49,7 @@
         <dependency>
             <groupId>org.siani.tara</groupId>
             <artifactId>proteo</artifactId>
-            <version>1.0.5-Snapshot</version>
+            <version>1.0.8-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.sparkjava</groupId>
