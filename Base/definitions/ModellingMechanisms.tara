@@ -1,42 +1,43 @@
 dsl Proteo
 
-MetaConcept PeriodicActivity is abstract
+Concept PeriodicActivity is abstract
 	var function:Execute execute is final
 
-MetaConcept Action extends PeriodicActivity into prototype feature
+Concept Action extends PeriodicActivity is feature
 	var function:Action action
 	var function:Execute execute = 'self.action()' is final
 
-MetaConcept ConditionalAction extends PeriodicActivity into prototype feature
+
+Concept ConditionalAction extends PeriodicActivity is feature
 	var function:Check condition = 'true'
 	var function:Action action
 	var function:Execute execute = '{if(self.condition())self.action();}' is final
 
-MetaConcept EquationSystem is prototype
+Concept EquationSystem is component
 	var word:{Euler} solver = Euler
 	var double step = 0.1
-	MetaConcept Element into feature
+	Concept Element is feature
 		var function:Function calculus
 		var double value = 0 is terminal
 		sub Stock:{0..1}
 		sub Flow:{0..1}
 
-MetaConcept StateChart extends PeriodicActivity into prototype feature
+Concept StateChart extends PeriodicActivity is feature
 	var function:Execute execute = 'update(self, step)' is final
 	var string message = ""
 	var function:Message receiveMessage = 'self.message(message);if(self.current() != null) self.current().receiveMessage(message)' is final
 	var StateChart current = empty
-	MetaConcept State extends StateChart
-		MetaConcept Action
+	Concept State extends StateChart
+		Concept Action
 			var function:Action action is final
 			sub EntryAction
 			sub ExitAction
 			sub PeriodicAction
-	MetaConcept Transition 
+	Concept Transition
 		var State from is final
 		var State to is final
-		var function:Action action = ' '
-		MetaConcept:{1..1} Trigger
+		var function:Action action = ''
+		Concept:{1..1} Trigger
 			var function:CheckTransition check
 			sub Condition >var function:CheckTransition check
 			sub TimeBased
@@ -56,15 +57,15 @@ MetaConcept StateChart extends PeriodicActivity into prototype feature
 				var string expectedMessage
 				var function:CheckTransition check = 'self._owner(StateChart.class).message().equals(self.expectedMessage())'
 
-MetaConcept Task into prototype feature
+Concept Task is feature
 	var word[]:DayOfWeek days = Monday Tuesday Wednesday Thursday Friday Saturday Sunday
 	var date scheduledDate = ""
 	var function:Check check = '!self.scheduledDate().isAfter(getDateTime())' is final
 	var function:Action program = 'self.scheduledDate(scheduledDate(self))' is final
-	MetaConcept:{1..1} Start
+	Concept:{1..1} Start
 		var time start is final
 		var integer:Time deviation = 0 minute
-	MetaConcept:{0..1} Finish
+	Concept:{0..1} Finish
 		sub End
 			var time end is final
 			var integer:Time deviation = 0 minute
@@ -73,7 +74,7 @@ MetaConcept Task into prototype feature
 			var integer:Time deviation = 0 minute
 	has Task
 	has JobAction
-	MetaConcept Action
+	Concept Action
 		var function:Action action is final
 		sub StartAction
 		sub RecurrentAction
@@ -100,14 +101,14 @@ Concept Job is feature
 		sub RecurrentAction
 		sub EndAction
 
-MetaConcept TableFunction into prototype feature
-	MetaConcept:{0..1} Interpolation
+Concept TableFunction is feature
+	Concept:{0..1} Interpolation
 		sub NoneInterpolation
 		sub LinearInterpolation
 		sub PolynomialInterpolation
 		sub SplineInterpolation
 		sub StepInterpolation
-	MetaConcept:{0..1} Extrapolation
+	Concept:{0..1} Extrapolation
 		sub NoneExtrapolation
 		sub CustomExtrapolation > var function:Function extrapolationFunction
 		sub NearestPointExtrapolation
@@ -116,7 +117,7 @@ MetaConcept TableFunction into prototype feature
 		sub PolynomialExtrapolation
 		sub SplineExtrapolation
 		sub StepExtrapolation
-	MetaConcept Data
+	Concept Data
 		var double[] input
 		var double output
 	var function:Calculate get = '0' is terminal

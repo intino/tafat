@@ -1,7 +1,7 @@
 package tafat;
 
 import tafat.utils.Random;
-import tara.magritte.Model;
+import tara.magritte.Graph;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 import static java.lang.Thread.sleep;
 import static spark.Spark.*;
 
-public class TafatPlatform extends tafat.ModelWrapper implements tara.magritte.Platform {
+public class TafatPlatform extends tafat.GraphWrapper implements tara.magritte.Platform {
 
 	private static final Logger LOG = Logger.getLogger(TafatPlatform.class.getName());
 	private static ExecutorService executorService = Executors.newFixedThreadPool(1);
@@ -19,27 +19,24 @@ public class TafatPlatform extends tafat.ModelWrapper implements tara.magritte.P
 	private Future<?> submission;
 	private int delay = 1000;
 
-	public TafatPlatform(Model model) {
-		super(model);
+	public TafatPlatform(Graph graph) {
+		super(graph);
 		Random.init(simulation().seed());
 	}
 
 	private void runProfiling() {
-		if(profiling() == null) return;
+		if (profiling() == null) return;
 		java.util.Random random = profiling().seed() == -1 ? new java.util.Random() : new java.util.Random(profiling().seed());
-		profiling().profilerList().forEach(p -> p.execute(model, random));
+		profiling().profilerList().forEach(p -> p.execute(graph, random));
 	}
 
 	@Override
-	public void init(String... args) {
+	public void execute(String... args) {
 		runProfiling();
-		executor = new Executor(model);
+		executor = new Executor(graph);
 		executor.init();
 		initUserInterface();
-	}
 
-	@Override
-	public void execute() {
 		if (userInterface() != null) return;
 		executor.execute();
 	}
@@ -97,8 +94,8 @@ public class TafatPlatform extends tafat.ModelWrapper implements tara.magritte.P
 	}
 
 	private void reloadModel() {
-		model.reload();
-		executor = new Executor(model);
+		graph.reload();
+		executor = new Executor(graph);
 		executor.init();
 	}
 

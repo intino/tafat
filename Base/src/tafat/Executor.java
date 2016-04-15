@@ -5,7 +5,7 @@ import tafat.engine.Date;
 import tafat.instant.InstantTrace;
 import tafat.parallelizable.ParallelizableBehavior;
 import tafat.periodic.PeriodicTrace;
-import tara.magritte.Model;
+import tara.magritte.Graph;
 
 import java.time.ZoneOffset;
 import java.util.Collection;
@@ -21,18 +21,18 @@ public class Executor {
 
 	private static final Logger LOG = Logger.getLogger(Executor.class.getName());
 
-	private final Model model;
-	private final TafatPlatform engine;
+	private final Graph graph;
+	private final TafatPlatform platform;
 	private List<Behavior> parallelBehaviors;
 	private List<Behavior> behaviors;
 
-	public Executor(Model model) {
-		this.model = model;
-		this.engine = model.platform();
+	public Executor(Graph graph) {
+		this.graph = graph;
+		this.platform = graph.platform();
 	}
 
 	public void init() {
-		Date.setDateTime(engine.simulation().from());
+		Date.setDateTime(platform.simulation().from());
 		initEngine();
 		initEvents();
 		initAssertions();
@@ -52,13 +52,13 @@ public class Executor {
 	}
 
 	private void initEvents() {
-		engine.eventList().forEach(e -> timeout(e.instant(), e::execute));
+		platform.eventList().forEach(e -> timeout(e.instant(), e::execute));
 	}
 
 	private void initTraces() {
-		model.find(PeriodicTrace.class)
+		graph.find(PeriodicTrace.class)
 				.forEach(p -> cyclicTimeout(p.timeScale(), traceAction(p.as(Trace.class))));
-		model.find(InstantTrace.class)
+		graph.find(InstantTrace.class)
 				.forEach(p -> p.instants().forEach(i -> timeout(i, traceAction(p.as(Trace.class)))));
 	}
 
@@ -72,20 +72,20 @@ public class Executor {
 	}
 
 	private void initAssertions() {
-		engine.simulation().assertionList().forEach(a -> {
+		platform.simulation().assertionList().forEach(a -> {
 			timeout(a.at(), () -> {
 				if (a.that().equals(a.shouldBe())) return;
-				LOG.info(a.at() + ": assertion " + a._simpleName() + " failed. Expected: " + a.shouldBe() + ". Was: " + a.that());
+				LOG.info(a.at() + ": assertion " + a.name() + " failed. Expected: " + a.shouldBe() + ". Was: " + a.that());
 			});
 		});
 	}
 
 	private void initOutputs() {
-		engine.outputList().forEach(Output::init);
+		platform.outputList().forEach(Output::init);
 	}
 
 	private void initBehaviors() {
-		List<Behavior> behaviors = model.find(Behavior.class);
+		List<Behavior> behaviors = graph.find(Behavior.class);
 		initStateCharts();
 		initTableFunctions();
 		TaskManager.addAll(behaviors.stream().flatMap(b -> b.taskList().stream()).collect(Collectors.toList()));
@@ -95,14 +95,14 @@ public class Executor {
 	}
 
 	private void initStateCharts() {
-		model.find(Behavior.class).stream()
+		graph.find(Behavior.class).stream()
 				.map(Behavior::stateChartList)
 				.flatMap(Collection::stream)
 				.forEach(stateChart -> stateChart.current(stateChart.state(0)));
 	}
 
 	private void initTableFunctions() {
-		model.find(TableFunction.class).stream()
+		graph.find(TableFunction.class).stream()
 				.filter(t -> !t.dataList().isEmpty())
 				.forEach(t -> {
 					try {
@@ -117,10 +117,10 @@ public class Executor {
 	public void run() {
 		TaskManager.update();
 		TimeoutManager.update();
-		engine.simulation().stopList().stream().filter(Stop::when).forEach(Stop::execute);
+		platform.simulation().stopList().stream().filter(Stop::when).forEach(Stop::execute);
 		parallelBehaviors.parallelStream().filter(Behavior::checkStep).forEach(this::run);
 		behaviors.stream().filter(Behavior::checkStep).forEach(this::run);
-		engine.outputList().forEach(Output::process);
+		platform.outputList().forEach(Output::process);
 		Date.plusSeconds(1);
 	}
 
@@ -129,8 +129,8 @@ public class Executor {
 	}
 
 	private long steps() {
-		return (engine.simulation().to().toEpochSecond(ZoneOffset.UTC) -
-				engine.simulation().from().toEpochSecond(ZoneOffset.UTC));
+		return (platform.simulation().to().toEpochSecond(ZoneOffset.UTC) -
+				platform.simulation().from().toEpochSecond(ZoneOffset.UTC));
 	}
 
 }

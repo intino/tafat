@@ -1,11 +1,11 @@
 package tafat.functions;
 
-import tara.io.Instance;
 import tara.magritte.Layer;
+import tara.magritte.Node;
 
 @FunctionalInterface
 public interface Extractor {
 
-	Instance extract(Layer layer);
+	Node extract(Layer layer);
 
 }

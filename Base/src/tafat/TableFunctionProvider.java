@@ -29,7 +29,7 @@ public class TableFunctionProvider {
 	public TableFunctionProvider(TableFunction tableFunction) {
 		this.tableFunction = tableFunction;
 		List<Record> records = recordsOf(tableFunction.dataList());
-		new ArrayList<>(tableFunction.dataList()).stream().forEach(Layer::remove);
+		new ArrayList<>(tableFunction.dataList()).stream().forEach(Layer::delete);
 		dimensions.addAll(dimensionsOf(records));
 	}
 

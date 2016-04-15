@@ -15,7 +15,7 @@ public class Values {
 
 	private static JsonElement jsonObjectOf(UserInterface.Heatmap.Region region) {
 		JsonObject jsonObject = new JsonObject();
-		jsonObject.addProperty("id", region._simpleName());
+		jsonObject.addProperty("id", region.name());
 		jsonObject.addProperty("value", region.value());
 		return jsonObject;
 	}

@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface Stash {
 
-    List<tara.io.Instance> build();
+    List<tara.io.Node> build();
 }

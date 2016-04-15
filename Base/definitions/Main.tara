@@ -14,9 +14,9 @@ Concept:{1..1} Simulation
 	has Stop
 
 Concept Output
-	var function:Action init is private final
-	var function:Action process is private final
-	var function:Action terminate is private final
+	var function:Action init is final
+	var function:Action process is final
+	var function:Action terminate is final
 
 MetaConcept Agent
 	has Knol
@@ -45,10 +45,8 @@ MetaFacet Behavior is abstract
 		self.timeout(self.timeout() - 1);
 		return false;
 		--
-	MetaConcept Start is final into feature prototype
+	Concept Start is final feature
 		var function:Action start is final
-	MetaConcept Knol is final into prototype feature
-		has Knol
 	has PeriodicActivity
 	has Action is final
 	has ConditionalAction is final

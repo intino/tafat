@@ -7,7 +7,7 @@ Concept Assertion is component
 Concept Trace is component
 	var function:Trace print
 Concept Stop is component
-	var boolean when is native
+	var boolean when is reactive
 	var function:Action execute = 'self.model().<TafatPlatform>platform().stop()' is private final
 
 Facet Periodic on Trace
@@ -27,4 +27,4 @@ Facet Instant on Trace
 	var date[] instants
 
 Facet Conditional on Trace
-	var boolean check is native
+	var boolean check is reactive
