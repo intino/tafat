@@ -2,10 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/base/Base.iml" filepath="$PROJECT_DIR$/base/Base.iml" />
+      <module fileurl="file://$PROJECT_DIR$/test/Test.iml" filepath="$PROJECT_DIR$/test/Test.iml" />
       <module fileurl="file://$PROJECT_DIR$/Toolbox/Toolbox.iml" filepath="$PROJECT_DIR$/Toolbox/Toolbox.iml" />
-      <module fileurl="file://$PROJECT_DIR$/base/base.iml" filepath="$PROJECT_DIR$/base/base.iml" />
       <module fileurl="file://$PROJECT_DIR$/site/site.iml" filepath="$PROJECT_DIR$/site/site.iml" />
-      <module fileurl="file://$PROJECT_DIR$/test/test.iml" filepath="$PROJECT_DIR$/test/test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/base/tafat-platform.iml" filepath="$PROJECT_DIR$/base/tafat-platform.iml" />
     </modules>
   </component>
 </project>

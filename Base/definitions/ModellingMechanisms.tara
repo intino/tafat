@@ -11,7 +11,7 @@ Concept Action extends PeriodicActivity is feature
 Concept ConditionalAction extends PeriodicActivity is feature
 	var function:Check condition = 'true'
 	var function:Action action
-	var function:Execute execute = '{if(self.condition())self.action();}' is final
+	var function:Execute execute = 'if(self.condition())self.action();' is final
 
 Concept EquationSystem is component
 	var word:{Euler} solver = Euler
