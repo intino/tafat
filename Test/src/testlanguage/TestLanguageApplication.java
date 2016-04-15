@@ -1,11 +1,11 @@
 package testlanguage;
 
-import tara.magritte.Model;
+import tara.magritte.Graph;
 
-public class TestLanguageApplication extends testlanguage.ModelWrapper implements tara.magritte.Application {
+public class TestLanguageApplication extends testlanguage.GraphWrapper implements tara.magritte.Application {
 
-	public TestLanguageApplication(Model model) {
-		super(model);
+	public TestLanguageApplication(Graph graph) {
+		super(graph);
 		// Insert code here
 	}
 }

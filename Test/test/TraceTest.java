@@ -1,6 +1,6 @@
 import org.junit.Before;
 import org.junit.Test;
-import tara.magritte.Model;
+import tara.magritte.Graph;
 import testlanguage.TestLanguageApplication;
 import tafat.TafatPlatform;
 
@@ -11,10 +11,10 @@ public class TraceTest {
 
 	@Before
 	public void setUp() {
-		Model model = Model.load("Trace").init(TestLanguageApplication.class, TafatPlatform.class);
+		Graph model = Graph.load("Trace").wrap(TestLanguageApplication.class, TafatPlatform.class);
 		this.platform = model.<TafatPlatform>platform();
 		this.application = model.<TestLanguageApplication>application();
-		this.platform.init();
+		this.platform.execute();
 	}
 
 	@Test
@@ -23,8 +23,7 @@ public class TraceTest {
 	}
 
 	public static void main(String[] args) {
-		Model model = Model.load("Trace").init(TestLanguageApplication.class, TafatPlatform.class);
-		model.platform().init();
+		Graph model = Graph.load("Trace").wrap(TestLanguageApplication.class, TafatPlatform.class);
 		model.platform().execute();
 	}
 }

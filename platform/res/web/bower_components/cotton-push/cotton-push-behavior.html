@@ -1,0 +1,51 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<script src="PushService.js"></script>
+
+<script>
+'use strict';
+
+var CottonBehaviors = CottonBehaviors || {};
+
+CottonBehaviors.PushBehavior = {
+  properties: {
+    _pushRegistrations: {
+      type: Array,
+      readOnly: true,
+      value: function() { return []; }
+    }
+  },
+
+  detached: function () {
+    this._pushRegistrations.forEach(function (registrations) {
+      registrations.deregister();
+    });
+    this._pushRegistrations.splice(0, this._pushRegistrations.length);
+  },
+
+  when: function (message) {
+    var register = this._register.bind(this);
+    var display = this.display;
+    return {
+      toSelf: function () {
+        return {
+          execute: function (action) {
+            register(PushService.registerCallback(message, function (parameters) {
+              if (parameters.id === display.id) {
+                action(parameters);
+              }
+            }));
+          }
+        }
+      },
+      execute: function (action) {
+        register(PushService.registerCallback(message, action));
+      }
+    };
+  },
+
+  _register: function (registration) {
+    this._pushRegistrations.push(registration);
+  }
+};
+</script>

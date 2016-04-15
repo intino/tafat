@@ -1,12 +1,12 @@
 import tafat.TafatPlatform;
-import tara.magritte.Model;
+import tara.magritte.Graph;
 import testlanguage.TestLanguageApplication;
 
 public class UserInterfaceTest {
 
 	public static void main(String[] args) throws Exception{
-		Model model = Model.load("UserInterface").init(TestLanguageApplication.class, TafatPlatform.class);
+		Graph model = Graph.load("UserInterface").wrap(TestLanguageApplication.class, TafatPlatform.class);
 		TafatPlatform engine = model.platform();
-		engine.init();
+		engine.execute();
 	}
 }

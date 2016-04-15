@@ -1,0 +1,24 @@
+{
+  "name": "cotton-footer",
+  "version": "1.1.2",
+  "authors": [
+    "SIANI <info.cottons@siani.es>"
+  ],
+  "description": "Footer for a suite application.",
+  "main": "cotton-footer.html",
+  "license": "MIT",
+  "homepage": "https://bitbucket.org/cottons/cotton-footer/",
+  "ignore": [
+    "/.*",
+    "/test/"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.2.0",
+    "paper-tabs": "PolymerElements/paper-tabs#~1.0.4",
+    "paper-icon-button": "PolymerElements/paper-icon-button#~1.0.5",
+    "neon-animation": "PolymerElements/neon-animation#^1.1.0"
+  },
+  "devDependencies": {
+    "web-component-tester": "*"
+  }
+}

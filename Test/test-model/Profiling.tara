@@ -6,6 +6,6 @@ Profiling(seed = 2)
 	Profiler
 		execute
 			--
-			TestLanguageApplication application = model.<TestLanguageApplication>application();
-			range(0, 5).forEach(i -> application.newFridge("Model").power(random.nextDouble()));
+			TestLanguageApplication application = graph.<TestLanguageApplication>application();
+					range(0, 5).forEach(i -> application.create().fridge().power(random.nextDouble()));
 			--

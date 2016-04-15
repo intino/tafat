@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>cotton-user Sample</title>
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="../cotton-user.html">
+    <link rel="import" href="../../paper-toolbar/paper-toolbar.html">
+    <style is="custom-style">
+      body {
+        margin: 0;
+        --paper-toolbar: {
+          .title {
+            line-height: 97px;
+          }
+        };
+      }
+
+      div {
+        height: 100px;
+      }
+
+      div#tall cotton-user {
+        --photo-size: 100px;
+        --photo-border: 3px solid #fff;
+      }
+
+      .flexchild {
+        @apply(--layout-flex);
+      }
+    </style>
+  </head>
+  <body>
+    <div style="height: 100px;">
+      <paper-toolbar>
+        <div class="title">Lorem ipsum</div>
+        <cotton-user full-name="Rubén Díaz Martínez" photo="image.png" right></cotton-user>
+      </paper-toolbar>
+    </div>
+
+    <script>
+      document.addEventListener('edit-profile', function () {
+        alert('Edit user profile');
+      });
+      document.addEventListener('logout', function () {
+        alert('Logout');
+      });
+    </script>
+  </body>
+</html>

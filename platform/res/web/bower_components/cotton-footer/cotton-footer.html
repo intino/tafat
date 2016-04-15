@@ -1,0 +1,164 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-tabs/paper-tabs.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../neon-animation/neon-animation-runner-behavior.html">
+<link rel="import" href="../neon-animation/animations/slide-from-bottom-animation.html">
+<link rel="import" href="../neon-animation/animations/slide-down-animation.html">
+
+<dom-module id="cotton-footer">
+
+<style>
+:host {
+  display: block;
+  --paper-tabs: {
+    font-size: 16px;
+    font-weight: 300;
+    height: 42px;
+    color: var(--text-primary-color);
+    width: 100%;
+  };
+
+  --paper-tab: {
+    padding-left: 15px;
+    padding-right: 15px;
+    text-transform: lowercase;
+  };
+  --paper-tab-ink: var(--accent-color);
+  --paper-tabs-selection-bar-color: var(--accent-color);
+  --paper-icon-button-ink-color: var(--accent-color);
+
+  background-color: var(--footer-background-color, #E7E9EE);
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 42px;
+}
+
+:host:not([extensible]) paper-icon-button {
+  display: none;
+}
+
+footer > paper-tabs > paper-icon-button {
+  color: var(--text-primary-color);
+}
+
+footer > h5 {
+  text-align: right;
+  color: var(--text-primary-color);
+  display: inline-block;
+  margin: 0;
+  position: absolute;
+  right: 5px;
+  bottom: 8px;
+  font-family: 'Rubik', 'Roboto', 'Noto', sans-serif;
+  font-weight: lighter;
+  font-size: 8pt;
+  @apply(--footer-text);
+}
+
+footer > h5 > a {
+  font-style: italic;
+  text-decoration: none;
+  font-weight: normal;
+  color: var(--text-primary-color);
+}
+
+@media all and (max-width: 600px) {
+  footer > h5 {
+    display: none;
+  }
+}
+
+</style>
+
+<template>
+  <footer>
+    <paper-tabs selected="{{selectedTab}}" align-bottom scrollable>
+      <template is="dom-repeat" items="{{tabs}}">
+        <paper-tab>{{item}}</paper-tab>
+      </template>
+      <paper-icon-button icon="icons:add" id="newTab" on-tap="_newTabPressed"></paper-icon-button>
+    </paper-tabs>
+    <template is="dom-if" if="{{poweredBy}}" restamp="true">
+      <h5>
+        powered by <a href="{{link}}" target="_blank">{{poweredBy}}</a>
+      </h5>
+    </template>
+  </footer>
+</template>
+
+<script>
+Polymer({
+  is: 'cotton-footer',
+
+  properties: {
+    tabs: {
+      type: Array,
+      observer: 'refresh'
+    },
+    selectedTab: {
+      type: String,
+      value: "0",
+      notify: true
+    },
+    poweredBy: String,
+    link: String,
+    animationConfig: {
+      type: Object,
+      value: function () {
+        return {
+          'show': [{
+            name: 'slide-from-bottom-animation',
+            node: this
+          }],
+          'hide': [{
+            name: 'slide-down-animation',
+            node: this
+          }]
+        };
+      }
+    },
+    _opened: Boolean
+  },
+
+  behaviors: [Polymer.NeonAnimationRunnerBehavior],
+
+  listeners: {
+    'neon-animation-finish': '_onNeonAnimationFinish'
+  },
+
+  ready: function () {
+    this._opened = true;
+  },
+
+  refresh: function () {
+    this.querySelector('paper-tabs').notifyResize();
+  },
+
+  show: function () {
+    this.playAnimation('show');
+    this.style.display = 'block';
+    this._opened = true;
+  },
+
+  hide: function () {
+    this.playAnimation('hide');
+    this._opened = false;
+  },
+
+  _onNeonAnimationFinish: function () {
+    if (!this._opened) {
+      this.style.transform = 'translateY(100%)';
+      this.style.display = 'none';
+    } else {
+      this.style.transform = 'translateY(0%)';
+    }
+  },
+
+  _newTabPressed: function (e) {
+    this.fire('new-tab-pressed');
+  }
+});
+</script>
+</dom-module>

@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <title>cotton-footer Demo</title>
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="../cotton-footer.html">
+    <style>
+    body {
+        margin: 0;
+    }
+
+    body > div {
+        position: relative;
+        width: 100%;
+        height: 150px;
+    }
+    </style>
+</head>
+<body unresolved>
+
+    <div>
+        <custom-element-showing-tab></custom-element-showing-tab>
+    </div>
+
+    <dom-module id="custom-element-showing-tab">
+        <template>
+
+        <style>
+        h3, h4 {
+            padding-left: 10px;
+        }
+
+        :host {
+            --text-primary-color: black;
+            --footer-text: {
+                font-size: 10pt;
+            };
+        }
+        </style>
+
+        <h3>cotton-footer</h3>
+        <h4>Current tab <span>{{currentTab}}</span></h4>
+        <cotton-footer tabs='["Home", "Admin", "Settings"]' selected-tab="{{currentTab}}" powered-by="Tafat" link="https://bitbucket.org/siani/tafat-platform"></cotton-footer>
+    </template>
+
+    <script>
+    Polymer({
+        is: 'custom-element-showing-tab',
+
+        properties: {
+            currentTab: {
+                type: String,
+                value: "0",
+                notify: true
+            }
+        }
+    });
+    </script>
+</dom-module>
+</body>
+</html>

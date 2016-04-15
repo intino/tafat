@@ -1,6 +1,6 @@
 import org.junit.Before;
 import org.junit.Test;
-import tara.magritte.Model;
+import tara.magritte.Graph;
 import testlanguage.TestLanguageApplication;
 import tafat.TafatPlatform;
 
@@ -14,10 +14,10 @@ public class ProfilingTest {
 
 	@Before
 	public void setUp() {
-		Model model = Model.load("Profiling").init(TestLanguageApplication.class, TafatPlatform.class);
+		Graph model = Graph.load("Profiling").wrap(TestLanguageApplication.class, TafatPlatform.class);
 		this.platform = model.platform();
 		this.application = model.application();
-		this.platform.init();
+		this.platform.execute();
 	}
 
 	@Test

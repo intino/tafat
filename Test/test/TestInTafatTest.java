@@ -2,7 +2,7 @@ import org.junit.Before;
 import org.junit.Test;
 import tafat.Executor;
 import tafat.TafatPlatform;
-import tara.magritte.Model;
+import tara.magritte.Graph;
 import testlanguage.TestLanguageApplication;
 
 import java.io.ByteArrayOutputStream;
@@ -20,10 +20,10 @@ public class TestInTafatTest {
 
 	@Before
 	public void setUp() {
-		Model model = Model.load("TestInTafat").init(TestLanguageApplication.class, TafatPlatform.class);
+		Graph model = Graph.load("TestInTafat").wrap(TestLanguageApplication.class, TafatPlatform.class);
 		this.platform = model.<TafatPlatform>platform();
 		this.application = model.<TestLanguageApplication>application();
-		this.platform.init();
+		this.platform.execute();
 	}
 
 	@Test

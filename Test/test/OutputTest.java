@@ -1,7 +1,7 @@
 import org.junit.Before;
 import org.junit.Test;
 import tafat.TafatPlatform;
-import tara.magritte.Model;
+import tara.magritte.Graph;
 import testlanguage.TestLanguageApplication;
 
 public class OutputTest {
@@ -11,10 +11,10 @@ public class OutputTest {
 
 	@Before
 	public void setUp() {
-		Model model = Model.load("Output").init(TestLanguageApplication.class, TafatPlatform.class);
+		Graph model = Graph.load("Output").wrap(TestLanguageApplication.class, TafatPlatform.class);
 		this.engine = model.platform();
 		this.domain = model.application();
-		this.engine.init();
+		this.engine.execute();
 	}
 
 	@Test
