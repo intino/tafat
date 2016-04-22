@@ -30,13 +30,16 @@ public class TafatPlatform extends tafat.GraphWrapper implements tara.magritte.P
 		profiling().profilerList().forEach(p -> p.execute(graph, random));
 	}
 
-	@Override
-	public void execute(String... args) {
+	public void init() {
 		runProfiling();
 		executor = new Executor(graph);
 		executor.init();
 		initUserInterface();
+	}
 
+	@Override
+	public void execute(String... args) {
+		init();
 		if (userInterface() != null) return;
 		executor.execute();
 	}

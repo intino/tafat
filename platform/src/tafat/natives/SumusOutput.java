@@ -1,4 +1,4 @@
-package tafat.actions;
+package tafat.natives;
 
 import tara.io.Node;
 import tara.io.Stash;

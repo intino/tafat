@@ -11,4 +11,4 @@ Behavior Electrical on Router
 			State Connected > EntryAction('System.out.println("Connected")')
 			Transition(Connecting, Connected) > After(15 seconds)
 		Transition(Idle, Working) > Condition('self.mode() == On;')
-		Transition(Working, Idle) > Condition('return self.mode() == Router.Mode.Off;')
+		Transition(Working, Idle) > Condition('self.mode() == Router.Mode.Off;')
