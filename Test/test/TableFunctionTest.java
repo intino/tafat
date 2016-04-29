@@ -2,10 +2,10 @@ import org.junit.Before;
 import org.junit.Test;
 import tafat.TafatPlatform;
 import tara.magritte.Graph;
-import testlanguage.Fridge;
-import testlanguage.TestLanguageApplication;
-import testlanguage.electrical5.Electrical5Fridge;
-import testlanguage.electrical6.Electrical6Fridge;
+import test.Fridge;
+import test.TestApplication;
+import test.electrical5.Electrical5Fridge;
+import test.electrical6.Electrical6Fridge;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
@@ -14,11 +14,11 @@ import static org.junit.Assert.assertThat;
 public class TableFunctionTest {
 
 	TafatPlatform platform;
-	TestLanguageApplication application;
+	TestApplication application;
 
 	@Before
 	public void setUp() {
-		Graph graph = Graph.load("TableFunction").wrap(TestLanguageApplication.class, TafatPlatform.class);
+		Graph graph = Graph.load("TableFunction").wrap(TestApplication.class, TafatPlatform.class);
 		this.platform = graph.platform();
 		this.application = graph.application();
 		this.platform.execute();

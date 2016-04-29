@@ -1,4 +1,4 @@
-package tafat.natives;
+package tafat;
 
 public class Main {
 	public static boolean checkStep(tafat.Behavior self) {

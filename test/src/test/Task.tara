@@ -4,7 +4,7 @@ use Main
 
 Behavior Consumer on Family
 	Task > Start("06:00", 10 minutes); Duration(120 minutes, 10 minutes)
-		StartAction('System.out.println("Switching on lights");')
+		StartAction(@action)
 
 	Task(Monday Tuesday Wednesday Thursday Friday) > Start("06:30", 20 minutes)
 		StartAction('System.out.println("Making coffee")')

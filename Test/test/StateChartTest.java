@@ -3,10 +3,10 @@ import org.junit.Test;
 import tafat.TafatPlatform;
 import tafat.behavior.BehaviorEntity;
 import tara.magritte.Graph;
-import testlanguage.Fridge;
-import testlanguage.TestLanguageApplication;
-import testlanguage.electrical2.Electrical2Fridge;
-import testlanguage.electrical3.Electrical3Fridge;
+import test.Fridge;
+import test.TestApplication;
+import test.electrical2.Electrical2Fridge;
+import test.electrical3.Electrical3Fridge;
 
 import static java.util.stream.IntStream.range;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -15,11 +15,11 @@ import static org.hamcrest.core.Is.is;
 public class StateChartTest {
 
 	private TafatPlatform platform;
-	private TestLanguageApplication domain;
+	private TestApplication domain;
 
 	@Before
 	public void setUp() {
-		Graph model = Graph.load("StateChart").wrap(TestLanguageApplication.class, TafatPlatform.class);
+		Graph model = Graph.load("StateChart").wrap(TestApplication.class, TafatPlatform.class);
 		this.platform = model.platform();
 		this.domain = model.application();
 		platform.init();

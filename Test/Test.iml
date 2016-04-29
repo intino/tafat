@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module type="JAVA_MODULE" version="4">
+<module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="Tara" name="Tara">
       <configuration>
-        <dsl>Tafat</dsl>
-        <genDslName>TestLanguage</genDslName>
-        <level>1</level>
+        <type>Application</type>
+        <platformDsl />
+        <applicationDsl>Tafat</applicationDsl>
+        <systemDsl>Test</systemDsl>
+        <applicationOutDsl>Test</applicationOutDsl>
+        <testModule>true</testModule>
       </configuration>
     </facet>
   </component>
@@ -16,10 +19,9 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/gen" isTestSource="false" generated="true" />
       <sourceFolder url="file://$MODULE_DIR$/res" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/definitions" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/test-res" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/test-model" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/test-res" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/test-gen" isTestSource="true" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

@@ -1,7 +1,7 @@
 dsl Proteo
 
 use Control
-use UserInterface
+use GUI
 use ModellingMechanisms
 
 Concept:{1..1} Simulation

@@ -3,7 +3,7 @@
   <component name="FacetManager">
     <facet type="Tara" name="Tara">
       <configuration>
-        <genDslName>Tafat</genDslName>
+        <platformOutDsl>Tafat</platformOutDsl>
       </configuration>
     </facet>
   </component>

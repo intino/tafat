@@ -3,7 +3,7 @@ import org.junit.Test;
 import tafat.Executor;
 import tafat.TafatPlatform;
 import tara.magritte.Graph;
-import testlanguage.TestLanguageApplication;
+import test.TestApplication;
 
 import java.io.ByteArrayOutputStream;
 import java.util.logging.Logger;
@@ -16,13 +16,13 @@ import static org.junit.Assert.assertThat;
 public class TestInTafatTest {
 
 	TafatPlatform platform;
-	TestLanguageApplication application;
+	TestApplication application;
 
 	@Before
 	public void setUp() {
-		Graph model = Graph.load("TestInTafat").wrap(TestLanguageApplication.class, TafatPlatform.class);
+		Graph model = Graph.load("TestInTafat").wrap(TestApplication.class, TafatPlatform.class);
 		this.platform = model.<TafatPlatform>platform();
-		this.application = model.<TestLanguageApplication>application();
+		this.application = model.<TestApplication>application();
 		this.platform.execute();
 	}
 

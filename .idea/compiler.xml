@@ -33,6 +33,13 @@
         <module name="platform" />
         <module name="tafat-platform" />
       </profile>
+      <profile default="false" name="Annotation profile for test" enabled="true">
+        <sourceOutputDir name="../out/build/test/generated-sources/annotations" />
+        <sourceTestOutputDir name="../out/build/test/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="true" />
+        <module name="test" />
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="Base" target="1.8" />
@@ -45,6 +52,7 @@
       <module name="tafat-platform" target="1.8" />
       <module name="test" target="1.8" />
       <module name="Test" target="1.8" />
+      <module name="test-m2" target="1.8" />
       <module name="TestLanguage" target="1.8" />
       <module name="TestModel" target="1.8" />
       <module name="Toolbox" target="1.8" />

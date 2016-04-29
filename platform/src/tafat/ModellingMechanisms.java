@@ -1,4 +1,4 @@
-package tafat.natives;
+package tafat;
 
 import tafat.StateChart;
 import tafat.Task;

@@ -1,19 +1,19 @@
 import org.junit.Before;
 import org.junit.Test;
 import tara.magritte.Graph;
-import testlanguage.TestLanguageApplication;
+import test.TestApplication;
 import tafat.TafatPlatform;
 
 public class TraceTest {
 
 	TafatPlatform platform;
-	TestLanguageApplication application;
+	TestApplication application;
 
 	@Before
 	public void setUp() {
-		Graph model = Graph.load("Trace").wrap(TestLanguageApplication.class, TafatPlatform.class);
+		Graph model = Graph.load("Trace").wrap(TestApplication.class, TafatPlatform.class);
 		this.platform = model.<TafatPlatform>platform();
-		this.application = model.<TestLanguageApplication>application();
+		this.application = model.<TestApplication>application();
 		this.platform.execute();
 	}
 
@@ -23,7 +23,7 @@ public class TraceTest {
 	}
 
 	public static void main(String[] args) {
-		Graph model = Graph.load("Trace").wrap(TestLanguageApplication.class, TafatPlatform.class);
+		Graph model = Graph.load("Trace").wrap(TestApplication.class, TafatPlatform.class);
 		model.platform().execute();
 	}
 }

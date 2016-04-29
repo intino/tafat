@@ -1,4 +1,4 @@
-package tafat.natives;
+package tafat;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -10,7 +10,7 @@ import static java.time.format.DateTimeFormatter.ofPattern;
 import static tafat.engine.Date.getDateTime;
 import static tafat.engine.helpers.ImageHelper.base64;
 
-public class UserInterface {
+public class GUI {
 	public static String jsonData(tafat.UserInterface self) {
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.addProperty("title", self.title());
@@ -20,7 +20,7 @@ public class UserInterface {
 		return jsonObject.toString();
 	}
 
-	private static JsonArray arrayOfComponents(List<tafat.UserInterface.GraphicalComponent> components) {
+	private static JsonArray arrayOfComponents(List<UserInterface.GraphicalComponent> components) {
 		JsonArray array = new JsonArray();
 		components.forEach(r -> array.add(r.data()));
 		return array;
@@ -33,20 +33,20 @@ public class UserInterface {
 		return jsonObject.toString();
 	}
 
-	private static JsonArray arrayOf(List<tafat.UserInterface.GraphicalComponent> components) {
+	private static JsonArray arrayOf(List<UserInterface.GraphicalComponent> components) {
 		JsonArray array = new JsonArray();
 		components.forEach(r -> array.add(objectOf(r)));
 		return array;
 	}
 
-	private static JsonObject objectOf(tafat.UserInterface.GraphicalComponent component) {
+	private static JsonObject objectOf(UserInterface.GraphicalComponent component) {
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.addProperty("title", component.title());
 		jsonObject.add("values", component.values());
 		return jsonObject;
 	}
 
-	public static JsonElement heatmapData(tafat.UserInterface.Heatmap self) {
+	public static JsonElement heatmapData(UserInterface.Heatmap self) {
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.addProperty("type", "heatmap");
 		jsonObject.addProperty("title", self.title());
@@ -56,26 +56,26 @@ public class UserInterface {
 		return jsonObject;
 	}
 
-	private static JsonArray arrayOfRegions(List<? extends tafat.UserInterface.Heatmap.Region> regions) {
+	private static JsonArray arrayOfRegions(List<? extends UserInterface.Heatmap.Region> regions) {
 		JsonArray array = new JsonArray();
 		regions.forEach(r -> array.add(r.data()));
 		return array;
 	}
 
-	public static JsonElement heatmapValues(tafat.UserInterface.Heatmap self) {
+	public static JsonElement heatmapValues(UserInterface.Heatmap self) {
 		JsonArray array = new JsonArray();
 		self.regionList().forEach(r -> array.add(jsonObjectOf(r)));
 		return array;
 	}
 
-	private static JsonElement jsonObjectOf(tafat.UserInterface.Heatmap.Region region) {
+	private static JsonElement jsonObjectOf(UserInterface.Heatmap.Region region) {
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.addProperty("id", region.name());
 		jsonObject.addProperty("value", region.value());
 		return jsonObject;
 	}
 
-	public static JsonElement buildSquareJson(tafat.UserInterface.Heatmap.Square self) {
+	public static JsonElement buildSquareJson(UserInterface.Heatmap.Square self) {
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.addProperty("id", self.name());
 		jsonObject.addProperty("type", "square");
@@ -87,7 +87,7 @@ public class UserInterface {
 		return jsonObject;
 	}
 
-	public static JsonElement buildCircleJson(tafat.UserInterface.Heatmap.Circle self) {
+	public static JsonElement buildCircleJson(UserInterface.Heatmap.Circle self) {
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.addProperty("id", self.name());
 		jsonObject.addProperty("type", "circle");
@@ -99,7 +99,7 @@ public class UserInterface {
 		return jsonObject;
 	}
 
-	public static JsonElement buildLineChartJson(tafat.UserInterface.LineChart self) {
+	public static JsonElement buildLineChartJson(UserInterface.LineChart self) {
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.addProperty("type", "chart");
 		jsonObject.addProperty("title", self.title());
@@ -107,26 +107,26 @@ public class UserInterface {
 		return jsonObject;
 	}
 
-	private static JsonArray arrayOfLines(List<tafat.UserInterface.LineChart.Line> lines) {
+	private static JsonArray arrayOfLines(List<UserInterface.LineChart.Line> lines) {
 		JsonArray array = new JsonArray();
 		lines.forEach(l -> array.add(l.data()));
 		return array;
 	}
 
-	public static JsonElement getLineChartValues(tafat.UserInterface.LineChart self) {
+	public static JsonElement getLineChartValues(UserInterface.LineChart self) {
 		JsonArray array = new JsonArray();
 		self.lineList().forEach(l -> array.add(jsonObjectOf(l)));
 		return array;
 	}
 
-	private static JsonElement jsonObjectOf(tafat.UserInterface.LineChart.Line line) {
+	private static JsonElement jsonObjectOf(UserInterface.LineChart.Line line) {
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.addProperty("id", line.label());
 		jsonObject.addProperty("value", line.value());
 		return jsonObject;
 	}
 
-	public static JsonElement buildLineJson(tafat.UserInterface.LineChart.Line self) {
+	public static JsonElement buildLineJson(UserInterface.LineChart.Line self) {
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.addProperty("id", self.name());
 		jsonObject.addProperty("label", self.label());

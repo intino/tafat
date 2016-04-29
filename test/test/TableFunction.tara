@@ -1,8 +1,6 @@
-dsl TestLanguage 
+dsl Test
 
 Simulation(from = "01/01/2010 00:00:00", to = "02/01/2010 00:00:00")
 
-Fridge f5
-	as Electrical5
-Fridge f6
-	as Electrical6
+Fridge f5 as Electrical5
+Fridge f6 as Electrical6

@@ -1,7 +1,7 @@
 import org.junit.Before;
 import org.junit.Test;
 import tara.magritte.Graph;
-import testlanguage.TestLanguageApplication;
+import test.TestApplication;
 import tafat.TafatPlatform;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -10,11 +10,11 @@ import static org.junit.Assert.assertThat;
 public class ProfilingTest {
 
 	TafatPlatform platform;
-	TestLanguageApplication application;
+	TestApplication application;
 
 	@Before
 	public void setUp() {
-		Graph model = Graph.load("Profiling").wrap(TestLanguageApplication.class, TafatPlatform.class);
+		Graph model = Graph.load("Profiling").wrap(TestApplication.class, TafatPlatform.class);
 		this.platform = model.platform();
 		this.application = model.application();
 		this.platform.execute();

@@ -1,6 +1,7 @@
 .idea/workspace.xml
 out/
-Engine/gen/
+*/gen/
+*/test-gen/
 Engine/.idea/workspace.xml
 SGIFramework/target
 SGISite/target
@@ -13,11 +14,8 @@ Tafat.language
 dsl/Tafat.reload
 dsl/Tafat/
 .tara/
-.idea/libraries/Maven__com_esotericsoftware_minlog_1_3_0.xml
 .idea/libraries/
 site/node_modules/
 site/dist/
 site/bower_components/
 site/.tmp/
-TestLanguage/res/
-TestModel/res/
