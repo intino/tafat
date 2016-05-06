@@ -1,8 +1,8 @@
 import org.junit.Before;
 import org.junit.Test;
 import tara.magritte.Graph;
-import test.TestApplication;
 import tafat.TafatPlatform;
+import test.TestApplication;
 
 public class TraceTest {
 

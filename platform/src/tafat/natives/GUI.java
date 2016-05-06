@@ -1,8 +1,9 @@
-package tafat;
+package tafat.natives;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import tafat.UserInterface;
 
 import java.util.List;
 

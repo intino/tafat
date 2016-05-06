@@ -128,3 +128,6 @@ Concept TableFunction is feature
 Concept Map
 	var function:Get get = '0' is final
 	Concept Entry >var string key;var double value
+
+Concept Rule
+	var boolean check is reactive

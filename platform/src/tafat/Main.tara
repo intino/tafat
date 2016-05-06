@@ -49,6 +49,7 @@ MetaFacet Behavior is abstract
 	has TableFunction is final
 	has Job is final
 	has Map is final
+	has Rule is final
 
 MetaFacet Behavior on Entity
 MetaFacet Behavior on Agent
