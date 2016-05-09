@@ -92,7 +92,7 @@ public class TableFunctionProvider {
 
 	private Dimension findDimension(double... inputs) {
 		Dimension[] result = new Dimension[] {dimensionWith(dimensions, inputs[0])};
-		range(1, inputs.length - 1).forEach(i -> result[0] = dimensionWith(result[0].dimensions(), inputs[i]));
+		for (int i = 1; i < inputs.length - 1; i++) result[0] = dimensionWith(result[0].dimensions(), inputs[i]);
 		return result[0].dimensions().get(0);
 	}
 

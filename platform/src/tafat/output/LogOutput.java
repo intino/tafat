@@ -2,7 +2,9 @@ package tafat.output;
 
 import tara.magritte.Layer;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static java.time.format.DateTimeFormatter.ofPattern;
 import static java.util.stream.Collectors.toList;
@@ -20,7 +22,7 @@ public class LogOutput {
 
 	public static void process(tafat.LogOutput self) {
 		if (self.checkStep()) {
-			List<Object> collect = self.lineList().stream().map(tafat.LogOutput.Line::value).collect(toList());
+			List<Object> collect = collectValues(self);
 			collect.add(0, getDateTime().format(ofPattern("dd/MM/yyyy HH:mm:ss")));
 			System.out.format(self.format(), collect.toArray(new Object[collect.size()]));
 		}
@@ -33,5 +35,12 @@ public class LogOutput {
 		}
 		self.timeout(self.timeout() - 1);
 		return false;
+	}
+
+	@SuppressWarnings("Convert2streamapi")
+	private static List<Object> collectValues(tafat.LogOutput self) {
+		List<Object> result = new ArrayList<>();
+		for (tafat.LogOutput.Line line : self.lineList()) result.add(line.value());
+		return result;
 	}
 }

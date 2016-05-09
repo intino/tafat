@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,7 +23,7 @@ public class SumusOutput {
 	}
 
 	public static void process(tafat.SumusOutput self) {
-		self.toStash(self.plotList().stream().filter(tafat.SumusOutput.Plot::checkStep).collect(toList()));
+		self.toStash(plotListToWrite(self));
 	}
 
 	public static void toStash(tafat.SumusOutput self, List<? extends tafat.SumusOutput.Extractor> extractors) {
@@ -33,7 +34,7 @@ public class SumusOutput {
 	public static Stash createStash(tafat.SumusOutput self, List<? extends tafat.SumusOutput.Extractor> extractors) {
 		Stash stash = new tara.io.Stash();
 		stash.language = self.language();
-		extractors.stream().forEach(e -> stash.nodes.addAll(e.buildStash()));
+		for (tafat.SumusOutput.Extractor extractor : extractors) stash.nodes.addAll(extractor.buildStash());
 		return stash;
 	}
 
@@ -60,7 +61,7 @@ public class SumusOutput {
 	}
 
 	public static List<tara.io.Node> buildStashOfMembers(tafat.SumusOutput.Export self) {
-		return self.collect().parallelStream().map(l -> self.extractMember(l)).collect(Collectors.toList());
+		return self.collect().parallelStream().map(self::extractMember).collect(Collectors.toList());
 	}
 
 	public static String getPlotPath(tafat.SumusOutput.Plot self) {
@@ -73,6 +74,16 @@ public class SumusOutput {
 	}
 
 	public static List<Node> buildStashOfFacts(tafat.SumusOutput.Plot self) {
-		return self.collect().parallelStream().map(l -> self.extractFact(l)).collect(toList());
+		return self.collect().parallelStream().map(self::extractFact).collect(toList());
 	}
+
+	@SuppressWarnings("Convert2streamapi")
+	private static List<tafat.SumusOutput.Plot> plotListToWrite(tafat.SumusOutput self) {
+		List<tafat.SumusOutput.Plot> result = new ArrayList<>();
+		for (tafat.SumusOutput.Plot plot : self.plotList())
+			if (plot.checkStep())
+				result.add(plot);
+		return result;
+	}
+
 }

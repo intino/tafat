@@ -26,14 +26,14 @@ public class TaskManager {
         prepareNextTasks();
     }
 
+    @SuppressWarnings("Convert2streamapi")
     static void update() {
         if(nextDate.isAfter(getDateTime())) return;
-        nextTasks.stream()
-                .filter(Task::check)
-                .forEach(t -> {
-                    t.startActionList().forEach(Task.Action::action);
-                    t.program();
-                });
+        for (Task nextTask : nextTasks)
+            if (nextTask.check()) {
+                nextTask.startActionList().forEach(Task.Action::action);
+                nextTask.program();
+            }
         prepareNextTasks();
     }
 

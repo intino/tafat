@@ -31,6 +31,7 @@ public class TimeoutManager {
 		timeouts = new ArrayList<>();
 	}
 
+    @SuppressWarnings("Convert2streamapi")
     static void update() {
         List<Timeout> finishedTimeouts = new ArrayList<>();
         for (Timeout timeout : timeouts) {
@@ -41,10 +42,11 @@ public class TimeoutManager {
         }
         finishedTimeouts.forEach(t -> t.action.execute());
         timeouts.removeAll(finishedTimeouts);
-		finishedTimeouts.stream()
-				.filter(timeout -> timeout instanceof CyclicTimeout)
-				.map(timeout -> (CyclicTimeout)timeout)
-				.forEach(timeout -> cyclicTimeout(timeout.timeScale, timeout.action));
+        for (Timeout timeout : finishedTimeouts)
+            if (timeout instanceof CyclicTimeout) {
+                CyclicTimeout cyclicTimeout = (CyclicTimeout) timeout;
+                cyclicTimeout(cyclicTimeout.timeScale, cyclicTimeout.action);
+            }
     }
 
     private static class Timeout {
