@@ -80,9 +80,10 @@ public class StatechartUpdater {
     }
 
     private static void activateTransitions(StateChart stateChart) {
-        stateChart.transitionList().stream()
-                .filter(t -> t.trigger().is(TimeBased.class) && t.from() == stateChart.current())
-                .forEach(t -> t.timeBased().activate());
+        stateChart.transitionList().forEach(t -> {
+            if(t.trigger().is(TimeBased.class) && t.from() == stateChart.current())
+                t.timeBased().activate();
+        });
     }
 
     private static void activateState(State state) {

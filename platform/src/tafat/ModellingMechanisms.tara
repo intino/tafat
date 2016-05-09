@@ -41,29 +41,29 @@ Concept StateChart extends PeriodicActivity is feature
 		var function:Action action = ''
 		Concept:{1..1} Trigger
 			var function:CheckTransition check
-			sub Condition >var function:CheckTransition check
+			sub Condition
 			sub TimeBased
 				var date when = "" is private
-				var function:CheckTransition check = 'return !self.when().isAfter(getDateTime());' is private
+				var function:CheckTransition check = @checkTimeBasedTransition is private
 				var function:Action activate is private
 				sub Timeout
-					var function:Action activate = 'self.when(getDateTime().plusSeconds(self.timeout()));'
+					var function:Action activate = @activateTimeout
 					var function:Timeout timeout is final
 				sub After
-					var function:Action activate = 'self.when(getDateTime().plusSeconds(self.fixedTime()));'
+					var function:Action activate = @activateAfter
 					var integer:Time fixedTime is final
 				sub Rate
-					var function:Action activate = 'self.when(getDateTime().plusSeconds(self.unit() / self.times()));'
+					var function:Action activate = @activateRate
 					var integer:{times} times
 					var integer unit
 			sub Message
 				var string expectedMessage
-				var function:CheckTransition check = 'return self.ownerAs(StateChart.class).message().equals(self.expectedMessage());'
+				var function:CheckTransition check = @checkMessageTransition
 
 Concept Task is feature
 	var word[]:DayOfWeek days = Monday Tuesday Wednesday Thursday Friday Saturday Sunday
 	var date scheduledDate = "" is private
-	var boolean check = 'return !self.scheduledDate().isAfter(getDateTime());' is final reactive private
+	var boolean check = @checkTask is final reactive private
 	var function:Action program = @programTask is final private
 	Concept:{1..1} Start
 		var time start is final
@@ -129,5 +129,5 @@ Concept Map
 	var function:Get get = '0' is final
 	Concept Entry >var string key;var double value
 
-Concept Rule
+Concept Rule is feature
 	var boolean check is reactive

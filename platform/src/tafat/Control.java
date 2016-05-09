@@ -1,4 +1,4 @@
-package tafat.natives;
+package tafat;
 
 import tafat.TafatPlatform;
 

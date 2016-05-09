@@ -1,4 +1,4 @@
-package tafat.natives;
+package tafat.output;
 
 import tara.magritte.Layer;
 
