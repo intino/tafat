@@ -15,8 +15,6 @@ Facet Periodic on Trace
 	var boolean checkStep = @checkStep is private reactive
 	var word:TimeScale timeScale is final
 
-
-
 Facet Instant on Trace
 	var date[] instants
 

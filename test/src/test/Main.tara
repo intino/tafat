@@ -1,6 +1,7 @@
 dsl Tafat 
 
 Entity Fridge
+	var word:{On Off} mode = Off
 	var double power = 0
 
 Agent Family

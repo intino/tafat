@@ -22,7 +22,8 @@ Concept EquationSystem is component
 		sub Stock:{0..1}
 		sub Flow:{0..1}
 	Concept Param
-		var double value is reactive
+		var double value = 0
+		var double pull is reactive
 
 Concept StateChart extends PeriodicActivity is feature
 	var function:Execute execute = @updateStateChart is final
@@ -48,7 +49,7 @@ Concept StateChart extends PeriodicActivity is feature
 				var function:Action activate is private
 				sub Timeout
 					var function:Action activate = @activateTimeout
-					var function:Timeout timeout is final
+					var integer timeout is reactive final
 				sub After
 					var function:Action activate = @activateAfter
 					var integer:Time fixedTime is final

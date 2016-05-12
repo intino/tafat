@@ -2,8 +2,6 @@ dsl Tafat
 
 use Main
 
-FmuModel("thermalFridge.fmu") Thermal on Fridge
-	var double power
-	var double temperature
-	Input("temperatura", 'self.temperature()')
-	Output("potencia", 'self.power((Double) value)')
+Fmu(file = "res/Fridge.fmu", step = 1) ElectricalFmu on Fridge
+	BooleanInput("on", 'return self.mode() == On;')
+	RealOutput("power", 'self.power(value)')

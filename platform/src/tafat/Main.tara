@@ -2,7 +2,7 @@ dsl Proteo
 
 use Control
 use GUI
-use ModellingMechanisms
+use ModelingMechanisms
 
 Concept:{1..1} Simulation
 	var date from is final
@@ -54,18 +54,34 @@ MetaFacet Behavior is abstract
 MetaFacet Behavior on Entity
 MetaFacet Behavior on Agent
 
-MetaFacet FmuModel is abstract
-	var string fmuPath is terminal
+MetaFacet Fmu is abstract
+	// TODO steps higher than 1
+	var string file is terminal
 	var double step = 0.01 is terminal
+	var object:org.javafmi.wrapper.Simulation wrapper = empty is private
 	Concept Input is feature
 		var string fmuVariableName
-		var function:Write write
+		sub RealInput
+			var function:PushReal push
+		sub IntegerInput
+			var function:PushInteger push
+		sub BooleanInput
+			var function:PushBoolean push
+		sub StringInput
+			var function:PushString push
 	Concept Output is feature
 		var string fmuVariableName
-		var function:Read read
+		sub RealOutput
+			var function:PullReal pull
+		sub IntegerOutput
+			var function:PullInteger pull
+		sub BooleanOutput
+			var function:PullBoolean pull
+		sub StringOutput
+			var function:PullString pull
 
-MetaFacet FmuModel on Entity
-MetaFacet FmuModel on Agent
+MetaFacet Fmu on Entity
+MetaFacet Fmu on Agent
 
 MetaConcept Knol
 	has Knol

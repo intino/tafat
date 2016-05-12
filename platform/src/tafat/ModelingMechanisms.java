@@ -4,7 +4,7 @@ import static tafat.engine.Date.getDateTime;
 import static tafat.engine.StatechartUpdater.update;
 import static tafat.engine.helpers.TaskHelper.scheduledDate;
 
-public class ModellingMechanisms {
+public class ModelingMechanisms {
 
 	public static void receiveMessage(StateChart self, String message) {
 		self.message(message);

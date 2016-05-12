@@ -1,5 +1,6 @@
 package tafat;
 
+import org.javafmi.wrapper.Simulation;
 import tafat.conditional.ConditionalTrace;
 import tafat.engine.Date;
 import tafat.instant.InstantTrace;
@@ -8,6 +9,7 @@ import tafat.periodic.PeriodicTrace;
 import tara.magritte.Graph;
 
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
@@ -25,6 +27,8 @@ public class Executor {
     private final TafatPlatform platform;
     private List<Behavior> parallelBehaviors;
     private List<Behavior> behaviors;
+    private List<Fmu> fmus = new ArrayList<>();
+    private List<EquationSystem> equationSystems = new ArrayList<>();
 
     public Executor(Graph graph) {
         this.graph = graph;
@@ -39,6 +43,8 @@ public class Executor {
         initTraces();
         initOutputs();
         initBehaviors();
+        initFmus();
+        initEquationSystems();
     }
 
     public void execute() {
@@ -99,6 +105,18 @@ public class Executor {
                 .forEach(stateChart -> stateChart.current(stateChart.state(0)));
     }
 
+    private void initFmus() {
+        this.fmus = graph.find(Fmu.class);
+        this.fmus.forEach(f -> {
+            f.wrapper(new Simulation(f.file));
+            f.wrapper().init(0);
+        });
+    }
+
+    private void initEquationSystems() {
+        this.equationSystems = graph.find(EquationSystem.class);
+    }
+
     private void initTableFunctions() {
         graph.find(TableFunction.class).stream()
                 .filter(t -> !t.dataList().isEmpty())
@@ -117,14 +135,41 @@ public class Executor {
         TaskManager.update();
         TimeoutManager.update();
         processStopList();
+        processEquations();
+        processFmus();
         processParallelBehaviors();
         processBehaviors();
         processOutputList();
         Date.plusSeconds(1);
     }
 
-    private void processOutputList() {
-        platform.outputList().forEach(Output::process);
+    @SuppressWarnings("Convert2streamapi")
+    private void processStopList() {
+        for (Stop stop : platform.simulation().stopList())
+            if (stop.when())
+                stop.execute();
+    }
+
+    private void processEquations() {
+
+    }
+
+    private void processFmus() {
+        for (Fmu fmu : fmus) {
+            fmu.realInputList().forEach(f -> fmu.wrapper().write(f.fmuVariableName()).with(f.push()));
+            fmu.integerInputList().forEach(f -> fmu.wrapper().write(f.fmuVariableName()).with(f.push()));
+            fmu.booleanInputList().forEach(f -> fmu.wrapper().write(f.fmuVariableName()).with(f.push()));
+            fmu.stringInputList().forEach(f -> fmu.wrapper().write(f.fmuVariableName()).with(f.push()));
+            for (int i = 0; i < (int) (1. / fmu.step()); i++) fmu.wrapper().doStep(fmu.step());
+            fmu.realOutputList().forEach(f -> f.pull(fmu.wrapper().read(f.fmuVariableName()).asDouble()));
+            fmu.integerOutputList().forEach(f -> f.pull(fmu.wrapper().read(f.fmuVariableName()).asInteger()));
+            fmu.booleanOutputList().forEach(f -> f.pull(fmu.wrapper().read(f.fmuVariableName()).asBoolean()));
+            fmu.stringOutputList().forEach(f -> f.pull(fmu.wrapper().read(f.fmuVariableName()).asString()));
+        }
+    }
+
+    private void processParallelBehaviors() {
+        parallelBehaviors.parallelStream().filter(Behavior::checkStep).forEach(this::run);
     }
 
     @SuppressWarnings("Convert2streamapi")
@@ -134,15 +179,8 @@ public class Executor {
                 run(behavior);
     }
 
-    private void processParallelBehaviors() {
-        parallelBehaviors.parallelStream().filter(Behavior::checkStep).forEach(this::run);
-    }
-
-    @SuppressWarnings("Convert2streamapi")
-    private void processStopList() {
-        for (Stop stop : platform.simulation().stopList())
-            if (stop.when())
-                stop.execute();
+    private void processOutputList() {
+        platform.outputList().forEach(Output::process);
     }
 
     private void run(Behavior behavior) {
