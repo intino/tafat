@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
-import static tafat.engine.utils.Date.getDateTime;
+import static tafat.engine.Date.getDateTime;
 
 public class TaskManager {
 

@@ -7,7 +7,7 @@ import com.google.gson.JsonObject;
 import java.util.List;
 
 import static java.time.format.DateTimeFormatter.ofPattern;
-import static tafat.engine.utils.Date.getDateTime;
+import static tafat.engine.Date.getDateTime;
 import static tafat.engine.utils.ImageHelper.base64;
 
 public class GUI {

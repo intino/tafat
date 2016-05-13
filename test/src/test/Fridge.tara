@@ -7,8 +7,8 @@ Entity Fridge
 Agent Family
 
 Behavior Electrical on Fridge
-	var integer value = -1
 	var word:{v1 v2 v3 v4 v5 v6 vFmu} implementation
+	var integer value = -1
 	Implementation v1
 		StateChart
 			State On

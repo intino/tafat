@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static tafat.engine.utils.Date.getDateTime;
+import static tafat.engine.Date.getDateTime;
 
 public class TimeoutManager {
 

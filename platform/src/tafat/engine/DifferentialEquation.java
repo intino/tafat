@@ -2,7 +2,7 @@ package tafat.engine;
 
 import org.opensourcephysics.numerics.ODE;
 
-public abstract class SystemDynamic implements ODE {
+public abstract class DifferentialEquation implements ODE {
 
     protected double[] state = null;
     protected double[] rate = null;

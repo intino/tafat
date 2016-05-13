@@ -1,14 +1,15 @@
 package test;
 
+import tafat.engine.DifferentialEquation;
 import test.evolver.EvolverSystem;
 
 public class SystemDynamic {
 
-    public static tafat.engine.SystemDynamic adoptersSD(test.evolver.EvolverSystem self) {
+    public static DifferentialEquation adoptersSD(test.evolver.EvolverSystem self) {
         return new AdoptersSd(self);
     }
 
-    private static class AdoptersSd extends tafat.engine.SystemDynamic {
+    private static class AdoptersSd extends DifferentialEquation {
 
         private static final int SdElements = 4, Params = 1;
         // SD ELEMENTS

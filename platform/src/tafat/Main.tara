@@ -13,11 +13,6 @@ Concept:{1..1} Simulation
 	has Trace
 	has Stop
 
-Concept Output
-	var function:Action init is final
-	var function:Action process is final
-	var function:Action terminate is final
-
 MetaConcept Agent
 	has Knol
 
@@ -56,10 +51,15 @@ MetaFacet Behavior is abstract
 MetaFacet Behavior on Entity
 MetaFacet Behavior on Agent
 
+Facet Parallelizable on Behavior.Implementation
+
+Concept Output
+	var function:Action init is final
+	var function:Action process is final
+	var function:Action terminate is final
+
 MetaConcept Knol
 	has Knol
-
-Facet Parallelizable on Behavior.Implementation
 
 Concept Event
 	var date instant

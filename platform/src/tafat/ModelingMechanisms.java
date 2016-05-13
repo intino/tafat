@@ -1,10 +1,12 @@
 package tafat;
 
+import org.javafmi.wrapper.*;
+import org.javafmi.wrapper.Simulation;
 import org.opensourcephysics.numerics.ODESolver;
 import org.opensourcephysics.numerics.ODESolverFactory;
 import tafat.engine.tablefunction.TableFunctionProvider;
 
-import static tafat.engine.utils.Date.getDateTime;
+import static tafat.engine.Date.getDateTime;
 import static tafat.engine.utils.StatechartUpdater.update;
 import static tafat.engine.utils.TaskHelper.scheduledDate;
 
@@ -19,9 +21,9 @@ public class ModelingMechanisms {
         update(self, step);
     }
 
-    public static void initCurrentState(StateChart self) {
-        if (self.stateList().isEmpty()) return;
-        self.current(self.state(0));
+    public static StateChart.State initCurrentState(StateChart self) {
+        if (self.stateList().isEmpty()) return null;
+        return self.state(0);
     }
 
     public static void programTask(Task self) {
@@ -52,9 +54,10 @@ public class ModelingMechanisms {
         return !self.scheduledDate().isAfter(getDateTime());
     }
 
-    public static void initFmuWrapper(Fmu self) {
-        self.wrapper(new org.javafmi.wrapper.Simulation(self.file()));
-        self.wrapper().init(0);
+    public static org.javafmi.wrapper.Simulation initFmuWrapper(Fmu self) {
+        org.javafmi.wrapper.Simulation simulation = new Simulation(self.file());
+        simulation.init(0);
+        return simulation;
     }
 
     public static void executeFmu(tafat.Fmu self, int step) {
@@ -69,26 +72,14 @@ public class ModelingMechanisms {
         self.stringOutputList().forEach(f -> f.pull(self.wrapper().read(f.fmuVariableName()).asString()));
     }
 
-    public static void executeSd(SystemDynamic self) {
-        self.systemDynamic().pull();
+    public static void executeSd(SystemDynamic self, int step) {
+        self.differentialEquation().pull();
         for (int i = 0; i < self.timesPerSecond(); i++) self.odeSolver().step();
-        self.systemDynamic().push();
-    }
-
-    public static ODESolver createSolver(SystemDynamic self) {
-        ODESolver odeSolver = ODESolverFactory.createODESolver(self.systemDynamic(), self.solver().toString());
-        odeSolver.setStepSize(self.step());
-        return odeSolver;
+        self.differentialEquation().push();
     }
 
     public static double getY(TableFunction self, double... inputs) {
         return self.provider().get(inputs);
-    }
-
-    public static TableFunctionProvider initProvider(TableFunction self) {
-        if (!self.dataList().isEmpty())
-           return new TableFunctionProvider(self);
-        throw new RuntimeException("There is no data in table function " + self.name());
     }
 
 }

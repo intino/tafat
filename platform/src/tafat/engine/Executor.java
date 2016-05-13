@@ -1,10 +1,8 @@
 package tafat.engine;
 
-import org.javafmi.wrapper.Simulation;
 import tafat.*;
 import tafat.conditional.ConditionalTrace;
 import tafat.engine.tablefunction.TableFunctionProvider;
-import tafat.engine.utils.Date;
 import tafat.instant.InstantTrace;
 import tafat.parallelizable.behavior.ParallelizableImplementation;
 import tafat.periodic.PeriodicTrace;
@@ -17,6 +15,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
+import static org.opensourcephysics.numerics.ODESolverFactory.createODESolver;
 import static tafat.engine.TimeoutManager.cyclicTimeout;
 import static tafat.engine.TimeoutManager.timeout;
 
@@ -89,10 +88,27 @@ public class Executor {
     private void initImplementations() {
         purgeImplementations();
         List<Behavior> behaviors = graph.find(Behavior.class);
+        initTableFunctions(behaviors);
+        initSystemDynamics(behaviors);
         TaskManager.addAll(behaviors.stream().flatMap(b -> b.implementation(0).taskList().stream()).collect(Collectors.toList()));
         behaviors.forEach(behavior -> behavior.implementation(0).startList().forEach(Start::start));
         this.behaviors = behaviors.stream().filter(b -> !isParallelizable(b)).collect(toList());
         this.parallelBehaviors = behaviors.stream().filter(this::isParallelizable).collect(toList());
+    }
+
+    private void initTableFunctions(List<Behavior> behaviors) {
+        behaviors.forEach(b -> b.implementation(0).tableFunctionList().forEach(tableFunction -> {
+            if (!tableFunction.dataList().isEmpty())
+                tableFunction.provider(new TableFunctionProvider(tableFunction));
+            throw new RuntimeException("There is no data in table function " + tableFunction.name());
+        }));
+    }
+
+    private void initSystemDynamics(List<Behavior> behaviors) {
+        behaviors.forEach(b -> b.implementation(0).systemDynamicList().forEach(systemDynamic -> {
+            systemDynamic.odeSolver(createODESolver(systemDynamic.differentialEquation(), systemDynamic.solver().toString()));
+            systemDynamic.odeSolver().setStepSize(systemDynamic.step());
+        }));
     }
 
     private boolean isParallelizable(Behavior behavior) {
@@ -110,7 +126,7 @@ public class Executor {
         behavior.implementationList().stream()
                 .filter(i -> !i.name().equalsIgnoreCase(behavior.implementation()))
                 .forEach(Layer::delete);
-        if(behavior.implementationList().isEmpty())
+        if (behavior.implementationList().isEmpty())
             throw new RuntimeException("Behavior at " + behavior.name() + " must have an implementation selected");
     }
 

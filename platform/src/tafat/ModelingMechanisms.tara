@@ -18,11 +18,12 @@ Concept ConditionalAction extends PeriodicActivity is feature
 
 Concept SystemDynamic extends PeriodicActivity is feature
 	var function:Execute execute = @executeSd is final private
-	var object:tafat.engine.SystemDynamic systemDynamic
+	var object:tafat.engine.DifferentialEquation differentialEquation
 	var word:{Euler} solver = Euler
 	var double step = 0.1
-	var integer timesPerSecond = '1. / self.step()' is private
-	var object:org.opensourcephysics.numerics.ODESolver odeSolver = @createSolver is private
+	var integer timesPerSecond = 'return (int) (1. / self.step());' is private
+	var object:org.opensourcephysics.numerics.ODESolver odeSolver = empty is private
+	var boolean enabled = true
 //	Concept Element is feature
 //		var function:Function calculus
 //		var double value = 0 is terminal
@@ -132,7 +133,7 @@ Concept TableFunction is feature
 		var double[] input
 		var double output
 	var function:Calculate get = @getY is terminal
-	var object:tafat.engine.tablefunction.TableFunctionProvider provider = @initProvider is private
+	var object:tafat.engine.tablefunction.TableFunctionProvider provider = empty is private
 
 Concept Map
 	var function:Get get = '0' is final
