@@ -147,7 +147,7 @@ Concept Fmu extends PeriodicActivity is feature
 	var function:Execute execute = @executeFmu is final private
 	var string file is terminal
 	var double step = 0.01 is terminal
-	var object:org.javafmi.wrapper.Simulation wrapper = @initFmuWrapper is private
+	var object:org.javafmi.wrapper.Simulation wrapper = empty is private
 	Concept Input is feature
 		var string fmuVariableName
 		sub RealInput

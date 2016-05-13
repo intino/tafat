@@ -54,12 +54,6 @@ public class ModelingMechanisms {
         return !self.scheduledDate().isAfter(getDateTime());
     }
 
-    public static org.javafmi.wrapper.Simulation initFmuWrapper(Fmu self) {
-        org.javafmi.wrapper.Simulation simulation = new Simulation(self.file());
-        simulation.init(0);
-        return simulation;
-    }
-
     public static void executeFmu(tafat.Fmu self, int step) {
         self.realInputList().forEach(f -> self.wrapper().write(f.fmuVariableName()).with(f.push()));
         self.integerInputList().forEach(f -> self.wrapper().write(f.fmuVariableName()).with(f.push()));

@@ -1,5 +1,6 @@
 package tafat.engine;
 
+import org.javafmi.wrapper.*;
 import tafat.*;
 import tafat.conditional.ConditionalTrace;
 import tafat.engine.tablefunction.TableFunctionProvider;
@@ -90,6 +91,7 @@ public class Executor {
         List<Behavior> behaviors = graph.find(Behavior.class);
         initTableFunctions(behaviors);
         initSystemDynamics(behaviors);
+        initFmu(behaviors);
         TaskManager.addAll(behaviors.stream().flatMap(b -> b.implementation(0).taskList().stream()).collect(Collectors.toList()));
         behaviors.forEach(behavior -> behavior.implementation(0).startList().forEach(Start::start));
         this.behaviors = behaviors.stream().filter(b -> !isParallelizable(b)).collect(toList());
@@ -108,6 +110,13 @@ public class Executor {
         behaviors.forEach(b -> b.implementation(0).systemDynamicList().forEach(systemDynamic -> {
             systemDynamic.odeSolver(createODESolver(systemDynamic.differentialEquation(), systemDynamic.solver().toString()));
             systemDynamic.odeSolver().setStepSize(systemDynamic.step());
+        }));
+    }
+
+    private void initFmu(List<Behavior> behaviors) {
+        behaviors.forEach(b -> b.implementation(0).fmuList().forEach(fmu -> {
+            fmu.wrapper(new org.javafmi.wrapper.Simulation(fmu.file()));
+            fmu.wrapper().init(0);
         }));
     }
 
