@@ -1,9 +1,10 @@
 dsl Tafat
 
-use Main
+use Fridge
 
 Behavior Consumer on Family
-	sub SimpleConsumer
+	var word:{Simple Complex} implementation
+	Implementation Simple
 		TableFunction > LinearInterpolation; NoneExtrapolation
 			Data(0, 0)
 			Data(6, 0)
@@ -11,6 +12,6 @@ Behavior Consumer on Family
 			Data(14, 400)
 			Data(20, 300)
 			Data(23, 0)
-	sub ComplexConsumer
+	Implementation Complex
 		TableFunction > LinearInterpolation; LinearExtrapolation
 			Data... with Consumption(hour, power)

@@ -1,7 +1,0 @@
-dsl Tafat 
-
-use Main
-
-Fmu(file = "res/Fridge.fmu", step = 1) ElectricalFmu on Fridge
-	BooleanInput("on", 'return self.mode() == On;')
-	RealOutput("power", 'self.power(value)')

@@ -4,11 +4,10 @@ import tara.magritte.Layer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import static java.time.format.DateTimeFormatter.ofPattern;
 import static java.util.stream.Collectors.toList;
-import static tafat.engine.Date.getDateTime;
+import static tafat.engine.utils.Date.getDateTime;
 
 public class LogOutput {
 	public static void init(tafat.LogOutput self) {

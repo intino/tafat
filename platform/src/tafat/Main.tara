@@ -34,59 +34,32 @@ MetaFacet Aspect on Entity
 	has TableFunction is final
 
 MetaFacet Behavior is abstract
+	var string implementation = "" is private
 	var integer step = 1 is terminal
-	var integer timeout = 0
-	var boolean checkStep = @checkStep is reactive final
+	var integer timeout = 0 is private
+	var boolean checkStep = @checkStep is reactive private
+	Concept:{1..*} Implementation is feature
 
-	Concept Start is final feature
-		var function:Action start is final
-	has PeriodicActivity
-	has Action is final
-	has ConditionalAction is final
-	has EquationSystem is final
-	has StateChart is final
-	has Task is final
-	has TableFunction is final
-	has Job is final
-	has Map is final
-	has Rule is final
+		has Start
+		has PeriodicActivity
+		has Action is final
+		has ConditionalAction is final
+		has SystemDynamic is final
+		has StateChart is final
+		has Task is final
+		has TableFunction is final
+		has Job is final
+		has Map is final
+		has Rule is final
+		has Fmu is final
 
 MetaFacet Behavior on Entity
 MetaFacet Behavior on Agent
 
-MetaFacet Fmu is abstract
-	// TODO steps higher than 1
-	var string file is terminal
-	var double step = 0.01 is terminal
-	var object:org.javafmi.wrapper.Simulation wrapper = empty is private
-	Concept Input is feature
-		var string fmuVariableName
-		sub RealInput
-			var function:PushReal push
-		sub IntegerInput
-			var function:PushInteger push
-		sub BooleanInput
-			var function:PushBoolean push
-		sub StringInput
-			var function:PushString push
-	Concept Output is feature
-		var string fmuVariableName
-		sub RealOutput
-			var function:PullReal pull
-		sub IntegerOutput
-			var function:PullInteger pull
-		sub BooleanOutput
-			var function:PullBoolean pull
-		sub StringOutput
-			var function:PullString pull
-
-MetaFacet Fmu on Entity
-MetaFacet Fmu on Agent
-
 MetaConcept Knol
 	has Knol
 
-Facet Parallelizable on Behavior
+Facet Parallelizable on Behavior.Implementation
 
 Concept Event
 	var date instant

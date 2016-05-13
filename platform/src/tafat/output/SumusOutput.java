@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
-import static tafat.engine.Date.getDateTime;
+import static tafat.engine.utils.Date.getDateTime;
 
 public class SumusOutput {
 

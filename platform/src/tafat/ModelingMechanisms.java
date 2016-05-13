@@ -1,45 +1,94 @@
 package tafat;
 
-import static tafat.engine.Date.getDateTime;
-import static tafat.engine.StatechartUpdater.update;
-import static tafat.engine.helpers.TaskHelper.scheduledDate;
+import org.opensourcephysics.numerics.ODESolver;
+import org.opensourcephysics.numerics.ODESolverFactory;
+import tafat.engine.tablefunction.TableFunctionProvider;
+
+import static tafat.engine.utils.Date.getDateTime;
+import static tafat.engine.utils.StatechartUpdater.update;
+import static tafat.engine.utils.TaskHelper.scheduledDate;
 
 public class ModelingMechanisms {
 
-	public static void receiveMessage(StateChart self, String message) {
-		self.message(message);
-		if (self.current() != null) self.current().receiveMessage(message);
-	}
+    public static void receiveMessage(StateChart self, String message) {
+        self.message(message);
+        if (self.current() != null) self.current().receiveMessage(message);
+    }
 
-	public static void updateStateChart(StateChart self, int step) {
-		update(self, step);
-	}
+    public static void updateStateChart(StateChart self, int step) {
+        update(self, step);
+    }
 
-	public static void programTask(Task self) {
-		self.scheduledDate(scheduledDate(self));
-	}
+    public static void initCurrentState(StateChart self) {
+        if (self.stateList().isEmpty()) return;
+        self.current(self.state(0));
+    }
 
-	public static boolean checkTimeBasedTransition(StateChart.Transition.TimeBased self, int advancedTime) {
-		return !self.when().isAfter(getDateTime());
-	}
+    public static void programTask(Task self) {
+        self.scheduledDate(scheduledDate(self));
+    }
 
-	public static void activateTimeout(StateChart.Transition.Timeout self) {
-		self.when(getDateTime().plusSeconds(self.timeout()));
-	}
+    public static boolean checkTimeBasedTransition(StateChart.Transition.TimeBased self, int advancedTime) {
+        return !self.when().isAfter(getDateTime());
+    }
 
-	public static void activateAfter(StateChart.Transition.After self) {
-		self.when(getDateTime().plusSeconds(self.fixedTime()));
-	}
+    public static void activateTimeout(StateChart.Transition.Timeout self) {
+        self.when(getDateTime().plusSeconds(self.timeout()));
+    }
 
-	public static void activateRate(StateChart.Transition.Rate self) {
-		self.when(getDateTime().plusSeconds(self.unit() / self.times()));
-	}
+    public static void activateAfter(StateChart.Transition.After self) {
+        self.when(getDateTime().plusSeconds(self.fixedTime()));
+    }
 
-	public static boolean checkMessageTransition(StateChart.Transition.Message self, int advancedTime) {
-		return self.ownerAs(StateChart.class).message().equals(self.expectedMessage());
-	}
+    public static void activateRate(StateChart.Transition.Rate self) {
+        self.when(getDateTime().plusSeconds(self.unit() / self.times()));
+    }
 
-	public static boolean checkTask(tafat.Task self) {
-		return !self.scheduledDate().isAfter(getDateTime());
-	}
+    public static boolean checkMessageTransition(StateChart.Transition.Message self, int advancedTime) {
+        return self.ownerAs(StateChart.class).message().equals(self.expectedMessage());
+    }
+
+    public static boolean checkTask(tafat.Task self) {
+        return !self.scheduledDate().isAfter(getDateTime());
+    }
+
+    public static void initFmuWrapper(Fmu self) {
+        self.wrapper(new org.javafmi.wrapper.Simulation(self.file()));
+        self.wrapper().init(0);
+    }
+
+    public static void executeFmu(tafat.Fmu self, int step) {
+        self.realInputList().forEach(f -> self.wrapper().write(f.fmuVariableName()).with(f.push()));
+        self.integerInputList().forEach(f -> self.wrapper().write(f.fmuVariableName()).with(f.push()));
+        self.booleanInputList().forEach(f -> self.wrapper().write(f.fmuVariableName()).with(f.push()));
+        self.stringInputList().forEach(f -> self.wrapper().write(f.fmuVariableName()).with(f.push()));
+        for (int i = 0; i < (int) (step / self.step()); i++) self.wrapper().doStep(self.step());
+        self.realOutputList().forEach(f -> f.pull(self.wrapper().read(f.fmuVariableName()).asDouble()));
+        self.integerOutputList().forEach(f -> f.pull(self.wrapper().read(f.fmuVariableName()).asInteger()));
+        self.booleanOutputList().forEach(f -> f.pull(self.wrapper().read(f.fmuVariableName()).asBoolean()));
+        self.stringOutputList().forEach(f -> f.pull(self.wrapper().read(f.fmuVariableName()).asString()));
+    }
+
+    public static void executeSd(SystemDynamic self) {
+        self.systemDynamic().pull();
+        for (int i = 0; i < self.timesPerSecond(); i++) self.odeSolver().step();
+        self.systemDynamic().push();
+    }
+
+    public static ODESolver createSolver(SystemDynamic self) {
+        ODESolver odeSolver = ODESolverFactory.createODESolver(self.systemDynamic(), self.solver().toString());
+        odeSolver.setStepSize(self.step());
+        return odeSolver;
+    }
+
+    public static double getY(TableFunction self, double... inputs) {
+        return self.provider().get(inputs);
+    }
+
+    public static TableFunctionProvider initProvider(TableFunction self) {
+        if (!self.dataList().isEmpty())
+           return new TableFunctionProvider(self);
+        throw new RuntimeException("There is no data in table function " + self.name());
+    }
+
 }

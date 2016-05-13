@@ -1,35 +1,42 @@
 dsl Proteo
 
+Concept Start is final feature
+	var function:Action start is final
+
 Concept PeriodicActivity is abstract
-	var function:Execute execute is final
+	var function:Execute execute is final private
 
 Concept Action extends PeriodicActivity is feature
+	var function:Execute execute = 'self.action()' is final private
 	var function:Action action
-	var function:Execute execute = 'self.action()' is final
 
 
 Concept ConditionalAction extends PeriodicActivity is feature
+	var function:Execute execute = 'if(self.condition()) self.action();' is final private
 	var boolean condition = true is final reactive
 	var function:Action action
-	var function:Execute execute = 'if(self.condition()) self.action();' is final
 
-Concept EquationSystem is component
+Concept SystemDynamic extends PeriodicActivity is feature
+	var function:Execute execute = @executeSd is final private
+	var object:tafat.engine.SystemDynamic systemDynamic
 	var word:{Euler} solver = Euler
 	var double step = 0.1
-	Concept Element is feature
-		var function:Function calculus
-		var double value = 0 is terminal
-		sub Stock:{0..1}
-		sub Flow:{0..1}
-	Concept Param
-		var double value = 0
-		var double pull is reactive
+	var integer timesPerSecond = '1. / self.step()' is private
+	var object:org.opensourcephysics.numerics.ODESolver odeSolver = @createSolver is private
+//	Concept Element is feature
+//		var function:Function calculus
+//		var double value = 0 is terminal
+//		sub Stock:{0..1}
+//		sub Flow:{0..1}
+//	Concept Param
+//		var double value = 0
+//		var double pull is reactive
 
 Concept StateChart extends PeriodicActivity is feature
-	var function:Execute execute = @updateStateChart is final
+	var function:Execute execute = @updateStateChart is final private
 	var function:Message receiveMessage = @receiveMessage is final
 	var string message = "" is private
-	var StateChart current = empty is private
+	var StateChart current = @initCurrentState is private
 	Concept State extends StateChart
 		Concept Action
 			var function:Action action is final
@@ -124,7 +131,8 @@ Concept TableFunction is feature
 	Concept Data
 		var double[] input
 		var double output
-	var function:Calculate get = '0' is terminal
+	var function:Calculate get = @getY is terminal
+	var object:tafat.engine.tablefunction.TableFunctionProvider provider = @initProvider is private
 
 Concept Map
 	var function:Get get = '0' is final
@@ -132,3 +140,30 @@ Concept Map
 
 Concept Rule is feature
 	var boolean check is reactive
+
+Concept Fmu extends PeriodicActivity is feature
+	// TODO steps higher than 1
+	var function:Execute execute = @executeFmu is final private
+	var string file is terminal
+	var double step = 0.01 is terminal
+	var object:org.javafmi.wrapper.Simulation wrapper = @initFmuWrapper is private
+	Concept Input is feature
+		var string fmuVariableName
+		sub RealInput
+			var function:PushReal push
+		sub IntegerInput
+			var function:PushInteger push
+		sub BooleanInput
+			var function:PushBoolean push
+		sub StringInput
+			var function:PushString push
+	Concept Output is feature
+		var string fmuVariableName
+		sub RealOutput
+			var function:PullReal pull
+		sub IntegerOutput
+			var function:PullInteger pull
+		sub BooleanOutput
+			var function:PullBoolean pull
+		sub StringOutput
+			var function:PullString pull

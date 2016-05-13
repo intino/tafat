@@ -3,13 +3,12 @@ package tafat;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import tafat.UserInterface;
 
 import java.util.List;
 
 import static java.time.format.DateTimeFormatter.ofPattern;
-import static tafat.engine.Date.getDateTime;
-import static tafat.engine.helpers.ImageHelper.base64;
+import static tafat.engine.utils.Date.getDateTime;
+import static tafat.engine.utils.ImageHelper.base64;
 
 public class GUI {
 	public static String jsonData(tafat.UserInterface self) {

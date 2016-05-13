@@ -1,6 +1,7 @@
 package tafat;
 
-import tafat.utils.Random;
+import tafat.engine.Executor;
+import tafat.engine.utils.Random;
 import tara.magritte.Graph;
 
 import java.util.concurrent.ExecutorService;

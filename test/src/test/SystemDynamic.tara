@@ -4,9 +4,6 @@ Entity System
 
 Behavior Evolver on System
 	var double potentialAdopters
-//	EquationSystem
-//		Param(pull = 'self.owner(Evolver.class).potentialAdopters()') potentialAdopters
-//		Flow('self.potentialAdopters()') adoptionFromAd
-//		Flow('self.potentialAdopters() + self.adopters().value()') adoptionFromWOM
-//		Flow('self.adoptionFromAd().value() + self.adoptionFromWOM().value();') adoptionRate
-//		Stock('self.adoptionRate().value()') adopters
+	var double adopters
+	Implementation
+		SystemDynamic(@adoptersSD)

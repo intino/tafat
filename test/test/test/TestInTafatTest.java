@@ -2,10 +2,9 @@ package test;
 
 import org.junit.Before;
 import org.junit.Test;
-import tafat.Executor;
+import tafat.engine.Executor;
 import tafat.TafatPlatform;
 import tara.magritte.Graph;
-import test.TestApplication;
 
 import java.io.ByteArrayOutputStream;
 import java.util.logging.Logger;
