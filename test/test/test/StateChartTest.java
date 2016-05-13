@@ -75,9 +75,9 @@ public class StateChartTest {
 	}
 
 	@Test
-	public void after_updating_value_must_be_46() throws Exception {
+	public void after_updating_value_must_be_45() throws Exception {
 		Fridge fridge = domain.fridgeList().get(2);
 		platform.run();
-		assertThat(fridge.as(ElectricalFridge.class).value(), is(46));
+		assertThat(fridge.as(ElectricalFridge.class).value(), is(45));
 	}
 }

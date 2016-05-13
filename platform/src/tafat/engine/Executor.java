@@ -28,7 +28,6 @@ public class Executor {
     private final TafatPlatform platform;
     private List<Behavior> parallelBehaviors;
     private List<Behavior> behaviors;
-//    private List<EquationSystem> equationSystems = new ArrayList<>();
 
     public Executor(Graph graph) {
         this.graph = graph;
@@ -102,7 +101,7 @@ public class Executor {
         behaviors.forEach(b -> b.implementation(0).tableFunctionList().forEach(tableFunction -> {
             if (!tableFunction.dataList().isEmpty())
                 tableFunction.provider(new TableFunctionProvider(tableFunction));
-            throw new RuntimeException("There is no data in table function " + tableFunction.name());
+            else throw new RuntimeException("There is no data in table function " + tableFunction.name());
         }));
     }
 
@@ -134,7 +133,7 @@ public class Executor {
     private void purgeImplementations(Behavior behavior) {
         behavior.implementationList().stream()
                 .filter(i -> !i.name().equalsIgnoreCase(behavior.implementation()))
-                .forEach(Layer::delete);
+                .collect(toList()).forEach(Layer::delete);
         if (behavior.implementationList().isEmpty())
             throw new RuntimeException("Behavior at " + behavior.name() + " must have an implementation selected");
     }
