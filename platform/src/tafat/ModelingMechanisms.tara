@@ -13,17 +13,18 @@ Concept Action extends PeriodicActivity is feature
 
 Concept ConditionalAction extends PeriodicActivity is feature
 	var function:Execute execute = 'if(self.condition()) self.action();' is final private
-	var boolean condition = true is final reactive
+	var boolean condition = true is reactive
 	var function:Action action
 
 Concept SystemDynamic extends PeriodicActivity is feature
 	var function:Execute execute = @executeSd is final private
-	var object:tafat.engine.DifferentialEquation differentialEquation
+	var object:tafat.engine.DifferentialEquation odeProvider is reactive
+	var boolean enabled = true
 	var word:{Euler} solver = Euler
 	var double step = 0.1
 	var integer timesPerSecond = 'return (int) (1. / self.step());' is private
+	var object:tafat.engine.DifferentialEquation differentialEquation = empty is private
 	var object:org.opensourcephysics.numerics.ODESolver odeSolver = empty is private
-	var boolean enabled = true
 //	Concept Element is feature
 //		var function:Function calculus
 //		var double value = 0 is terminal

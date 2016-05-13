@@ -29,9 +29,9 @@ public abstract class DifferentialEquation implements ODE {
 
     public abstract void pull();
 
-    protected abstract void calculateFlows(double[] state, double[] rate);
+    protected abstract void calculateFlows(double[] previous, double[] current);
 
-    protected abstract void calculateStocks(double[] state, double[] rate);
+    protected abstract void calculateStocks(double[] previous, double[] current);
 
     public abstract void push();
 }

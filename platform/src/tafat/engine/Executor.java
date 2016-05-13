@@ -107,6 +107,7 @@ public class Executor {
 
     private void initSystemDynamics(List<Behavior> behaviors) {
         behaviors.forEach(b -> b.implementation(0).systemDynamicList().forEach(systemDynamic -> {
+            systemDynamic.differentialEquation(systemDynamic.odeProvider());
             systemDynamic.odeSolver(createODESolver(systemDynamic.differentialEquation(), systemDynamic.solver().toString()));
             systemDynamic.odeSolver().setStepSize(systemDynamic.step());
         }));
