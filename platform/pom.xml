@@ -70,8 +70,6 @@
             <groupId>org.osp</groupId>
             <artifactId>osp</artifactId>
             <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/lib/osp.jar</systemPath>
         </dependency>
     </dependencies>
 
