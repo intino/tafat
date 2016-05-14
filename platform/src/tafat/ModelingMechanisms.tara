@@ -38,7 +38,7 @@ Concept StateChart extends PeriodicActivity is feature
 	var function:Execute execute = @updateStateChart is final private
 	var function:Message receiveMessage = @receiveMessage is final
 	var string message = "" is private
-	var StateChart current = @initCurrentState is private
+	var StateChart current = empty is private
 	Concept State extends StateChart
 		Concept Action
 			var function:Action action is final

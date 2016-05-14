@@ -21,11 +21,6 @@ public class ModelingMechanisms {
         update(self, step);
     }
 
-    public static StateChart.State initCurrentState(StateChart self) {
-        if (self.stateList().isEmpty()) return null;
-        return self.state(0);
-    }
-
     public static void programTask(Task self) {
         self.scheduledDate(scheduledDate(self));
     }

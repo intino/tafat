@@ -4,6 +4,7 @@ import org.javafmi.wrapper.*;
 import tafat.*;
 import tafat.conditional.ConditionalTrace;
 import tafat.engine.tablefunction.TableFunctionProvider;
+import tafat.engine.utils.StatechartUpdater;
 import tafat.instant.InstantTrace;
 import tafat.parallelizable.behavior.ParallelizableImplementation;
 import tafat.periodic.PeriodicTrace;
@@ -19,6 +20,7 @@ import static java.util.stream.Collectors.toList;
 import static org.opensourcephysics.numerics.ODESolverFactory.createODESolver;
 import static tafat.engine.TimeoutManager.cyclicTimeout;
 import static tafat.engine.TimeoutManager.timeout;
+import static tafat.engine.utils.StatechartUpdater.activateTransitions;
 
 public class Executor {
 
@@ -91,6 +93,7 @@ public class Executor {
         initTableFunctions(behaviors);
         initSystemDynamics(behaviors);
         initFmu(behaviors);
+        initStateCharts(behaviors);
         TaskManager.addAll(behaviors.stream().flatMap(b -> b.implementation(0).taskList().stream()).collect(Collectors.toList()));
         behaviors.forEach(behavior -> behavior.implementation(0).startList().forEach(Start::start));
         this.behaviors = behaviors.stream().filter(b -> !isParallelizable(b)).collect(toList());
@@ -118,6 +121,17 @@ public class Executor {
             fmu.wrapper(new org.javafmi.wrapper.Simulation(fmu.file()));
             fmu.wrapper().init(0);
         }));
+    }
+
+    private void initStateCharts(List<Behavior> behaviors) {
+        behaviors.forEach(b -> b.implementation(0).stateChartList().forEach(this::initStateChart));
+    }
+
+    private void initStateChart(StateChart stateChart) {
+        if (stateChart.stateList().isEmpty()) return;
+        stateChart.current(stateChart.state(0));
+        initStateChart(stateChart.current());
+        activateTransitions(stateChart);
     }
 
     private boolean isParallelizable(Behavior behavior) {

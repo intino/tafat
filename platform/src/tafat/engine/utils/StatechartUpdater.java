@@ -79,7 +79,7 @@ public class StatechartUpdater {
         activateState(stateChart.current().as(State.class));
     }
 
-    private static void activateTransitions(StateChart stateChart) {
+    public static void activateTransitions(StateChart stateChart) {
         stateChart.transitionList().forEach(t -> {
             if(t.trigger().is(TimeBased.class) && t.from() == stateChart.current())
                 t.timeBased().activate();
