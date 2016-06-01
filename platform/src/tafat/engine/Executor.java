@@ -1,12 +1,10 @@
 package tafat.engine;
 
-import org.javafmi.wrapper.*;
 import tafat.*;
 import tafat.conditional.ConditionalTrace;
 import tafat.engine.tablefunction.TableFunctionProvider;
-import tafat.engine.utils.StatechartUpdater;
 import tafat.instant.InstantTrace;
-import tafat.parallelizable.behavior.ParallelizableImplementation;
+import tafat.parallelizable.ParallelizableImplementation;
 import tafat.periodic.PeriodicTrace;
 import tara.magritte.Graph;
 import tara.magritte.Layer;
@@ -28,8 +26,8 @@ public class Executor {
 
     private final Graph graph;
     private final TafatPlatform platform;
-    private List<Behavior> parallelBehaviors;
-    private List<Behavior> behaviors;
+    private List<Implementation> parallelImplementations;
+    private List<Implementation> implementations;
 
     public Executor(Graph graph) {
         this.graph = graph;
@@ -95,13 +93,13 @@ public class Executor {
         initFmu(behaviors);
         initStateCharts(behaviors);
         TaskManager.addAll(behaviors.stream().flatMap(b -> b.implementation(0).taskList().stream()).collect(Collectors.toList()));
-        behaviors.forEach(behavior -> behavior.implementation(0).startList().forEach(Start::start));
-        this.behaviors = behaviors.stream().filter(b -> !isParallelizable(b)).collect(toList());
-        this.parallelBehaviors = behaviors.stream().filter(this::isParallelizable).collect(toList());
+        behaviors.forEach(behavior -> behavior.implementationList().forEach(i -> i.startList().forEach(Start::start)));
+        this.implementations = graph.find(Implementation.class).stream().filter(i -> !isParallelizable(i)).collect(toList());
+        this.parallelImplementations = graph.find(Implementation.class).stream().filter(this::isParallelizable).collect(toList());
     }
 
     private void initTableFunctions(List<Behavior> behaviors) {
-        behaviors.forEach(b -> b.implementation(0).tableFunctionList().forEach(tableFunction -> {
+        behaviors.forEach(b -> b.tableFunctionList().forEach(tableFunction -> {
             if (!tableFunction.dataList().isEmpty())
                 tableFunction.provider(new TableFunctionProvider(tableFunction));
             else throw new RuntimeException("There is no data in table function " + tableFunction.name());
@@ -109,22 +107,22 @@ public class Executor {
     }
 
     private void initSystemDynamics(List<Behavior> behaviors) {
-        behaviors.forEach(b -> b.implementation(0).systemDynamicList().forEach(systemDynamic -> {
+        behaviors.forEach(b -> b.implementationList().forEach(i -> i.systemDynamicList().forEach(systemDynamic -> {
             systemDynamic.differentialEquation(systemDynamic.odeProvider());
             systemDynamic.odeSolver(createODESolver(systemDynamic.differentialEquation(), systemDynamic.solver().toString()));
             systemDynamic.odeSolver().setStepSize(systemDynamic.step());
-        }));
+        })));
     }
 
     private void initFmu(List<Behavior> behaviors) {
-        behaviors.forEach(b -> b.implementation(0).fmuList().forEach(fmu -> {
+        behaviors.forEach(b -> b.implementationList().forEach(i -> i.fmuList().forEach(fmu -> {
             fmu.wrapper(new org.javafmi.wrapper.Simulation(fmu.file()));
             fmu.wrapper().init(0);
-        }));
+        })));
     }
 
     private void initStateCharts(List<Behavior> behaviors) {
-        behaviors.forEach(b -> b.implementation(0).stateChartList().forEach(this::initStateChart));
+        behaviors.forEach(b -> b.implementationList().forEach(i -> i.stateChartList().forEach(this::initStateChart)));
     }
 
     private void initStateChart(StateChart stateChart) {
@@ -134,15 +132,16 @@ public class Executor {
         activateTransitions(stateChart);
     }
 
-    private boolean isParallelizable(Behavior behavior) {
-        return !behavior.implementation(0).periodicActivityList().isEmpty() &&
-                behavior.implementation(0).is(ParallelizableImplementation.class);
+    private boolean isParallelizable(Implementation implementation) {
+        return !implementation.periodicActivityList().isEmpty() &&
+                implementation.is(ParallelizableImplementation.class);
     }
 
     private void purgeImplementations() {
         graph.find(Behavior.class).stream()
                 .filter(b -> !b.implementation().isEmpty())
                 .forEach(this::purgeImplementations);
+        graph.find(Behavior.class).forEach(b -> b.implementationList().forEach(i -> i.step(b.step())));
     }
 
     private void purgeImplementations(Behavior behavior) {
@@ -158,7 +157,7 @@ public class Executor {
         TaskManager.update();
         TimeoutManager.update();
         processStopList();
-        processParallelBehaviors();
+        processParallelImplementations();
         processBehaviors();
         processOutputList();
         Date.plusSeconds(1);
@@ -171,23 +170,23 @@ public class Executor {
                 stop.execute();
     }
 
-    private void processParallelBehaviors() {
-        parallelBehaviors.parallelStream().filter(Behavior::checkStep).forEach(this::run);
+    private void processParallelImplementations() {
+        parallelImplementations.parallelStream().filter(Implementation::checkStep).forEach(this::run);
     }
 
     @SuppressWarnings("Convert2streamapi")
     private void processBehaviors() {
-        for (Behavior behavior : behaviors)
-            if (behavior.checkStep())
-                run(behavior);
+        for (Implementation implementation : implementations)
+            if (implementation.checkStep())
+                run(implementation);
     }
 
     private void processOutputList() {
         platform.outputList().forEach(Output::process);
     }
 
-    private void run(Behavior behavior) {
-        behavior.implementation(0).periodicActivityList().forEach(p -> p.execute(behavior.step()));
+    private void run(Implementation implementation) {
+        implementation.periodicActivityList().forEach(p -> p.execute(implementation.step()));
     }
 
     private long steps() {

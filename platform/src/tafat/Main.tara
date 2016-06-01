@@ -25,33 +25,37 @@ MetaConcept Entity
 	MetaConcept Feature into feature
 		has Feature
 
+MetaFacet Aspect on Agent
 MetaFacet Aspect on Entity
 	has TableFunction is final
 
 MetaFacet Behavior is abstract
 	var string implementation = "" is private
 	var integer step = 1 is terminal
+	has Rule is final
+	has TableFunction is final
+	has:{1..*} Implementation
+
+Concept Implementation is feature
+	var integer step = 1 is terminal private
 	var integer timeout = 0 is private
 	var boolean checkStep = @checkStep is reactive private
-	Concept:{1..*} Implementation is feature
 
-		has Start
-		has PeriodicActivity
-		has Action is final
-		has ConditionalAction is final
-		has SystemDynamic is final
-		has StateChart is final
-		has Task is final
-		has TableFunction is final
-		has Job is final
-		has Map is final
-		has Rule is final
-		has Fmu is final
+	has Start
+	has PeriodicActivity
+	has Action is final
+	has ConditionalAction is final
+	has SystemDynamic is final
+	has StateChart is final
+	has Task is final
+	has Job is final
+	has Map is final
+	has Fmu is final
 
 MetaFacet Behavior on Entity
 MetaFacet Behavior on Agent
 
-Facet Parallelizable on Behavior.Implementation
+Facet Parallelizable on Implementation
 
 Concept Output
 	var function:Action init is final

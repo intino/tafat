@@ -16,7 +16,6 @@ public class OutputTest {
 		Graph model = Graph.load("Output").wrap(TestApplication.class, TafatPlatform.class);
 		this.engine = model.platform();
 		this.domain = model.application();
-		this.engine.execute();
 	}
 
 	@Test

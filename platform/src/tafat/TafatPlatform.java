@@ -40,6 +40,8 @@ public class TafatPlatform extends tafat.GraphWrapper implements tara.magritte.P
 
 	@Override
 	public void execute(String... args) {
+		if(args.length > 0 && userInterface() != null)
+			userInterface().port(Integer.parseInt(args[0]));
 		init();
 		if (userInterface() != null) return;
 		executor.execute();
