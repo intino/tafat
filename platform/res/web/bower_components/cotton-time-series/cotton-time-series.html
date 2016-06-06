@@ -137,6 +137,11 @@
         this._addPoint(seriesName, point, false);
       },
 
+      clearAll: function(){
+          while(this._chart.series.length > 0)
+             this._chart.series[0].remove(true);
+      },
+
       redraw: function () {
         this._chart.redraw();
       },

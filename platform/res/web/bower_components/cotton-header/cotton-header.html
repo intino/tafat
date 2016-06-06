@@ -2,15 +2,14 @@
 <link rel="import" href="../paper-toolbar/paper-toolbar.html">
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../cotton-user/cotton-user.html">
-<link rel="import" href="../neon-animation/neon-animation-runner-behavior.html">
-<link rel="import" href="../neon-animation/animations/slide-from-top-animation.html">
-<link rel="import" href="../neon-animation/animations/slide-up-animation.html">
+<link rel="import" href="../paper-progress/paper-progress.html">
 
 <dom-module id="cotton-header">
   <style>
 
     :host {
       display: block;
+      position: relative;
     }
 
     paper-toolbar {
@@ -37,7 +36,6 @@
     }
 
     img {
-      width: 60px;
       height: 60px;
       cursor: pointer;
     }
@@ -60,6 +58,15 @@
 
     span {
       @apply(--layout-flex);
+    }
+
+    paper-progress {
+      width: 100%;
+      position: absolute;
+      z-index: -1;
+      --paper-progress-active-color: var(--accent-color);
+      --paper-progress-transition-duration: var(0.1s);
+      --paper-progress-transition-transition-delay: var(0.1s);
     }
 
     .content {
@@ -88,7 +95,6 @@
         }
 
         img {
-          width: 52px;
           height: 52px;
         }
 
@@ -110,14 +116,15 @@
       <div class="content">
         <content select="#header-content"></content>
       </div>
-      <template is="dom-if" if="[[_userPresent()]]">
+      <template is="dom-if" if="[[_userPresent(user)]]">
         <cotton-user full-name="[[user.fullName]]" photo="[[user.photo]]"></cotton-user>
       </template>
-      <template is="dom-if" if="[[_userNotPresent()]]">
+      <template is="dom-if" if="[[_userNotPresent(user)]]">
         <div class="user-content"><content select="#user-content"></content></div>
       </template>
     </paper-toolbar>
-    <div class="separator"></div>
+    <paper-progress indeterminate hidden$="[[_hideLoading(loading)]]"></paper-progress>
+    <div class="separator" hidden$="[[loading]]"></div>
   </template>
 
   <script>
@@ -129,60 +136,28 @@
         title: String,
         subtitle: String,
         user: Object,
-        animationConfig: {
-          type: Object,
+        loading: {
+          type: Boolean,
           value: function () {
-            return {
-              'show': [{
-                name: 'slide-from-top-animation',
-                node: this
-              }],
-              'hide': [{
-                name: 'slide-up-animation',
-                node: this
-              }]
-            };
+            return false;
           }
-        },
-        _opened: Boolean
-      },
-
-      behaviors: [Polymer.NeonAnimationRunnerBehavior],
-
-      listeners: {
-        'neon-animation-finish': '_onNeonAnimationFinish'
-      },
-
-      show: function () {
-        this.playAnimation('show');
-        this._opened = true;
-        this.style.display = 'block';
-      },
-
-      hide: function () {
-        this.playAnimation('hide');
-        this._opened = false;
+        }
       },
 
       _notifyHome: function () {
         this.fire('home');
       },
 
-      _userPresent : function() {
-        return this.user != null;
+      _hideLoading: function (loading) {
+        return !loading;
       },
 
-      _userNotPresent : function() {
-          return this.user == null;
+      _userPresent : function(user) {
+        return user != null;
       },
 
-      _onNeonAnimationFinish: function () {
-        if (!this._opened) {
-          this.style.transform = 'translateY(-100%)';
-          this.style.display = 'none';
-        } else {
-          this.style.transform = 'translateY(0%)';
-        }
+      _userNotPresent : function(user) {
+          return user == null;
       }
     });
   </script>

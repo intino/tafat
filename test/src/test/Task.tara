@@ -2,7 +2,7 @@ dsl Tafat
 
 use Fridge
 
-Behavior Consumer on Family
+Behavior Consumer2 on Family
 	Implementation
 		Task > Start("06:00", 10 minutes); Duration(120 minutes, 10 minutes)
 			StartAction('System.out.println("Switching on lights")')

@@ -133,7 +133,7 @@ gulp.task('copy-to-res', () => {
         'dist/**/*'
     ], {
         dot: true
-    }).pipe(gulp.dest('../Base/res/web'));
+    }).pipe(gulp.dest('../platform/res/web'));
 });
 
 gulp.task('copy-to-server', () => {
