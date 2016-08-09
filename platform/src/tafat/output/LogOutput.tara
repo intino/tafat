@@ -9,6 +9,7 @@ Concept LogOutput extends Output is component
 	var function:Action terminate = '' is private final
 	var string format = empty is private
 	var integer timeout = 0
+	// TODO FIX
 	var boolean checkStep = @checkStep is private reactive
 	Concept Line
 		var string name

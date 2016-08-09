@@ -28,6 +28,7 @@ public class Executor {
     private final TafatPlatform platform;
     private List<Implementation> parallelImplementations;
     private List<Implementation> implementations;
+    private int minStepSize;
 
     public Executor(Graph graph) {
         this.graph = graph;
@@ -45,8 +46,8 @@ public class Executor {
     }
 
     public void execute() {
-        long steps = steps();
-        for (int step = 0; step < steps; step++) run();
+        long steps = steps() / minStepSize;
+        for (int step = 0; step < steps; step++) run(minStepSize);
     }
 
     private void initEngine() {
@@ -88,6 +89,7 @@ public class Executor {
     private void initImplementations() {
         purgeImplementations();
         List<Behavior> behaviors = graph.find(Behavior.class);
+        minStepSize = behaviors.parallelStream().mapToInt(Behavior::step).min().orElse(1);
         initTableFunctions(behaviors);
         initSystemDynamics(behaviors);
         initFmu(behaviors);
@@ -153,14 +155,14 @@ public class Executor {
     }
 
     @SuppressWarnings("WeakerAccess")
-    public void run() {
+    public void run(int stepSize) {
         TaskManager.update();
         TimeoutManager.update();
         processStopList();
-        processParallelImplementations();
-        processBehaviors();
+        processParallelImplementations(stepSize);
+        processBehaviors(stepSize);
         processOutputList();
-        Date.plusSeconds(1);
+        Date.plusSeconds(stepSize);
     }
 
     @SuppressWarnings("Convert2streamapi")
@@ -170,14 +172,14 @@ public class Executor {
                 stop.execute();
     }
 
-    private void processParallelImplementations() {
-        parallelImplementations.parallelStream().filter(Implementation::checkStep).forEach(this::run);
+    private void processParallelImplementations(int stepSize) {
+        parallelImplementations.parallelStream().filter(i -> i.checkStep(stepSize)).forEach(this::run);
     }
 
     @SuppressWarnings("Convert2streamapi")
-    private void processBehaviors() {
+    private void processBehaviors(int stepSize) {
         for (Implementation implementation : implementations)
-            if (implementation.checkStep())
+            if (implementation.checkStep(stepSize))
                 run(implementation);
     }
 

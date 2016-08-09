@@ -16,7 +16,7 @@ Concept SumusOutput extends Output is component
 
 	Concept Extractor
 		var string label is final
-		var string path is reactive final
+		var string path is reactive private
 		var function:Collect collect is final
 		var function:Stash buildStash is final
 
@@ -28,7 +28,8 @@ Concept SumusOutput extends Output is component
 		sub Plot
 			var word:TimeScale timeScale is final
 			var integer timeout = 0
+			// TODO fix
 			var boolean checkStep = @checkStep is private reactive
 			var function:Extractor extractFact is final
-			var string path = @getPlotPath  is private
+			var string path = @getPlotPath is reactive private
 			var function:Stash buildStash = @buildStashOfFacts is final

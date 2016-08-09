@@ -12,6 +12,7 @@ Concept Stop is component
 
 Facet Periodic on Trace
 	var integer timeout = 0 is private
+	// TODO improve by function
 	var boolean checkStep = @checkStep is private reactive
 	var word:TimeScale timeScale is final
 

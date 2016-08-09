@@ -39,7 +39,7 @@ MetaFacet Behavior is abstract
 Concept Implementation is feature
 	var integer step = 1 is terminal private
 	var integer timeout = 0 is private
-	var boolean checkStep = @checkStep is reactive private
+	var function:CheckStep checkStep = @checkStep is private
 
 	has Start
 	has PeriodicActivity
