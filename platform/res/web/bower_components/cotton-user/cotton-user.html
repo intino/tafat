@@ -1,0 +1,97 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../cotton-translator/cotton-translator-behavior.html">
+
+<dom-module id="cotton-user">
+  <style is="custom-style">
+
+    :host > div {
+      @apply(--layout-horizontal);
+    }
+
+    .info {
+      margin: 5px 10px 0 13px;
+      @apply(--paper-font-common-base);
+    }
+
+    .info > div {
+      cursor: pointer;
+    }
+
+    img {
+      height: 48px;
+      width: 48px;
+      border-radius: 25px;
+      cursor: pointer;
+    }
+
+    paper-icon-button {
+      display: none;
+      margin-top: 5px;
+      margin-rigth: 10px;
+    }
+
+    a {
+      font-size: smaller;
+      cursor: pointer;
+    }
+
+    @media only screen and (max-width: 900px) {
+      img {
+        margin-right: 5px;
+      }
+
+      .info {
+        display: none;
+      }
+
+      paper-icon-button {
+        display: block;
+      }
+    }
+  </style>
+  <template>
+    <div>
+        <div><img src="[[photo]]" alt="[[fullName]]" on-tap="_notifyEditProfile"/></div>
+        <div class="info">
+            <div on-tap="_notifyEditProfile">[[fullName]]</div>
+            <a on-tap="_notifyLogout">[[logout]]</a>
+        </div>
+        <paper-icon-button icon="power-settings-new" on-tap="_notifyLogout"></paper-icon-button>
+    </div>
+  </template>
+
+  <script>
+    const CottonUserDictionary = {
+        es : {
+            logout: "cerrar sesión"
+        },
+        en : {
+            logout: "log out"
+        }
+    };
+
+    Polymer({
+      is: 'cotton-user',
+      behaviors: [ CottonBehaviors.TranslatorBehavior ],
+      properties: {
+        fullName: String,
+        photo: String
+      },
+
+      attached : function() {
+          this.translate(CottonUserDictionary);
+      },
+
+      _notifyEditProfile: function (e) {
+        this.fire('edit-profile');
+      },
+
+      _notifyLogout: function (e) {
+        this.fire('logout');
+      }
+    });
+  </script>
+</dom-module>

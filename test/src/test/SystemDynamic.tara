@@ -1,0 +1,17 @@
+dsl Tafat 
+
+Entity Environment
+	var double temperature
+	Entity Building
+		var double temperature
+		Entity Radiator
+			var double temperature
+
+Behavior Thermal on Environment.Building.Radiator
+	Implementation
+		ConditionalAction(condition = @lowTemperature, action = @startHeating)
+		ConditionalAction(condition = @highTemperature, action = @stopHeating)
+
+Behavior Thermal on Environment.Building
+	Implementation
+		SystemDynamic(odeProvider = @thermalBuildingOde)

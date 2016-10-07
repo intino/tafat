@@ -1,0 +1,141 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-resizable-behavior/iron-resizable-behavior.html">
+
+<dom-module id="heatmap-component">
+    <style>
+        :host {
+            display: block;
+            position: relative;
+        }
+
+        img {
+          display: block;
+          max-width: 100%;
+          max-height: 100%;
+          width: auto;
+          height: auto;
+        }
+
+        div {
+            display: inline-block;
+            position: relative;
+        }
+
+        div.region {
+            position: absolute;
+            opacity: 0
+        }
+
+    </style>
+    <template>
+        <div>
+          <img id="background" src="[[_image]]" on-load="_imageLoaded"/>
+          <template is="dom-repeat" items="{{_regions}}">
+              <div class="region" id={{item.id}} style$="
+                  top: {{item.top}}%;
+                  left: {{item.left}}%;
+                  height: {{item.height}}%;
+                  width: {{item.width}}%;
+                  background-color: {{heatmap.color}};
+                  z-index: {{item.zIndex}};
+                  border-radius: {{_setRadius(item.type)}}"></div>
+          </template>
+        </div>
+    </template>
+    <script>
+
+        Polymer({
+            is: 'heatmap-component',
+            behaviors: [Polymer.IronResizableBehavior],
+
+            properties: {
+                heatmap: {
+                    type: Object,
+                    observer: '_process'
+                },
+                _regions: Array,
+                _regionsLoaded: {
+                    type: Boolean,
+                    value: false
+                }
+            },
+
+            listeners: {
+                'iron-resize': '_onIronResize'
+            },
+
+            refresh: function (values) {
+                if (!this._regionsLoaded) return;
+                this._processValues(values.values);
+            },
+
+            _process: function () {
+                this.id = this.heatmap.title;
+                this._image = 'data:image/png;base64,' + this.heatmap.background;
+            },
+
+            _onIronResize: function () {
+                if (this.offsetHeight !== 0) {
+                  this._setRegions();
+                }
+            },
+
+            _setRegions: function () {
+                if (this._regionsLoaded) return;
+                var ratio = this.$.background.height / this.$.background.naturalHeight;
+                this.heatmap.regions.forEach(function (region) {
+                    region.top = (this.$.background.offsetTop + region.top * ratio) * 100 / this.$.background.offsetHeight;
+                    region.left = (this.$.background.offsetLeft + region.left * ratio) * 100 / this.$.background.offsetWidth;
+                    region.height = (region.height * ratio) * 100 / this.$.background.offsetHeight;
+                    region.width = (region.width * ratio) * 100 / this.$.background.offsetWidth;
+                }.bind(this));
+                this._regionsLoaded = true;
+                if (this.offsetHeight >= this.parentElement.offsetHeight) {
+                    this.$.background.style.height = this.parentElement.offsetHeight + 'px';
+                }
+                this._regions = this.heatmap.regions;
+            },
+
+            _imageLoaded: function () {
+                if (this.offsetHeight !== 0) {
+                  this._setRegions();
+                }
+            },
+
+            _processValues: function (regions) {
+                var values = regions.map(region => region.value);
+                var min = Math.min.apply(null, values);
+                var max = Math.max.apply(null, values);
+                if(max - min > 10){
+                    var filteredValues = this._filterOutliers(values);
+                    min = Math.min.apply(null, filteredValues);
+                    max = Math.max.apply(null, filteredValues);
+                }
+                for (var i = 0; i < regions.length; i++)
+                    this.querySelector('#' + regions[i].id).style.opacity = this._shadeOf(regions[i].value, max, min);
+            },
+
+            _filterOutliers: function (array) {
+                var values = array.concat();
+                values.sort((a, b) => a - b);
+                var q1 = values[Math.floor((values.length / 4))];
+                var q3 = values[Math.ceil((values.length * (3 / 4)))];
+                var iqr = q3 - q1;
+                var maxValue = q3 + iqr* 3;
+                var minValue = q1 - iqr* 3;
+                return values.filter(x => (x < maxValue) && (x > minValue));
+            },
+
+            _shadeOf: function (value, max, min) {
+                if(max === min) return 0.2;
+                var result = (0.6 * (value - min) / (max - min)) + 0.2;
+                return result > 0.8 ? 0.8 : result;
+            },
+
+            _setRadius: function (regionType) {
+                return regionType === 'square' ? '0%' : '50%';
+            }
+        })
+        ;
+    </script>
+</dom-module>

@@ -1,0 +1,20 @@
+{
+  "name": "cotton-time-series",
+  "version": "1.0.6",
+  "authors": [
+    "SIANI <info.cottons@siani.es>"
+  ],
+  "description": "Element that shows a time series",
+  "main": "cotton-time-series.html",
+  "license": "MIT",
+  "homepage": "https://bitbucket.org/cottons/cotton-time-series/",
+  "ignore": [
+    "/.*",
+    "/test/"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.2.0",
+    "highcharts": "^4.2.3",
+    "iron-resizable-behavior": "PolymerElements/iron-resizable-behavior#^1.0.3"
+  }
+}

@@ -1,0 +1,17 @@
+dsl Tafat
+
+use Fridge
+
+Behavior Consumer on Family
+	var word:{Simple Complex} implementation
+	Implementation Simple
+	TableFunction > LinearInterpolation; NoneExtrapolation
+		Data(0, 0)
+		Data(6, 0)
+		Data(8, 200)
+		Data(14, 400)
+		Data(20, 300)
+		Data(23, 0)
+	Implementation Complex
+	TableFunction > LinearInterpolation; LinearExtrapolation
+		Data... with Consumption(hour, power)

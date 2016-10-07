@@ -1,0 +1,22 @@
+{
+  "name": "cotton-header",
+  "version": "1.0.17",
+  "authors": [
+    "SIANI <info.cottons@siani.es>"
+  ],
+  "description": "Header element",
+  "main": "cotton-header.html",
+  "license": "MIT",
+  "homepage": "https://bitbucket.org/cottons/cotton-header/",
+  "ignore": [
+    "/.*",
+    "/test/"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.2.0",
+    "paper-toolbar": "PolymerElements/paper-toolbar#^1.1.4",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#^1.2.3",
+    "cotton-user": "https://bitbucket.org/cottons/cotton-user.git",
+    "paper-progress": "PolymerElements/paper-progress#^1.0.9"
+  }
+}

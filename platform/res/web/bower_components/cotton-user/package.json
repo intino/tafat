@@ -1,0 +1,14 @@
+{
+  "name": "cotton-user",
+  "version": "1.0.6",
+  "description": "Element for displaying user photo and name",
+  "main": "cotton-user.html",
+  "author": "SIANI <info.cottons@siani.es>",
+  "license": "MIT",
+  "devDependencies": {
+    "bower": "^1.6.5",
+    "connect": "^3.4.0",
+    "open": "0.0.5",
+    "serve-static": "^1.10.0"
+  }
+}

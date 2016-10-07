@@ -1,0 +1,164 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../cotton-user/cotton-user.html">
+<link rel="import" href="../paper-progress/paper-progress.html">
+
+<dom-module id="cotton-header">
+  <style>
+
+    :host {
+      display: block;
+      position: relative;
+    }
+
+    paper-toolbar {
+      background-color: var(--header-background-color, --primary-color);
+      color: var(--header-text-color, --text-primary-color);
+    }
+
+    .info {
+      @apply(--layout-horizontal);
+    }
+
+    .info > div {
+      @apply(--layout-vertical);
+      @apply(--layout-center-justified);
+      padding: 0 12px;
+    }
+
+    .info, cotton-user, .user-content {
+      z-index: 10;
+    }
+
+    .app-name {
+      font-size: 28px;
+    }
+
+    img {
+      height: 60px;
+      cursor: pointer;
+    }
+
+    .middle-container  {
+      margin: 5px 76px;
+      height: 100%;
+      @apply(--layout-self-start);
+    }
+
+    .middle-container {
+      font-size: 18px;
+      padding-bottom: 0;
+    }
+
+    .bottom-container {
+      margin: 5px 76px;
+      @apply(--layout-self-end);
+    }
+
+    span {
+      @apply(--layout-flex);
+    }
+
+    paper-progress {
+      width: 100%;
+      position: absolute;
+      z-index: -1;
+      --paper-progress-active-color: var(--accent-color);
+      --paper-progress-transition-duration: var(0.1s);
+      --paper-progress-transition-transition-delay: var(0.1s);
+    }
+
+    .content {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      @apply(--layout-horizontal);
+      @apply(--layout-center-justified);
+      @apply(--layout-center);
+    }
+
+    div.separator {
+      display: block;
+      height: 1px;
+      background-color: var(--divider-color, #000);
+    }
+
+    @media all and (max-width: 600px) {
+        .app-name, .bottom-title {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          width: 200px;
+        }
+
+        img {
+          height: 52px;
+        }
+
+        div.content {
+          display: none !important;
+        }
+    }
+  </style>
+  <template>
+    <paper-toolbar>
+      <div class="info">
+        <img src="[[logo]]" alt="Logo" on-tap="_notifyHome" />
+        <div>
+          <div class="app-name">[[title]]</div>
+          <div class="bottom-title">[[subtitle]]</div>
+        </div>
+      </div>
+      <span></span>
+      <div class="content">
+        <content select="#header-content"></content>
+      </div>
+      <template is="dom-if" if="[[_userPresent(user)]]">
+        <cotton-user full-name="[[user.fullName]]" photo="[[user.photo]]"></cotton-user>
+      </template>
+      <template is="dom-if" if="[[_userNotPresent(user)]]">
+        <div class="user-content"><content select="#user-content"></content></div>
+      </template>
+    </paper-toolbar>
+    <paper-progress indeterminate hidden$="[[_hideLoading(loading)]]"></paper-progress>
+    <div class="separator" hidden$="[[loading]]"></div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'cotton-header',
+
+      properties: {
+        logo: String,
+        title: String,
+        subtitle: String,
+        user: Object,
+        loading: {
+          type: Boolean,
+          value: function () {
+            return false;
+          }
+        }
+      },
+
+      _notifyHome: function () {
+        this.fire('home');
+      },
+
+      _hideLoading: function (loading) {
+        return !loading;
+      },
+
+      _userPresent : function(user) {
+        return user != null;
+      },
+
+      _userNotPresent : function(user) {
+          return user == null;
+      }
+    });
+  </script>
+</dom-module>

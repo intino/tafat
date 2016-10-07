@@ -1,0 +1,59 @@
+dsl Tafat 
+
+Entity Fridge
+	var word:{On Off} mode = Off
+	var double power = 0
+
+Agent Family
+
+Behavior Electrical on Fridge
+	var word:{v1 v2 v3 v4 v5 v6 vFmu} implementation
+	var integer value = -1
+	Implementation v1
+		StateChart
+			State On
+			State Off
+			Transition(from = On, to = Off) > Condition('true')
+
+	Implementation v2
+		StateChart
+			State Off > EntryAction('self.value(0)')
+			State On
+				State Heating > EntryAction('self.value(1000)')
+				State Washing > EntryAction('self.value(500)')
+				State Drying > EntryAction('self.value(800);')
+				Transition(from = Heating, to = Washing) > Timeout('20')
+				Transition(from = Washing, to = Drying) > Timeout('20')
+				Transition(from = Drying, to = Off) > Timeout('20')
+			Transition(from = Off, to = On) > Message("ON")
+
+	Implementation v3
+		StateChart
+			State s0 > EntryAction('self.value(0)')
+			State s1
+				State s0 > EntryAction('self.value(self.value() + 1)'); ExitAction('self.value(self.value() + 3)')
+				State s1
+					State s0
+					State s1 > EntryAction('self.value(self.value() + 2)')
+				Transition(s0, s1.s1, 'self.value(self.value() + 20)') > Condition('true')
+			Transition(s0, s1, 'self.value(self.value() + 20)') > Condition('true')
+
+	Implementation v4
+		Action > action
+				--
+				if(self.power() <= 100) self.power(self.power() + 10);
+				else self.power(0);
+				--
+
+	Implementation v5
+	TableFunction:{0..1} WattsV5 > LinearInterpolation; LinearExtrapolation
+		Data... with Watts(Diameter Temperature, Watts)
+
+	Implementation v6
+	TableFunction:{0..1} WattsV6 > LinearInterpolation; LinearExtrapolation
+		Data... with FridgeConsumption(Temperature, Watts)
+
+	Implementation vFmu
+		Fmu(file = "res/Fridge.fmu", step = 1) vFmu
+			BooleanInput("on", 'return self.mode() == On;')
+			RealOutput("power", 'self.power(value)')

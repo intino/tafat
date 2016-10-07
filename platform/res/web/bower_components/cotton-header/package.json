@@ -1,0 +1,14 @@
+{
+  "name": "cotton-header",
+  "version": "1.0.17",
+  "description": "Header element",
+  "main": "cotton-header.html",
+  "author": "SIANI <info.cottons@siani.es>",
+  "license": "MIT",
+  "devDependencies": {
+    "bower": "^1.7.7",
+    "connect": "^3.4.0",
+    "open": "0.0.5",
+    "serve-static": "^1.10.0"
+  }
+}

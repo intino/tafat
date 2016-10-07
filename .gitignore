@@ -1,6 +1,7 @@
 .idea/workspace.xml
 out/
-Engine/gen/
+*/gen/
+*/test-gen/
 Engine/.idea/workspace.xml
 SGIFramework/target
 SGISite/target
@@ -12,3 +13,10 @@ Base/res/tafat/
 Tafat.language
 dsl/Tafat.reload
 dsl/Tafat/
+.tara/
+.idea/libraries/
+site/node_modules/
+site/dist/
+site/bower_components/
+site/.tmp/
+*.stash
