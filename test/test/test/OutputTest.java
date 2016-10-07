@@ -2,9 +2,8 @@ package test;
 
 import org.junit.Before;
 import org.junit.Test;
-import tafat.TafatPlatform;
+import io.intino.tafat.TafatPlatform;
 import tara.magritte.Graph;
-import test.TestApplication;
 
 public class OutputTest {
 

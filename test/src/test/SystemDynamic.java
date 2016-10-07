@@ -1,6 +1,6 @@
 package test;
 
-import tafat.engine.DifferentialEquation;
+import io.intino.tafat.engine.DifferentialEquation;
 import test.thermal.environment.ThermalBuilding;
 import test.thermal.environment.building.ThermalRadiator;
 

@@ -1,7 +1,7 @@
 package test;
 
 import org.junit.Test;
-import tafat.TafatPlatform;
+import io.intino.tafat.TafatPlatform;
 import tara.magritte.Graph;
 
 import static junit.framework.TestCase.assertEquals;
@@ -10,8 +10,8 @@ import static test.Fridge.Mode.On;
 
 public class FmuModelTest {
 
-	TafatPlatform platform;
-	TestApplication application;
+	private TafatPlatform platform;
+	private TestApplication application;
 
 	@Test
 	public void should_execute_fmu_properly() throws Exception {

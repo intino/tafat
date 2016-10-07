@@ -2,8 +2,8 @@ package test;
 
 import org.junit.Before;
 import org.junit.Test;
-import tafat.engine.Executor;
-import tafat.TafatPlatform;
+import io.intino.tafat.engine.Executor;
+import io.intino.tafat.TafatPlatform;
 import tara.magritte.Graph;
 
 import java.io.ByteArrayOutputStream;

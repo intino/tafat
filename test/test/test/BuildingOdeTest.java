@@ -1,7 +1,7 @@
 package test;
 
 import org.junit.Test;
-import tafat.TafatPlatform;
+import io.intino.tafat.TafatPlatform;
 import tara.magritte.Graph;
 
 public class BuildingOdeTest {

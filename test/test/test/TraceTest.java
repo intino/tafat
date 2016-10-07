@@ -3,8 +3,7 @@ package test;
 import org.junit.Before;
 import org.junit.Test;
 import tara.magritte.Graph;
-import tafat.TafatPlatform;
-import test.TestApplication;
+import io.intino.tafat.TafatPlatform;
 
 public class TraceTest {
 

@@ -2,8 +2,8 @@ package test;
 
 import org.junit.Before;
 import org.junit.Test;
-import tafat.TafatPlatform;
-import tafat.behavior.BehaviorEntity;
+import io.intino.tafat.TafatPlatform;
+import io.intino.tafat.behavior.BehaviorEntity;
 import tara.magritte.Graph;
 import test.electrical.ElectricalFridge;
 

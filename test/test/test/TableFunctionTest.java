@@ -2,10 +2,8 @@ package test;
 
 import org.junit.Before;
 import org.junit.Test;
-import tafat.TableFunction;
-import tafat.TafatPlatform;
+import io.intino.tafat.TafatPlatform;
 import tara.magritte.Graph;
-import test.electrical.ElectricalFridge;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.hamcrest.core.Is.is;
