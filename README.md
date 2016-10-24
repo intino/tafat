@@ -160,7 +160,7 @@ Now run this executable class and you should have your simulation running on you
 
 ![Captura de pantalla 2016-10-24 a las 18.18.06.png](https://bitbucket.org/repo/xyM64b/images/379274976-Captura%20de%20pantalla%202016-10-24%20a%20las%2018.18.06.png)
 
-## What next? ##
+## What's next? ##
 
 We recommend you to play using the auto-completion code and to join us in the community opening discussions in the issue tracker. However, we are hardly working on creating a documentation to let you know what else you can do with Tafat. In the meantime, you can also see other examples in this [link](https://bitbucket.org/tafat/).
 
