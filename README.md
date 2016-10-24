@@ -10,7 +10,7 @@ To use Tafat, you need to install [Intellij](https://www.jetbrains.com/idea/). O
 
 To install them, go to the settings/plugins in Intellij. Click on install plugins from disk and select the files downloaded before (one by one).
 
-## Our first Tafat project ##
+## Your first Tafat project ##
 
 Once you have the IDE ready for using Tafat, you can go ahead with the creation of your own simulator. To do so, please create a new project and select the Tara facet.
 
@@ -108,7 +108,7 @@ Please, make sure you're compiled the previous model so that all generated class
 
 So now, we have made our first simulator, let's go ahead and use it!
 
-## Creating our first simulation ##
+## Model your first simulation ##
 
 Once we have defined our first simulator, let's call it "Smartgrid", we can go ahead and create our first model. As we are still testing our simulator, you can create a test folder (like before with "gen" folder, mark it as test folder). Let's create a new package and a Tara file (e.g. "NYC"). This time we will be using dsl Smartgrid (or the one you selected). Please, don't forget to place this name in the header of your file.
 
