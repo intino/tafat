@@ -16,9 +16,9 @@ Once you have the IDE ready for using Tafat, you can go ahead with the creation 
 
 ![Captura de pantalla 2016-10-24 a las 17.48.16.png](https://bitbucket.org/repo/xyM64b/images/1531657500-Captura%20de%20pantalla%202016-10-24%20a%20las%2017.48.16.png)
 
-Click on next twice and write the project name you prefer (make sure it is written with the first in uppercase as it will be the name of the simulator you're writing and the name of the DSL/Metamodel that will be created). Once you click on finish, you'll see a structure of the project like this:
+Click on next twice and write the project name you prefer (make sure it is written with the first in uppercase as it will be the name of the simulator you're writing and the name of the DSL/Metamodel that will be created). In our example, we have chosen "Smartgrid" as the name of the project. Once you click on finish, you'll see a structure of the project like this:
 
-![Captura de pantalla 2016-10-24 a las 17.49.12.png](https://bitbucket.org/repo/xyM64b/images/3564859854-Captura%20de%20pantalla%202016-10-24%20a%20las%2017.49.12.png)
+![Captura de pantalla 2016-10-25 a las 12.15.37.png](https://bitbucket.org/repo/xyM64b/images/682254962-Captura%20de%20pantalla%202016-10-25%20a%20las%2012.15.37.png)
 
 Open the "configuration.legio" file and make sure it is filled with the next repositories:
 
@@ -36,7 +36,7 @@ Finally, modify the part of the configuration of the factory to something like t
 #!python
 
 	Factory as Application
-		generationPackage = "this.is.my.package"
+		generationPackage = "org.example"
 		Modeling(language = "Tafat", version = "2.1.6")
 ```
 
@@ -156,9 +156,9 @@ Finally, create a Java class including this code for starting the simulation:
     }
 ```
 
-Now run this executable class and you should have your simulation running on your localhost port 8080: http://localhost:8080. If everything is right, you should see something like this. In this screen we have already executed the simulation a bit to show you the output.
+Now run this executable class and you should have your simulation running on your localhost port 8080: http://localhost:8080. If everything is right, you should see something like this. In this screen we have already executed the simulation a bit to show you the output. If you have an exception when executing the simulation, please make sure test-gen folder is marked as test source and test-res as test resource.
 
-![Captura de pantalla 2016-10-24 a las 18.18.06.png](https://bitbucket.org/repo/xyM64b/images/379274976-Captura%20de%20pantalla%202016-10-24%20a%20las%2018.18.06.png)
+![Captura de pantalla 2016-10-25 a las 12.25.37.png](https://bitbucket.org/repo/xyM64b/images/1189086107-Captura%20de%20pantalla%202016-10-25%20a%20las%2012.25.37.png)
 
 ## What's next? ##
 
