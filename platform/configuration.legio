@@ -1,6 +1,6 @@
 dsl Legio
 
-Project(groupId = "io.intino.tafat", version = "2.1.6") tafat
+Project(groupId = "io.intino.tafat", version = "2.2.0") tafat
 	Repositories
 		Release(url = "http://artifactory.siani.es/artifactory/libs-release", "siani-maven")
 		Release(url = "http://artifactory.siani.es/artifactory/libs-snapshot", "siani-maven-snapshot")
@@ -14,4 +14,6 @@ Project(groupId = "io.intino.tafat", version = "2.1.6") tafat
 	Factory("io.intino.tafat") as Platform("Verso", "LATEST")
 LifeCycle
 	Distribution
-		Release (url = "http://artifactory.intino.io/artifactory/release-libraries", "intino-maven")
+		Release(url = "https://artifactory.intino.io/artifactory/release-frameworks", "intino-maven")
+		Language(url = "https://artifactory.siani.es/artifactory/release-languages", "siani-maven")
+
