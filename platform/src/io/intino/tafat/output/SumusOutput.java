@@ -1,9 +1,9 @@
 package io.intino.tafat.output;
 
 import io.intino.tafat.engine.Date;
-import tara.io.Node;
-import tara.io.Stash;
-import tara.io.StashSerializer;
+import io.intino.tara.io.Node;
+import io.intino.tara.io.Stash;
+import io.intino.tara.io.StashSerializer;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +32,7 @@ public class SumusOutput {
 	}
 
 	public static Stash createStash(io.intino.tafat.SumusOutput self, List<? extends io.intino.tafat.SumusOutput.Extractor> extractors) {
-		Stash stash = new tara.io.Stash();
+		Stash stash = new io.intino.tara.io.Stash();
 		stash.language = self.language();
 		for (io.intino.tafat.SumusOutput.Extractor extractor : extractors) stash.nodes.addAll(extractor.buildStash());
 		return stash;
@@ -60,12 +60,12 @@ public class SumusOutput {
 		return false;
 	}
 
-	public static List<tara.io.Node> buildStashOfMembers(io.intino.tafat.SumusOutput.Export self) {
+	public static List<io.intino.tara.io.Node> buildStashOfMembers(io.intino.tafat.SumusOutput.Export self) {
 		return self.collect().parallelStream().map(self::extractMember).collect(Collectors.toList());
 	}
 
 	public static String getPlotPath(io.intino.tafat.SumusOutput.Plot self) {
-		LocalDateTime date = Date.getDateTime();
+		LocalDateTime date = Date.toLocalDateTime();
 		return self.ownerAs(io.intino.tafat.SumusOutput.class).rootPath() +
 				String.format("%04d", date.getYear()) + "/" +
 				String.format("%03d", date.getDayOfYear()) + "/" +

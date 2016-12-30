@@ -15,7 +15,7 @@ public class GUI {
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.addProperty("title", self.title());
 		jsonObject.addProperty("logo", ImageHelper.base64(self.logo()));
-		jsonObject.addProperty("time", Date.getDateTime().format(ofPattern("dd/MM/yyyy HH:mm:ss")));
+		jsonObject.addProperty("time", Date.toLocalDateTime().format(ofPattern("dd/MM/yyyy HH:mm:ss")));
 		jsonObject.add("components", arrayOfComponents(self.graphicalComponentList()));
 		return jsonObject.toString();
 	}
@@ -28,7 +28,7 @@ public class GUI {
 
 	public static String interfaceValues(UserInterface self) {
 		JsonObject jsonObject = new JsonObject();
-		jsonObject.addProperty("time", Date.getDateTime().format(ofPattern("dd/MM/yyyy HH:mm:ss")));
+		jsonObject.addProperty("time", Date.toLocalDateTime().format(ofPattern("dd/MM/yyyy HH:mm:ss")));
 		jsonObject.add("values", arrayOf(self.graphicalComponentList()));
 		return jsonObject.toString();
 	}

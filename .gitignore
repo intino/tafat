@@ -13,7 +13,6 @@ Base/res/
 Tafat.language
 dsl/Tafat.reload
 dsl/Tafat/
-.tara/
 .idea/libraries/
 site/node_modules/
 site/dist/

@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import io.intino.tafat.engine.Executor;
 import io.intino.tafat.TafatPlatform;
-import tara.magritte.Graph;
+import io.intino.tara.magritte.Graph;
 
 import java.io.ByteArrayOutputStream;
 import java.util.logging.Logger;

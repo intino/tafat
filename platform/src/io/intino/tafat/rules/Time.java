@@ -1,6 +1,6 @@
 package io.intino.tafat.rules;
 
-import tara.lang.model.Metric;
+import io.intino.tara.lang.model.Metric;
 
 public enum Time implements Metric<Integer> {
     minute(v -> v * 60),

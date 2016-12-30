@@ -2,6 +2,7 @@ package io.intino.tafat.engine;
 
 import io.intino.tafat.Task;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,12 +13,12 @@ public class TaskManager {
 
     private static List<Task> taskList;
     private static List<Task> nextTasks;
-    private static LocalDateTime nextDate;
+    private static Instant nextDate;
 
 	static void init(){
 		taskList = new ArrayList<>();
 		nextTasks = new ArrayList<>();
-		nextDate = LocalDateTime.MAX;
+		nextDate = Instant.MAX;
 	}
 
     public static void addAll(List<Task> tasks) {
@@ -29,7 +30,7 @@ public class TaskManager {
 
     @SuppressWarnings("Convert2streamapi")
     static void update() {
-        if(nextDate.isAfter(Date.getDateTime())) return;
+        if(nextDate.isAfter(Date.getInstant())) return;
         for (Task nextTask : nextTasks)
             if (nextTask.check()) {
                 nextTask.startActionList().forEach(Task.Action::action);
@@ -40,6 +41,6 @@ public class TaskManager {
 
     private static void prepareNextTasks() {
         nextDate = taskList.parallelStream().map(Task::scheduledDate).reduce((d1, d2) -> d1.isBefore(d2) ? d1 : d2).get();
-        nextTasks = taskList.parallelStream().filter(t -> t.scheduledDate().isEqual(nextDate)).collect(toList());
+        nextTasks = taskList.parallelStream().filter(t -> t.scheduledDate().equals(nextDate)).collect(toList());
     }
 }

@@ -1,0 +1,32 @@
+{
+  "ElectricalFridge.vFmu.vFmu.[anonymous@BooleanInput].push": [
+    "import static test.Fridge.Mode.On;"
+  ],
+  "[anonymous@LogOutput].[anonymous@Line].value": [
+    "import test.TestApplication;"
+  ],
+  "[anonymous@UserInterface].[anonymous@Heatmap].[anonymous@Square].value": [
+    "import test.Fridge;"
+  ],
+  "[anonymous@Profiling].[anonymous@Profiler].execute": [
+    "import static java.util.stream.IntStream.range;",
+    "import io.intino.tara.magritte.Graph;",
+    "import test.TestApplication;",
+    "import java.util.Random;"
+  ],
+  "[anonymous@Simulation].a2.that": [
+    "import test.Fridge;"
+  ],
+  "[anonymous@UserInterface].[anonymous@Heatmap].[anonymous@Circle].value": [
+    "import test.Fridge;"
+  ],
+  "[anonymous@Simulation].a1.that": [
+    "import test.Fridge;"
+  ],
+  "[anonymous@UserInterface].[anonymous@LineChart].[anonymous@Line].value": [
+    "import test.Fridge;"
+  ],
+  "[anonymous@Simulation].a3.that": [
+    "import test.Fridge;"
+  ]
+}

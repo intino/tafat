@@ -2,7 +2,7 @@ package test;
 
 import org.junit.Test;
 import io.intino.tafat.TafatPlatform;
-import tara.magritte.Graph;
+import io.intino.tara.magritte.Graph;
 
 import static junit.framework.TestCase.assertEquals;
 import static test.Fridge.Mode.Off;

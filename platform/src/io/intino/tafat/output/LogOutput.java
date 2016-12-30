@@ -1,7 +1,7 @@
 package io.intino.tafat.output;
 
 import io.intino.tafat.engine.Date;
-import tara.magritte.Layer;
+import io.intino.tara.magritte.Layer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ public class LogOutput {
 	public static void process(io.intino.tafat.LogOutput self) {
 		if (self.checkStep()) {
 			List<Object> collect = collectValues(self);
-			collect.add(0, Date.getDateTime().format(ofPattern("dd/MM/yyyy HH:mm:ss")));
+			collect.add(0, Date.toLocalDateTime().format(ofPattern("dd/MM/yyyy HH:mm:ss")));
 			System.out.format(self.format(), collect.toArray(new Object[collect.size()]));
 		}
 	}

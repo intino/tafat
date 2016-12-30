@@ -2,7 +2,7 @@ package test;
 
 import org.junit.Before;
 import org.junit.Test;
-import tara.magritte.Graph;
+import io.intino.tara.magritte.Graph;
 import io.intino.tafat.TafatPlatform;
 
 import static org.hamcrest.CoreMatchers.is;

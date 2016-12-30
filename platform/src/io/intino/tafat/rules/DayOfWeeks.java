@@ -1,6 +1,6 @@
 package io.intino.tafat.rules;
 
-import tara.lang.model.Rule;
+import io.intino.tara.lang.model.Rule;
 
 public enum DayOfWeeks implements Rule<Enum> {
 

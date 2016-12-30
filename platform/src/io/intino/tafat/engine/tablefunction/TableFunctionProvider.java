@@ -3,7 +3,7 @@ package io.intino.tafat.engine.tablefunction;
 import io.intino.tafat.TableFunction;
 import io.intino.tafat.engine.pointset.Point;
 import io.intino.tafat.engine.pointset.PointSet;
-import tara.magritte.Layer;
+import io.intino.tara.magritte.Layer;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;

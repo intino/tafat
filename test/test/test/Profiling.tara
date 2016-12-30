@@ -1,11 +1,11 @@
 dsl Test
 
-Simulation("05/10/2015 00:00:00", "10/10/2015 00:00:00")
+Simulation(from = "2015-10-05T00:00:00Z", to = "2015-10-10T00:00:00Z")
 
 Profiling(seed = 2)
 	Profiler
 		execute
 			--
 			TestApplication application = graph.application();
-					range(0, 5).forEach(i -> application.create().fridge().power(random.nextDouble()));
+				range(0, 5).forEach(i -> application.create().fridge().power(random.nextDouble()));
 			--

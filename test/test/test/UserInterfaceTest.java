@@ -1,7 +1,7 @@
 package test;
 
 import io.intino.tafat.TafatPlatform;
-import tara.magritte.Graph;
+import io.intino.tara.magritte.Graph;
 
 public class UserInterfaceTest {
 

@@ -1,9 +1,9 @@
-dsl Proteo 
+dsl Verso
 
 Concept Assertion is component
 	var function:Thing that
 	var function:Thing shouldBe
-	var date at
+	var instant at
 Concept Trace is component
 	var function:Trace print
 Concept Stop is component
@@ -17,7 +17,7 @@ Facet Periodic on Trace
 	var word:TimeScale timeScale is final
 
 Facet Instant on Trace
-	var date[] instants
+	var instant[] instants
 
 Facet Conditional on Trace
 	var boolean check is reactive

@@ -2,7 +2,7 @@ package io.intino.tafat;
 
 import io.intino.tafat.engine.Executor;
 import io.intino.tafat.engine.utils.Random;
-import tara.magritte.Graph;
+import io.intino.tara.magritte.Graph;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 import static java.lang.Thread.sleep;
 import static spark.Spark.*;
 
-public class TafatPlatform extends GraphWrapper implements tara.magritte.Platform {
+public class TafatPlatform extends GraphWrapper implements io.intino.tara.magritte.Platform {
 
     private static final Logger LOG = Logger.getLogger(TafatPlatform.class.getName());
     private static ExecutorService executorService = Executors.newFixedThreadPool(1);

@@ -5,21 +5,21 @@ import io.intino.tafat.conditional.ConditionalTrace;
 import io.intino.tafat.engine.tablefunction.TableFunctionProvider;
 import io.intino.tafat.engine.utils.StatechartUpdater;
 import io.intino.tafat.functions.Action;
-import io.intino.tafat.parallelizable.ParallelizableImplementation;
 import io.intino.tafat.instant.InstantTrace;
+import io.intino.tafat.parallelizable.ParallelizableImplementation;
 import io.intino.tafat.periodic.PeriodicTrace;
-import tara.magritte.Graph;
-import tara.magritte.Layer;
+import io.intino.tara.magritte.Graph;
+import io.intino.tara.magritte.Layer;
 
-import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.toList;
-import static org.opensourcephysics.numerics.ODESolverFactory.createODESolver;
 import static io.intino.tafat.engine.TimeoutManager.cyclicTimeout;
 import static io.intino.tafat.engine.TimeoutManager.timeout;
+import static java.util.stream.Collectors.toList;
+import static org.opensourcephysics.numerics.ODESolverFactory.createODESolver;
 
 public class Executor {
 
@@ -37,7 +37,7 @@ public class Executor {
     }
 
     public void init() {
-        Date.setDateTime(platform.simulation().from());
+        Date.setInstant(platform.simulation().from());
         initEngine();
         initEvents();
         initAssertions();
@@ -57,7 +57,7 @@ public class Executor {
     }
 
     private void initEvents() {
-        platform.eventList().forEach(e -> timeout(e.instant(), e::execute));
+        platform.eventList().forEach(e -> timeout(e.instantDate(), e::execute));
     }
 
     private void initTraces() {
@@ -193,8 +193,7 @@ public class Executor {
     }
 
     private long steps() {
-        return (platform.simulation().to().toEpochSecond(ZoneOffset.UTC) -
-                platform.simulation().from().toEpochSecond(ZoneOffset.UTC));
-    }
+		return (platform.simulation().from().until(platform.simulation().to(), ChronoUnit.SECONDS));
+	}
 
 }

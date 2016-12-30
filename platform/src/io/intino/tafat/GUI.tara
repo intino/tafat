@@ -1,4 +1,4 @@
-dsl Proteo 
+dsl Verso
 
 Concept:{0..1} UserInterface
 	var string data = @jsonData is reactive private
