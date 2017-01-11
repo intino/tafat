@@ -16,7 +16,7 @@ public class TableFunctionTest {
 
     @Before
     public void setUp() {
-        Graph graph = Graph.load("TableFunction").wrap(TestApplication.class, TafatPlatform.class);
+        Graph graph = Graph.use(TestApplication.class, TafatPlatform.class).load("TableFunction");
         this.platform = graph.platform();
         this.application = graph.application();
         this.platform.init();

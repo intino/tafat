@@ -8,7 +8,7 @@ public class BuildingOdeTest {
 
     @Test
     public void ode_test() throws Exception {
-        Graph graph = Graph.load("BuildingOde").wrap(TestApplication.class, TafatPlatform.class);
+        Graph graph = Graph.use(TestApplication.class, TafatPlatform.class).load("BuildingOde");
         graph.platform().execute();
     }
 }

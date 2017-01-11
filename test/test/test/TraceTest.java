@@ -12,7 +12,7 @@ public class TraceTest {
 
 	@Before
 	public void setUp() {
-		Graph model = Graph.load("Trace").wrap(TestApplication.class, TafatPlatform.class);
+		Graph model = Graph.use(TestApplication.class, TafatPlatform.class).load("Trace");
 		this.platform = model.<TafatPlatform>platform();
 		this.application = model.<TestApplication>application();
 		this.platform.execute();
@@ -24,7 +24,7 @@ public class TraceTest {
 	}
 
 	public static void main(String[] args) {
-		Graph model = Graph.load("Trace").wrap(TestApplication.class, TafatPlatform.class);
+		Graph model = Graph.use(TestApplication.class, TafatPlatform.class).load("Trace");
 		model.platform().execute();
 	}
 }

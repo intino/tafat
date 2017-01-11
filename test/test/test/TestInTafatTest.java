@@ -21,7 +21,7 @@ public class TestInTafatTest {
 
 	@Before
 	public void setUp() {
-		Graph model = Graph.load("TestInTafat").wrap(TestApplication.class, TafatPlatform.class);
+		Graph model = Graph.use(TestApplication.class, TafatPlatform.class).load("TestInTafat");
 		this.platform = model.<TafatPlatform>platform();
 		this.application = model.<TestApplication>application();
 	}

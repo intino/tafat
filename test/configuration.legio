@@ -7,5 +7,4 @@ Project(groupId = "tafat", version = "1.0.0") Test
 	Dependencies
 		Test(groupId = "junit", artifactId = "junit", version = "4.12")
 		Compile("com.esotericsoftware", "kryo", "4.0.0")
-
 	Factory("test") as Application(language="Tafat", version="LATEST")

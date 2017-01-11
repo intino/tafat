@@ -15,7 +15,7 @@ public class ProfilingTest {
 
 	@Before
 	public void setUp() {
-		Graph model = Graph.load("Profiling").wrap(TestApplication.class, TafatPlatform.class);
+		Graph model = Graph.use(TestApplication.class, TafatPlatform.class).load("Profiling");
 		this.platform = model.platform();
 		this.application = model.application();
 		this.platform.execute();

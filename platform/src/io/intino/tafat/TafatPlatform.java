@@ -22,7 +22,6 @@ public class TafatPlatform extends GraphWrapper implements io.intino.tara.magrit
 
     public TafatPlatform(Graph graph) {
         super(graph);
-        Random.init(simulation().seed());
     }
 
     private void runProfiling() {
@@ -32,6 +31,7 @@ public class TafatPlatform extends GraphWrapper implements io.intino.tara.magrit
     }
 
     public void init() {
+		Random.init(simulation().seed());
         runProfiling();
         executor = new Executor(graph);
         executor.init();

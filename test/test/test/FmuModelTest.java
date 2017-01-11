@@ -15,7 +15,7 @@ public class FmuModelTest {
 
 	@Test
 	public void should_execute_fmu_properly() throws Exception {
-		Graph model = Graph.load("FmuModel").wrap(TestApplication.class, TafatPlatform.class);
+		Graph model = Graph.use(TestApplication.class, TafatPlatform.class).load("FmuModel");
 		this.platform = model.platform();
 		this.application = model.application();
 		platform.init();

@@ -18,7 +18,7 @@ public class StateChartTest {
 
 	@Before
 	public void setUp() {
-		Graph model = Graph.load("StateChart").wrap(TestApplication.class, TafatPlatform.class);
+		Graph model = Graph.use(TestApplication.class, TafatPlatform.class).load("StateChart");
 		this.platform = model.platform();
 		this.domain = model.application();
 		platform.init();

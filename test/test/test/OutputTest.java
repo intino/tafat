@@ -12,7 +12,7 @@ public class OutputTest {
 
 	@Before
 	public void setUp() {
-		Graph model = Graph.load("Output").wrap(TestApplication.class, TafatPlatform.class);
+		Graph model = Graph.use(TestApplication.class, TafatPlatform.class).load("Output");
 		this.engine = model.platform();
 		this.domain = model.application();
 	}
