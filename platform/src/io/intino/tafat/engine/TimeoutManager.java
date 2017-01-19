@@ -2,8 +2,8 @@ package io.intino.tafat.engine;
 
 import io.intino.tafat.functions.Action;
 import io.intino.tafat.rules.TimeScale;
+import io.intino.tara.magritte.types.InstantX;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -18,7 +18,7 @@ public class TimeoutManager {
         timeout(Date.getInstant().plusSeconds((long) duration), action);
     }
 
-    public static void timeout(Instant instant, Action action) {
+    public static void timeout(InstantX instant, Action action) {
 		timeouts.add(new Timeout(instant, action));
         timeouts.sort(Comparator.comparing(t -> t.duration));
     }
@@ -51,10 +51,10 @@ public class TimeoutManager {
     }
 
     private static class Timeout {
-		Instant duration;
+		InstantX duration;
 		final Action action;
 
-        public Timeout(Instant duration, Action action) {
+        public Timeout(InstantX duration, Action action) {
             this.duration = duration;
             this.action = action;
         }

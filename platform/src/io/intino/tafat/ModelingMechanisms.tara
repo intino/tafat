@@ -53,7 +53,7 @@ Concept StateChart extends PeriodicActivity is feature
 			var function:CheckTransition check
 			sub Condition
 			sub TimeBased
-				var instant when = "" is private
+				var instantx when = "" is private
 				var function:CheckTransition check = @checkTimeBasedTransition is private
 				var function:Action activate is private
 				sub Timeout
@@ -72,7 +72,7 @@ Concept StateChart extends PeriodicActivity is feature
 
 Concept Task is feature
 	var word[]:DayOfWeek days = Monday Tuesday Wednesday Thursday Friday Saturday Sunday
-	var instant scheduledDate = "" is private
+	var instantx scheduledDate = "" is private
 	var boolean check = @checkTask is final reactive private
 	var function:Action program = @programTask is final private
 	Concept:{1..1} Start

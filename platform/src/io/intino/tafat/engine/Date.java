@@ -1,11 +1,13 @@
 package io.intino.tafat.engine;
 
+import io.intino.tara.magritte.types.InstantX;
+
 import java.time.*;
 import java.time.temporal.*;
 
 public class Date {
 
-    private static java.time.Instant dateTime;
+    private static InstantX dateTime;
 
 	public static java.time.Instant now() {
 		return java.time.Instant.now();
@@ -60,39 +62,39 @@ public class Date {
 		return dateTime.getNano();
 	}
 
-	public static java.time.Instant plus(long amountToAdd, TemporalUnit unit) {
+	public static InstantX plus(long amountToAdd, TemporalUnit unit) {
 		return dateTime = dateTime.plus(amountToAdd, unit);
 	}
 
-	public static java.time.Instant plusSeconds(long secondsToAdd) {
+	public static InstantX plusSeconds(long secondsToAdd) {
 		return dateTime = dateTime.plusSeconds(secondsToAdd);
 	}
 
-	public static java.time.Instant plusMillis(long millisToAdd) {
+	public static InstantX plusMillis(long millisToAdd) {
 		return dateTime = dateTime.plusMillis(millisToAdd);
 	}
 
-	public static java.time.Instant plusNanos(long nanosToAdd) {
+	public static InstantX plusNanos(long nanosToAdd) {
 		return dateTime = dateTime.plusNanos(nanosToAdd);
 	}
 
-	public static java.time.Instant minus(TemporalAmount amountToSubtract) {
+	public static InstantX minus(TemporalAmount amountToSubtract) {
 		return dateTime = dateTime.minus(amountToSubtract);
 	}
 
-	public static java.time.Instant minus(long amountToSubtract, TemporalUnit unit) {
+	public static InstantX minus(long amountToSubtract, TemporalUnit unit) {
 		return dateTime = dateTime.minus(amountToSubtract, unit);
 	}
 
-	public static java.time.Instant minusSeconds(long secondsToSubtract) {
+	public static InstantX minusSeconds(long secondsToSubtract) {
 		return dateTime = dateTime.minusSeconds(secondsToSubtract);
 	}
 
-	public static java.time.Instant minusMillis(long millisToSubtract) {
+	public static InstantX minusMillis(long millisToSubtract) {
 		return dateTime = dateTime.minusMillis(millisToSubtract);
 	}
 
-	public static java.time.Instant minusNanos(long nanosToSubtract) {
+	public static InstantX minusNanos(long nanosToSubtract) {
 		return dateTime = dateTime.minusNanos(nanosToSubtract);
 	}
 
@@ -104,7 +106,7 @@ public class Date {
 		return dateTime.adjustInto(temporal);
 	}
 
-	public static long until(Temporal endExclusive, TemporalUnit unit) {
+	public static long until(InstantX endExclusive, TemporalUnit unit) {
 		return dateTime.until(endExclusive, unit);
 	}
 
@@ -120,28 +122,28 @@ public class Date {
 		return dateTime.toEpochMilli();
 	}
 
-	public static int compareTo(java.time.Instant otherInstant) {
+	public static int compareTo(InstantX otherInstant) {
 		return dateTime.compareTo(otherInstant);
 	}
 
-	public static boolean isAfter(java.time.Instant otherInstant) {
+	public static boolean isAfter(InstantX otherInstant) {
 		return dateTime.isAfter(otherInstant);
 	}
 
-	public static boolean isBefore(java.time.Instant otherInstant) {
+	public static boolean isBefore(InstantX otherInstant) {
 		return dateTime.isBefore(otherInstant);
 	}
 
-	public static void setInstant(java.time.Instant otherInstant){
+	public static void setInstant(InstantX otherInstant){
 		dateTime = otherInstant;
 	}
 
-	public static Instant getInstant() {
+	public static InstantX getInstant() {
 		return dateTime;
 	}
 
 
 	public static LocalDateTime toLocalDateTime() {
-		return LocalDateTime.ofInstant(Date.getInstant(), ZoneId.of("UTC"));
+		return Date.getInstant().toLocalDateTime(ZoneId.of("UTC"));
 	}
 }
