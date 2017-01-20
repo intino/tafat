@@ -1,7 +1,6 @@
 package io.intino.tafat.engine;
 
 import io.intino.tafat.Task;
-import io.intino.tara.magritte.types.InstantX;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -14,12 +13,12 @@ public class TaskManager {
 
     private static List<Task> taskList;
     private static List<Task> nextTasks;
-    private static InstantX nextDate;
+    private static Instant nextDate;
 
 	static void init(){
 		taskList = new ArrayList<>();
 		nextTasks = new ArrayList<>();
-		nextDate = new InstantX(Instant.MAX);
+		nextDate = Instant.MAX;
 	}
 
     public static void addAll(List<Task> tasks) {

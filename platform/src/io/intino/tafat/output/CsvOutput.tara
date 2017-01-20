@@ -2,7 +2,7 @@ dsl Verso
 
 use Main
 
-Concept CsvOutput extends Output
+Concept CsvOutput extends Output is component
 	var string path
 	var word:TimeScale timeScale is final
 	Concept Column

@@ -12,9 +12,6 @@ public enum Time implements Metric<Integer> {
 
     private Converter<Integer> converter;
 
-	Time() {
-	}
-
 	Time(Converter<Integer> converter) {
 		this.converter = converter;
 	}

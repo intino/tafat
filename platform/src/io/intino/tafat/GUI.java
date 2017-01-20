@@ -14,7 +14,7 @@ public class GUI {
 	public static String jsonData(UserInterface self) {
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.addProperty("title", self.title());
-		jsonObject.addProperty("logo", ImageHelper.base64(self.logo().getURL()));
+		jsonObject.addProperty("logo", ImageHelper.base64(self.logo()));
 		jsonObject.addProperty("time", Date.toLocalDateTime().format(ofPattern("dd/MM/yyyy HH:mm:ss")));
 		jsonObject.add("components", arrayOfComponents(self.graphicalComponentList()));
 		return jsonObject.toString();
@@ -50,7 +50,7 @@ public class GUI {
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.addProperty("type", "heatmap");
 		jsonObject.addProperty("title", self.title());
-		jsonObject.addProperty("background", ImageHelper.base64(self.background().getURL()));
+		jsonObject.addProperty("background", ImageHelper.base64(self.background()));
 		jsonObject.addProperty("color", self.color().code());
 		jsonObject.add("regions", arrayOfRegions(self.regionList()));
 		return jsonObject;

@@ -5,7 +5,6 @@ Project(groupId = "io.intino.tafat", version = "2.2.0") tafat
 		Release(url = "http://artifactory.siani.es/artifactory/libs-release", "siani-maven")
 		Release(url = "http://artifactory.siani.es/artifactory/libs-snapshot", "siani-maven-snapshot")
 		Release(url = "https://artifactory.intino.io/artifactory/release-libraries", "intino-maven")
-		Release(url = "https://artifactory.intino.io/artifactory/release-frameworks", "intino-maven")
 		Language(url = "https://artifactory.intino.io/artifactory/release-languages", "intino-maven")
 	Dependencies
 		Test(groupId = "junit", artifactId = "junit", version = "4.12")
@@ -14,6 +13,7 @@ Project(groupId = "io.intino.tafat", version = "2.2.0") tafat
 		Compile(groupId = "org.siani.javafmi", artifactId = "fmu-wrapper", version = "2.18.3")
 		Compile(groupId = "org.osp", artifactId = "osp", version = "1.0")
 	Factory("io.intino.tafat") as Platform("Verso", "LATEST")
+
 LifeCycle
 	Distribution
 		Release(url = "https://artifactory.intino.io/artifactory/release-frameworks", "intino-maven")
