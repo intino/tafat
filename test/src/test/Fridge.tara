@@ -46,12 +46,9 @@ Behavior Electrical on Fridge
 				--
 
 	Implementation v5
-	TableFunction WattsV5 > LinearInterpolation; LinearExtrapolation
-		Data... with Watts(Diameter Temperature, Watts)
+
 
 	Implementation v6
-	TableFunction WattsV6 > LinearInterpolation; LinearExtrapolation
-		Data... with FridgeConsumption(Temperature, Watts)
 
 	Implementation vFmu
 		Fmu(file = "res/Fridge.fmu", step = 1) vFmu

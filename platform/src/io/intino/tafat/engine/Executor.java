@@ -26,14 +26,14 @@ public class Executor {
     private static final Logger LOG = Logger.getLogger(Executor.class.getName());
 
     private final Graph graph;
-    private final TafatPlatform platform;
+    private final Tafat platform;
     private List<Implementation> parallelImplementations;
     private List<Implementation> implementations;
     private int minStepSize;
 
     public Executor(Graph graph) {
         this.graph = graph;
-        this.platform = graph.platform();
+        this.platform = graph.wrapper(Tafat.class);
     }
 
     public void init() {

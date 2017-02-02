@@ -1,4 +1,4 @@
-dsl Proteo
+dsl Verso
 
 Concept Start is final feature
 	var function:Action start is final
@@ -9,7 +9,6 @@ Concept PeriodicActivity is abstract
 Concept Action extends PeriodicActivity is feature
 	var function:Execute execute = 'self.action()' is final private
 	var function:Action action
-
 
 Concept ConditionalAction extends PeriodicActivity is feature
 	var function:Execute execute = 'if(self.condition()) self.action();' is final private
@@ -53,7 +52,7 @@ Concept StateChart extends PeriodicActivity is feature
 			var function:CheckTransition check
 			sub Condition
 			sub TimeBased
-				var instant when = "" is private
+				var instant when = empty is private
 				var function:CheckTransition check = @checkTimeBasedTransition is private
 				var function:Action activate is private
 				sub Timeout
@@ -69,10 +68,9 @@ Concept StateChart extends PeriodicActivity is feature
 			sub Message
 				var string expectedMessage
 				var function:CheckTransition check = @checkMessageTransition
-
 Concept Task is feature
 	var word[]:DayOfWeek days = Monday Tuesday Wednesday Thursday Friday Saturday Sunday
-	var instant scheduledDate = "" is private
+	var instant scheduledDate = empty is private
 	var boolean check = @checkTask is final reactive private
 	var function:Action program = @programTask is final private
 	Concept:{1..1} Start

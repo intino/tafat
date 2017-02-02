@@ -12,15 +12,15 @@ import java.util.logging.Logger;
 import static java.lang.Thread.sleep;
 import static spark.Spark.*;
 
-public class TafatPlatform extends GraphWrapper implements io.intino.tara.magritte.Platform {
+public class Tafat extends GraphWrapper  {
 
-    private static final Logger LOG = Logger.getLogger(TafatPlatform.class.getName());
+    private static final Logger LOG = Logger.getLogger(Tafat.class.getName());
     private static ExecutorService executorService = Executors.newFixedThreadPool(1);
     private Executor executor;
     private Future<?> submission;
     private int delay = 1000;
 
-    public TafatPlatform(Graph graph) {
+    public Tafat(Graph graph) {
         super(graph);
     }
 
@@ -38,7 +38,6 @@ public class TafatPlatform extends GraphWrapper implements io.intino.tara.magrit
         initUserInterface();
     }
 
-    @Override
     public void execute(String... args) {
         if (args.length > 0 && userInterface() != null)
             userInterface().port(Integer.parseInt(args[0]));

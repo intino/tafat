@@ -1,23 +1,22 @@
 package test;
 
+import io.intino.tafat.Tafat;
 import org.junit.Before;
-import org.junit.Test;
-import io.intino.tafat.TafatPlatform;
 import io.intino.tara.magritte.Graph;
 
 public class OutputTest {
 
-	private TafatPlatform engine;
-	private TestApplication domain;
+	private Tafat engine;
+	private test.Test domain;
 
 	@Before
 	public void setUp() {
-		Graph model = Graph.use(TestApplication.class, TafatPlatform.class).load("Output");
-		this.engine = model.platform();
-		this.domain = model.application();
+		Graph model = Graph.use(Test.class, Tafat.class).load("Output");
+		this.engine = model.wrapper(Tafat.class);
+		this.domain = model.wrapper(Test.class);
 	}
 
-	@Test
+	@org.junit.Test
 	public void testModel() throws Exception {
 		this.engine.execute();
 	}

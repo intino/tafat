@@ -3,7 +3,7 @@
     "import static test.Fridge.Mode.On;"
   ],
   "[anonymous@LogOutput].[anonymous@Line].value": [
-    "import test.TestApplication;"
+    "import test.Test;"
   ],
   "[anonymous@UserInterface].[anonymous@Heatmap].[anonymous@Square].value": [
     "import test.Fridge;"
@@ -11,7 +11,7 @@
   "[anonymous@Profiling].[anonymous@Profiler].execute": [
     "import static java.util.stream.IntStream.range;",
     "import io.intino.tara.magritte.Graph;",
-    "import test.TestApplication;",
+    "import test.Test;",
     "import java.util.Random;"
   ],
   "[anonymous@Simulation].a2.that": [

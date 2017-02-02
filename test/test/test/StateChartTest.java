@@ -1,8 +1,7 @@
 package test;
 
 import org.junit.Before;
-import org.junit.Test;
-import io.intino.tafat.TafatPlatform;
+import io.intino.tafat.Tafat;
 import io.intino.tafat.behavior.BehaviorEntity;
 import io.intino.tara.magritte.Graph;
 import test.electrical.ElectricalFridge;
@@ -13,18 +12,18 @@ import static org.hamcrest.core.Is.is;
 
 public class StateChartTest {
 
-	private TafatPlatform platform;
-	private TestApplication domain;
+	private Tafat platform;
+	private Test domain;
 
 	@Before
 	public void setUp() {
-		Graph model = Graph.use(TestApplication.class, TafatPlatform.class).load("StateChart");
-		this.platform = model.platform();
-		this.domain = model.application();
+		Graph model = Graph.use(Test.class, Tafat.class).load("StateChart");
+		this.platform = model.wrapper(Tafat.class);
+		this.domain = model.wrapper(Test.class);
 		platform.init();
 	}
 
-	@Test
+	@org.junit.Test
 	public void should_initially_be_in_state_on_and_after_updating_in_state_off() throws Exception {
 		Fridge fridge = domain.fridgeList().get(0);
 		assertThat(fridge.as(BehaviorEntity.class).implementation(0).stateChart(0).current().name(), is("On"));
@@ -32,7 +31,7 @@ public class StateChartTest {
 		assertThat(fridge.as(BehaviorEntity.class).implementation(0).stateChart(0).current().name(), is("Off"));
 	}
 
-	@Test
+	@org.junit.Test
 	public void should_pass_all_stages_correctly() throws Exception {
 		Fridge fridge = domain.fridgeList().get(1);
 		assertThat(fridge.as(BehaviorEntity.class).implementation(0).stateChart(0).current().name(), is("Off"));
@@ -74,7 +73,7 @@ public class StateChartTest {
 		assertThat(fridge.as(ElectricalFridge.class).value(), is(0));
 	}
 
-	@Test
+	@org.junit.Test
 	public void after_updating_value_must_be_45() throws Exception {
 		Fridge fridge = domain.fridgeList().get(2);
 		platform.run();

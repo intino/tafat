@@ -2,7 +2,7 @@ dsl Verso
 
 use Main
 
-Concept CityCdfOutput extends Output is component
+Concept CityCdfOutput extends Output
 	var word:TimeScale timeScale is final
 	Concept Line
 		var string name
