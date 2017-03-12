@@ -11,8 +11,8 @@ Project(groupId = "io.intino.tafat", version = "2.2.0") tafat
 		Compile(groupId = "com.google.code.gson", artifactId = "gson", version = "2.4")
 		Compile(groupId = "org.siani.javafmi", artifactId = "fmu-wrapper", version = "2.18.3")
 		Compile(groupId = "org.osp", artifactId = "osp", version = "1.0")
-	Factory("io.intino.tafat") as Platform
-		Language(name = "Verso", version = "LATEST")
+	Factory("1.2.0", "io.intino.tafat") as Platform
+		Language(name = "Verso", version = "1.0.5")
 LifeCycle
 	Distribution
 		Release("https://artifactory.intino.io/artifactory/release-frameworks", "intino-maven")
