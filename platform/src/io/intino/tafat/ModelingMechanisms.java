@@ -37,7 +37,7 @@ public class ModelingMechanisms {
     }
 
     public static boolean checkMessageTransition(StateChart.Transition.Message self, int advancedTime) {
-        return self.ownerAs(StateChart.class).message().equals(self.expectedMessage());
+        return self.core$().ownerAs(StateChart.class).message().equals(self.expectedMessage());
     }
 
     public static boolean checkTask(Task self) {

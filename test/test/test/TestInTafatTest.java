@@ -1,9 +1,10 @@
 package test;
 
-import io.intino.tafat.Tafat;
+import io.intino.tafat.TafatGraph;
 import org.junit.Before;
 import io.intino.tafat.engine.Executor;
 import io.intino.tara.magritte.Graph;
+import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.util.logging.Logger;
@@ -15,17 +16,17 @@ import static org.junit.Assert.assertThat;
 
 public class TestInTafatTest {
 
-	Tafat platform;
-	Test application;
+	TafatGraph platform;
+	TestGraph product;
 
 	@Before
 	public void setUp() {
-		Graph model = Graph.use(Test.class, Tafat.class).load("TestInTafat");
-		this.platform = model.wrapper(Tafat.class);
-		this.application = model.wrapper(Test.class);
+		Graph graph = new Graph().loadStashes("TestInTafat");
+		this.platform = graph.as(TafatGraph.class);
+		this.product = graph.as(TestGraph.class);
 	}
 
-	@org.junit.Test
+	@Test
 	public void test_assertion_out() throws Exception {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		StreamHandler handler = new StreamHandler(outputStream, new SimpleFormatter());

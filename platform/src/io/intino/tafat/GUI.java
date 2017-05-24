@@ -70,14 +70,14 @@ public class GUI {
 
 	private static JsonElement jsonObjectOf(UserInterface.Heatmap.Region region) {
 		JsonObject jsonObject = new JsonObject();
-		jsonObject.addProperty("id", region.name());
+		jsonObject.addProperty("id", region.name$());
 		jsonObject.addProperty("value", region.value());
 		return jsonObject;
 	}
 
 	public static JsonElement buildSquareJson(UserInterface.Heatmap.Square self) {
 		JsonObject jsonObject = new JsonObject();
-		jsonObject.addProperty("id", self.name());
+		jsonObject.addProperty("id", self.name$());
 		jsonObject.addProperty("type", "square");
 		jsonObject.addProperty("zIndex", self.zIndex());
 		jsonObject.addProperty("top", self.top());
@@ -89,7 +89,7 @@ public class GUI {
 
 	public static JsonElement buildCircleJson(UserInterface.Heatmap.Circle self) {
 		JsonObject jsonObject = new JsonObject();
-		jsonObject.addProperty("id", self.name());
+		jsonObject.addProperty("id", self.name$());
 		jsonObject.addProperty("type", "circle");
 		jsonObject.addProperty("zIndex", self.zIndex());
 		jsonObject.addProperty("top", self.centerY() - self.diameter() / 2);
@@ -128,7 +128,7 @@ public class GUI {
 
 	public static JsonElement buildLineJson(UserInterface.LineChart.Line self) {
 		JsonObject jsonObject = new JsonObject();
-		jsonObject.addProperty("id", self.name());
+		jsonObject.addProperty("id", self.name$());
 		jsonObject.addProperty("label", self.label());
 		return jsonObject;
 	}

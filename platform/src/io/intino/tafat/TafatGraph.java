@@ -12,15 +12,15 @@ import java.util.logging.Logger;
 import static java.lang.Thread.sleep;
 import static spark.Spark.*;
 
-public class Tafat extends GraphWrapper  {
+public class TafatGraph extends io.intino.tafat.AbstractGraph {
 
-    private static final Logger LOG = Logger.getLogger(Tafat.class.getName());
+    private static final Logger LOG = Logger.getLogger(TafatGraph.class.getName());
     private static ExecutorService executorService = Executors.newFixedThreadPool(1);
     private Executor executor;
     private Future<?> submission;
     private int delay = 1000;
 
-    public Tafat(Graph graph) {
+    public TafatGraph(Graph graph) {
         super(graph);
     }
 

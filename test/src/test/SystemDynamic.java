@@ -7,7 +7,7 @@ import test.thermal.environment.building.ThermalRadiator;
 public class SystemDynamic {
 
     public static boolean lowTemperature(ThermalRadiator self){
-        return self.ownerAs(Environment.Building.class).temperature() < 18;
+        return self.core$().ownerAs(Environment.Building.class).temperature() < 18;
     }
 
     public static void startHeating(ThermalRadiator self){
@@ -15,7 +15,7 @@ public class SystemDynamic {
     }
 
     public static boolean highTemperature(ThermalRadiator self){
-        return self.ownerAs(Environment.Building.class).temperature() > 24;
+        return self.core$().ownerAs(Environment.Building.class).temperature() > 24;
     }
 
     public static void stopHeating(ThermalRadiator self){
@@ -40,7 +40,7 @@ public class SystemDynamic {
         private final Environment.Building.Radiator radiator;
 
         ThermalBuildingOde(ThermalBuilding self) {
-            this.environment = self.ownerAs(Environment.class);
+            this.environment = self.core$().ownerAs(Environment.class);
             this.building = self;
             this.radiator = self.radiatorList(0);
             init(3, 2);

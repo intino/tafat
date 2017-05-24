@@ -9,7 +9,7 @@ public class StatechartUpdater {
 
     public static void update(StateChart stateChart, int advancedTime){
         updateStatechart(stateChart, advancedTime);
-        doPeriodic(stateChart.current().as(State.class));
+        doPeriodic(stateChart.current().core$().as(State.class));
         stateChart.message("");
     }
 
@@ -28,7 +28,7 @@ public class StatechartUpdater {
     }
 
     private static boolean transitionChangedStateChart(StateChart stateChart) {
-        return stateChart.ownerAs(StateChart.class) != null && stateChart.ownerAs(StateChart.class).current() != stateChart;
+        return stateChart.core$().ownerAs(StateChart.class) != null && stateChart.core$().ownerAs(StateChart.class).current() != stateChart;
     }
 
     private static void updateChild(StateChart stateChart, int advancedTime) {
@@ -43,13 +43,13 @@ public class StatechartUpdater {
 	}
 
     private static void processTransition(Transition transition, StateChart stateChart) {
-        out(stateChart.current().as(State.class), transition.to().owner().as(StateChart.class));
-        doTransition(transition, transition.to().owner().as(StateChart.class));
+        out(stateChart.current().core$().as(State.class), transition.to().core$().owner().as(StateChart.class));
+        doTransition(transition, transition.to().core$().owner().as(StateChart.class));
         in(transition.to(), stateChart);
     }
 
     private static void out(State state, StateChart toParent) {
-        if (state.current() != null) out(state.current().as(State.class), toParent);
+        if (state.current() != null) out(state.current().core$().as(State.class), toParent);
         else doOut(state, toParent);
     }
 
@@ -61,14 +61,14 @@ public class StatechartUpdater {
     }
 
     private static void in(State state, StateChart fromParent) {
-        if (state.owner() == fromParent.node()) doIn(state);
-        else if (state.owner() != null && state.owner().is(State.class))
-            in(state.owner().as(State.class), fromParent);
+        if (state.core$().owner() == fromParent.core$()) doIn(state);
+        else if (state.core$().owner() != null && state.core$().owner().is(State.class))
+            in(state.core$().owner().as(State.class), fromParent);
         else doIn(state);
     }
 
     private static void updateParentsState(StateChart stateChart) {
-        StateChart owner = stateChart.ownerAs(StateChart.class);
+        StateChart owner = stateChart.core$().ownerAs(StateChart.class);
         if (owner == null) return;
         owner.current(stateChart);
         updateParentsState(owner);
@@ -76,12 +76,12 @@ public class StatechartUpdater {
 
     private static void activate(StateChart stateChart) {
         activateTransitions(stateChart);
-        activateState(stateChart.current().as(State.class));
+        activateState(stateChart.current().core$().as(State.class));
     }
 
     public static void activateTransitions(StateChart stateChart) {
         stateChart.transitionList().forEach(t -> {
-            if(t.trigger().is(TimeBased.class) && t.from() == stateChart.current())
+            if(t.trigger().core$().is(TimeBased.class) && t.from() == stateChart.current())
                 t.timeBased().activate();
         });
     }
@@ -94,18 +94,18 @@ public class StatechartUpdater {
     }
 
     private static void doPeriodic(State state) {
-        if (state.current() != null) doPeriodic(state.current().as(State.class));
+        if (state.current() != null) doPeriodic(state.current().core$().as(State.class));
         state.periodicActionList().forEach(State.Action::action);
     }
 
     private static void doIn(State state) {
         state.entryActionList().forEach(State.Action::action);
-        if (state.current() != null) doIn(state.current().as(State.class));
+        if (state.current() != null) doIn(state.current().core$().as(State.class));
     }
 
     private static void doOut(State state, StateChart toParent) {
         state.exitActionList().forEach(State.Action::action);
-        if (state.current() != null && state.owner() != toParent.node() && state.owner().is(State.class))
-            doOut(state.ownerAs(State.class), toParent);
+        if (state.current() != null && state.core$().owner() != toParent.core$() && state.core$().owner().is(State.class))
+            doOut(state.core$().ownerAs(State.class), toParent);
     }
 }

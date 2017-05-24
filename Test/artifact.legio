@@ -1,0 +1,16 @@
+dsl Legio
+
+Artifact(groupId = "tafat", version = "1.0.0") Test as Product
+	Model(language = "Tafat", version = "2.2.0", sdk = "2.0.0")
+	Code("test")
+	Imports
+		Test(groupId = "junit", artifactId = "junit", version = "4.12")
+		Compile("com.esotericsoftware", "kryo", "4.0.0")
+
+Repository("intino-maven") intino
+	Language("https://artifactory.intino.io/artifactory/release-languages") languages
+	Release("https://artifactory.intino.io/artifactory/releases")
+	Release("https://artifactory.intino.io/artifactory/release-frameworks") frameworks
+Repository("siani-maven") siani
+	Release("https://artifactory.siani.es/artifactory/libs-release")
+	Language("https://artifactory.siani.es/artifactory/languages-release")

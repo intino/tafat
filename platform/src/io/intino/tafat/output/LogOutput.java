@@ -12,7 +12,7 @@ import static java.util.stream.Collectors.toList;
 public class LogOutput {
 	public static void init(io.intino.tafat.LogOutput self) {
 		StringBuilder builder = new StringBuilder("%19s |");
-		List<String> names = self.lineList().stream().map(Layer::name).collect(toList());
+		List<String> names = self.lineList().stream().map(Layer::name$).collect(toList());
 		names.forEach(n -> builder.append(" %").append(n.length()).append("f |"));
 		names.add(0, "Time");
 		self.format(builder.append("%n").toString());

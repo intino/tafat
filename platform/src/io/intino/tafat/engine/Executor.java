@@ -26,14 +26,14 @@ public class Executor {
     private static final Logger LOG = Logger.getLogger(Executor.class.getName());
 
     private final Graph graph;
-    private final Tafat platform;
+    private final TafatGraph platform;
     private List<Implementation> parallelImplementations;
     private List<Implementation> implementations;
     private int minStepSize;
 
     public Executor(Graph graph) {
         this.graph = graph;
-        this.platform = graph.wrapper(Tafat.class);
+        this.platform = graph.as(TafatGraph.class);
     }
 
     public void init() {
@@ -62,16 +62,16 @@ public class Executor {
 
     private void initTraces() {
         graph.find(PeriodicTrace.class)
-                .forEach(p -> cyclicTimeout(p.timeScale(), traceAction(p.as(Trace.class))));
+                .forEach(p -> cyclicTimeout(p.timeScale(), traceAction(p.core$().as(Trace.class))));
         graph.find(InstantTrace.class)
-                .forEach(p -> p.instants().forEach(i -> timeout(i, traceAction(p.as(Trace.class)))));
+                .forEach(p -> p.instants().forEach(i -> timeout(i, traceAction(p.core$().as(Trace.class)))));
     }
 
     private Action traceAction(Trace trace) {
         return () -> {
-            if (!trace.is(ConditionalTrace.class))
+            if (!trace.core$().is(ConditionalTrace.class))
                 LOG.info(trace.print());
-            else if (trace.as(ConditionalTrace.class).check())
+            else if (trace.core$().as(ConditionalTrace.class).check())
                 LOG.info(trace.print());
         };
     }
@@ -79,7 +79,7 @@ public class Executor {
     private void initAssertions() {
         platform.simulation().assertionList().forEach(a -> timeout(a.at(), () -> {
             if (a.that().equals(a.shouldBe())) return;
-            LOG.info(a.at() + ": assertion " + a.name() + " failed. Expected: " + a.shouldBe() + ". Was: " + a.that());
+            LOG.info(a.at() + ": assertion " + a.name$() + " failed. Expected: " + a.shouldBe() + ". Was: " + a.that());
         }));
     }
 
@@ -105,7 +105,7 @@ public class Executor {
         behaviors.forEach(b -> b.tableFunctionList().forEach(tableFunction -> {
             if (!tableFunction.dataList().isEmpty())
                 tableFunction.provider(new TableFunctionProvider(tableFunction));
-            else throw new RuntimeException("There is no data in table function " + tableFunction.name());
+            else throw new RuntimeException("There is no data in table function " + tableFunction.name$());
         }));
     }
 
@@ -137,7 +137,7 @@ public class Executor {
 
     private boolean isParallelizable(Implementation implementation) {
         return !implementation.periodicActivityList().isEmpty() &&
-                implementation.is(ParallelizableImplementation.class);
+                implementation.core$().is(ParallelizableImplementation.class);
     }
 
     private void purgeImplementations() {
@@ -149,10 +149,10 @@ public class Executor {
 
     private void purgeImplementations(Behavior behavior) {
         behavior.implementationList().stream()
-                .filter(i -> !i.name().equalsIgnoreCase(behavior.implementation()))
-                .collect(toList()).forEach(Layer::delete);
+                .filter(i -> !i.name$().equalsIgnoreCase(behavior.implementation()))
+                .collect(toList()).forEach(Layer::delete$);
         if (behavior.implementationList().isEmpty())
-            throw new RuntimeException("Behavior at " + behavior.name() + " must have an implementation selected");
+            throw new RuntimeException("Behavior at " + behavior.name$() + " must have an implementation selected");
     }
 
     @SuppressWarnings("WeakerAccess")

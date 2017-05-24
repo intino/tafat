@@ -42,7 +42,7 @@ public class Interpolation {
 	private Function functionFor(TableFunction.Extrapolation extrapolation, PointSet points) {
 		Function function = instantiateFunction(extrapolation.getClass(), points);
 		if(function != null && extrapolation.getClass() == TableFunction.CustomExtrapolation.class)
-			((Custom) function).function(() -> extrapolation.as(TableFunction.CustomExtrapolation.class).extrapolationFunction());
+			((Custom) function).function(() -> extrapolation.core$().as(TableFunction.CustomExtrapolation.class).extrapolationFunction());
 		return function;
 	}
 

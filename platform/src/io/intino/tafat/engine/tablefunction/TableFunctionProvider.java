@@ -20,13 +20,13 @@ import static java.util.stream.IntStream.range;
 
 public class TableFunctionProvider {
 
-    List<Dimension> dimensions = new ArrayList<>();
+    private List<Dimension> dimensions = new ArrayList<>();
     private TableFunction tableFunction;
 
     public TableFunctionProvider(TableFunction tableFunction) {
         this.tableFunction = tableFunction;
         List<Record> records = recordsOf(tableFunction.dataList());
-        new ArrayList<>(tableFunction.dataList()).stream().forEach(Layer::delete);
+        new ArrayList<>(tableFunction.dataList()).forEach(Layer::delete$);
         dimensions.addAll(dimensionsOf(records));
     }
 
