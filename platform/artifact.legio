@@ -6,7 +6,7 @@ Artifact(groupId = "io.intino.tafat", version = "2.2.0") tafat as Platform
 		Compile(groupId = "com.sparkjava", artifactId = "spark-core", version = "2.3")
 		Compile(groupId = "com.google.code.gson", artifactId = "gson", version = "2.4")
 		Compile(groupId = "org.siani.javafmi", artifactId = "fmu-wrapper", version = "2.18.3")
-		Compile(groupId = "org.osp", artifactId = "osp", version = "1.0")
+		Compile(groupId = "org.osp", artifactId = "osp", version = "1.0.0")
 	Model(language = "Verso", version = "2.0.0", sdk = "2.0.0")
 	Code("io.intino.tafat")
 	Distribution(release = intino.frameworks, language = intino.languages)
@@ -16,3 +16,4 @@ Repository("intino-maven") intino
 	Release("https://artifactory.intino.io/artifactory/release-frameworks") frameworks
 Repository("siani-maven") siani
 	Release("https://artifactory.siani.es/artifactory/libs-release")
+	Release("https://artifactory.siani.es/artifactory/libs-release-local")

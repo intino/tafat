@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <resourceExtensions />
     <wildcardResourcePatterns>
       <entry name="!?*.java" />
       <entry name="!?*.form" />
@@ -13,29 +12,21 @@
       <entry name="!?*.clj" />
     </wildcardResourcePatterns>
     <annotationProcessing>
-      <profile default="true" name="Default" enabled="false">
-        <processorPath useClasspath="true" />
-      </profile>
-      <profile default="false" name="Annotation profile for test" enabled="true">
+      <profile name="Annotation profile for test" enabled="true">
         <sourceOutputDir name="../out/build/test/generated-sources/annotations" />
         <sourceTestOutputDir name="../out/build/test/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
-        <module name="Test" />
-        <module name="test" />
       </profile>
-      <profile default="false" name="Annotation profile for toolbox" enabled="true">
+      <profile name="Annotation profile for toolbox" enabled="true">
         <sourceOutputDir name="../out/build/toolbox/generated-sources/annotations" />
         <sourceTestOutputDir name="../out/build/toolbox/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
         <module name="toolbox" />
       </profile>
-      <profile default="false" name="Annotation profile for tafat-platform" enabled="true">
+      <profile name="Annotation profile for tafat-platform" enabled="true">
         <sourceOutputDir name="../out/build/tafat/generated-sources/annotations" />
         <sourceTestOutputDir name="../out/build/tafat/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="true" />
         <module name="platform" />
       </profile>
     </annotationProcessing>
