@@ -1,16 +1,14 @@
 package io.intino.tafat.engine.utils;
 
-import io.intino.tafat.rules.DayOfWeek;
 import io.intino.tafat.Task;
+import io.intino.tafat.graph.rules.DayOfWeek;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Random;
 
+import static io.intino.tafat.engine.Date.*;
 import static java.time.temporal.TemporalAdjusters.next;
-import static io.intino.tafat.engine.Date.getDayOfWeek;
-import static io.intino.tafat.engine.Date.toLocalDate;
-import static io.intino.tafat.engine.Date.with;
 
 public class TaskHelper {
     public static LocalDateTime scheduledDate(Task task) {

@@ -1,23 +1,22 @@
 package test;
 
+import io.intino.tafat.graph.TafatGraph;
 import org.junit.Before;
 import org.junit.Test;
-import io.intino.tafat.TafatPlatform;
 import tara.magritte.Graph;
 
-import static junit.framework.TestCase.assertEquals;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 public class TableFunctionTest {
 
-    private TafatPlatform platform;
-    private TestApplication application;
+	private TafatGraph platform;
+	private TestApplication application;
 
     @Before
     public void setUp() {
-        Graph graph = Graph.load("TableFunction").wrap(TestApplication.class, TafatPlatform.class);
-        this.platform = graph.platform();
+		Graph graph = Graph.load("TableFunction").wrap(TestApplication.class, TafatGraph.class);
+		this.platform = graph.platform();
         this.application = graph.application();
         this.platform.init();
     }

@@ -1,21 +1,18 @@
 package test;
 
+import io.intino.tafat.graph.TafatGraph;
 import org.junit.Before;
 import org.junit.Test;
 import tara.magritte.Graph;
-import io.intino.tafat.TafatPlatform;
 
 public class TraceTest {
 
-	TafatPlatform platform;
+	TafatGraph platform;
 	TestApplication application;
 
-	@Before
-	public void setUp() {
-		Graph model = Graph.load("Trace").wrap(TestApplication.class, TafatPlatform.class);
-		this.platform = model.<TafatPlatform>platform();
-		this.application = model.<TestApplication>application();
-		this.platform.execute();
+	public static void main(String[] args) {
+		Graph model = Graph.load("Trace").wrap(TestApplication.class, TafatGraph.class);
+		model.platform().execute();
 	}
 
 	@Test
@@ -23,8 +20,11 @@ public class TraceTest {
 		this.platform.execute();
 	}
 
-	public static void main(String[] args) {
-		Graph model = Graph.load("Trace").wrap(TestApplication.class, TafatPlatform.class);
-		model.platform().execute();
+	@Before
+	public void setUp() {
+		Graph model = Graph.load("Trace").wrap(TestApplication.class, TafatGraph.class);
+		this.platform = model.<TafatGraph>platform();
+		this.application = model.<TestApplication>application();
+		this.platform.execute();
 	}
 }

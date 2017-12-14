@@ -1,12 +1,12 @@
 package io.intino.tafat.engine;
 
-import io.intino.tafat.*;
 import io.intino.tafat.conditional.ConditionalTrace;
 import io.intino.tafat.engine.tablefunction.TableFunctionProvider;
 import io.intino.tafat.engine.utils.StatechartUpdater;
-import io.intino.tafat.functions.Action;
-import io.intino.tafat.parallelizable.ParallelizableImplementation;
+import io.intino.tafat.graph.TafatGraph;
+import io.intino.tafat.graph.functions.Action;
 import io.intino.tafat.instant.InstantTrace;
+import io.intino.tafat.parallelizable.ParallelizableImplementation;
 import io.intino.tafat.periodic.PeriodicTrace;
 import tara.magritte.Graph;
 import tara.magritte.Layer;
@@ -16,18 +16,17 @@ import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import static io.intino.tafat.engine.TimeoutManager.cyclicTimeout;
 import static java.util.stream.Collectors.toList;
 import static org.opensourcephysics.numerics.ODESolverFactory.createODESolver;
-import static io.intino.tafat.engine.TimeoutManager.cyclicTimeout;
-import static io.intino.tafat.engine.TimeoutManager.timeout;
 
 public class Executor {
 
     private static final Logger LOG = Logger.getLogger(Executor.class.getName());
 
     private final Graph graph;
-    private final TafatPlatform platform;
-    private List<Implementation> parallelImplementations;
+	private final TafatGraph platform;
+	private List<Implementation> parallelImplementations;
     private List<Implementation> implementations;
     private int minStepSize;
 

@@ -1,21 +1,21 @@
 package test;
 
+import io.intino.tafat.graph.TafatGraph;
 import org.junit.Before;
 import org.junit.Test;
 import tara.magritte.Graph;
-import io.intino.tafat.TafatPlatform;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class ProfilingTest {
 
-	TafatPlatform platform;
+	TafatGraph platform;
 	TestApplication application;
 
 	@Before
 	public void setUp() {
-		Graph model = Graph.load("Profiling").wrap(TestApplication.class, TafatPlatform.class);
+		Graph model = Graph.load("Profiling").wrap(TestApplication.class, TafatGraph.class);
 		this.platform = model.platform();
 		this.application = model.application();
 		this.platform.execute();

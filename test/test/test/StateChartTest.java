@@ -1,24 +1,23 @@
 package test;
 
+import io.intino.tafat.behavior.BehaviorEntity;
+import io.intino.tafat.graph.TafatGraph;
 import org.junit.Before;
 import org.junit.Test;
-import io.intino.tafat.TafatPlatform;
-import io.intino.tafat.behavior.BehaviorEntity;
 import tara.magritte.Graph;
 import test.electrical.ElectricalFridge;
 
 import static java.util.stream.IntStream.range;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 public class StateChartTest {
 
-	private TafatPlatform platform;
+	private TafatGraph platform;
 	private TestApplication domain;
 
 	@Before
 	public void setUp() {
-		Graph model = Graph.load("StateChart").wrap(TestApplication.class, TafatPlatform.class);
+		Graph model = Graph.load("StateChart").wrap(TestApplication.class, TafatGraph.class);
 		this.platform = model.platform();
 		this.domain = model.application();
 		platform.init();

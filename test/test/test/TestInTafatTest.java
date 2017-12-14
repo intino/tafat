@@ -1,9 +1,9 @@
 package test;
 
+import io.intino.tafat.engine.Executor;
+import io.intino.tafat.graph.TafatGraph;
 import org.junit.Before;
 import org.junit.Test;
-import io.intino.tafat.engine.Executor;
-import io.intino.tafat.TafatPlatform;
 import tara.magritte.Graph;
 
 import java.io.ByteArrayOutputStream;
@@ -16,13 +16,13 @@ import static org.junit.Assert.assertThat;
 
 public class TestInTafatTest {
 
-	TafatPlatform platform;
+	TafatGraph platform;
 	TestApplication application;
 
 	@Before
 	public void setUp() {
-		Graph model = Graph.load("TestInTafat").wrap(TestApplication.class, TafatPlatform.class);
-		this.platform = model.<TafatPlatform>platform();
+		Graph model = Graph.load("TestInTafat").wrap(TestApplication.class, TafatGraph.class);
+		this.platform = model.<TafatGraph>platform();
 		this.application = model.<TestApplication>application();
 	}
 

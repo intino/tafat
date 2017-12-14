@@ -1,0 +1,9 @@
+dsl Verso
+
+use Main
+
+Concept CityCdfOutput extends Output is component
+	var word:TimeScale timeScale is final
+	Concept Line
+		var string name
+		var double value is reactive

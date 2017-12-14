@@ -1,7 +1,7 @@
 package test;
 
+import io.intino.tafat.graph.TafatGraph;
 import org.junit.Test;
-import io.intino.tafat.TafatPlatform;
 import tara.magritte.Graph;
 
 import static junit.framework.TestCase.assertEquals;
@@ -10,12 +10,12 @@ import static test.Fridge.Mode.On;
 
 public class FmuModelTest {
 
-	private TafatPlatform platform;
+	private TafatGraph platform;
 	private TestApplication application;
 
 	@Test
 	public void should_execute_fmu_properly() throws Exception {
-		Graph model = Graph.load("FmuModel").wrap(TestApplication.class, TafatPlatform.class);
+		Graph model = Graph.load("FmuModel").wrap(TestApplication.class, TafatGraph.class);
 		this.platform = model.platform();
 		this.application = model.application();
 		platform.init();
