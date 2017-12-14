@@ -29,7 +29,6 @@
     <orderEntry type="library" name="Legio: org.eclipse.jetty.websocket:websocket-client:9.3.2.v20150730" level="project" />
     <orderEntry type="library" name="Legio: org.eclipse.jetty.websocket:websocket-servlet:9.3.2.v20150730" level="project" />
     <orderEntry type="library" name="Legio: org.eclipse.jetty.websocket:websocket-api:9.3.2.v20150730" level="project" />
-    <orderEntry type="library" name="Legio: com.google.code.gson:gson:2.4" level="project" />
     <orderEntry type="library" name="Legio: org.siani.javafmi:fmu-wrapper:2.18.3" level="project" />
     <orderEntry type="library" name="Legio: net.java.dev.jna:jna:4.1.0" level="project" />
     <orderEntry type="library" name="Legio: org.simpleframework:simple-xml:2.7.1" level="project" />
@@ -46,5 +45,6 @@
     <orderEntry type="library" name="Legio: io.intino.tara:magritte:2.0.0" level="project" />
     <orderEntry type="library" name="Legio: io.intino.tara:language:1.0.4" level="project" />
     <orderEntry type="library" name="Legio: org.osp:osp:1.0.0" level="project" />
+    <orderEntry type="library" name="Legio: com.google.code.gson:gson:2.8.0" level="project" />
   </component>
 </module>

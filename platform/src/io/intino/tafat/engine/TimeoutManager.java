@@ -1,7 +1,7 @@
 package io.intino.tafat.engine;
 
-import io.intino.tafat.functions.Action;
-import io.intino.tafat.rules.TimeScale;
+import io.intino.tafat.graph.functions.Action;
+import io.intino.tafat.graph.rules.TimeScale;
 
 import java.time.Instant;
 import java.util.ArrayList;

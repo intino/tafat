@@ -48,5 +48,6 @@
     <orderEntry type="library" name="Legio: com.sun.xml.security:xml-security-impl:1.0" level="project" />
     <orderEntry type="library" name="Legio: io.intino.tara:magritte:2.0.0" level="project" />
     <orderEntry type="library" name="Legio: io.intino.tara:language:1.0.4" level="project" />
+    <orderEntry type="library" name="Legio: io.intino.tafat:tafat:2.2.0" level="project" />
   </component>
 </module>

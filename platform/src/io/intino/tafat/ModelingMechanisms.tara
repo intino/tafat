@@ -67,7 +67,7 @@ Concept StateChart extends PeriodicActivity is feature
 					var integer unit
 			sub Message
 				var string expectedMessage
-				var function:CheckTransition check = @checkMessageTransition
+				var function:CheckTransition  check = @checkMessageTransition
 Concept Task is feature
 	var word[]:DayOfWeek days = Monday Tuesday Wednesday Thursday Friday Saturday Sunday
 	var instant scheduledDate = empty is private

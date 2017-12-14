@@ -4,7 +4,7 @@ import io.intino.tafat.*;
 import io.intino.tafat.conditional.ConditionalTrace;
 import io.intino.tafat.engine.tablefunction.TableFunctionProvider;
 import io.intino.tafat.engine.utils.StatechartUpdater;
-import io.intino.tafat.functions.Action;
+import io.intino.tafat.graph.functions.Action;
 import io.intino.tafat.instant.InstantTrace;
 import io.intino.tafat.parallelizable.ParallelizableImplementation;
 import io.intino.tafat.periodic.PeriodicTrace;
