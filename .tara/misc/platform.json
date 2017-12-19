@@ -1,0 +1,8 @@
+{
+  "StateChart.Transition.TimeBased.check": [],
+  "StateChart.Transition.Timeout.activate": [],
+  "StateChart.Transition.After.activate": [],
+  "StateChart.Transition.Rate.activate": [],
+  "StateChart.Transition.Message.check": [],
+  "Task.check": []
+}

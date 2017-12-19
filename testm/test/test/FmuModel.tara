@@ -2,5 +2,4 @@ dsl Test
 
 Simulation(from = "2016-01-01T00:00:00Z", to = "2016-01-02T00:00:00Z")
 
-
 Fridge f1 as Electrical(vFmu)
