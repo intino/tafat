@@ -1,12 +1,6 @@
-
-out/
 platform/res/web/*
 */test-gen/
 
-Tafat.language
-dsl/Tafat.reload
-dsl/Tafat/
-.idea/libraries/
 site/node_modules/
 site/dist/
 site/bower_components/
