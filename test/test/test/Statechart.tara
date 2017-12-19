@@ -1,6 +1,7 @@
 dsl Test
 
-Simulation(from = "01/01/2010 00:00:00", to = "02/01/2010 00:00:00")
+
+Simulation(from = "2016-01-01T00:00:00Z", to = "2016-01-02T00:00:00Z")
 
 Router as Electrical
 

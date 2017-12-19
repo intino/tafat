@@ -1,23 +1,20 @@
 dsl Legio
 
-Artifact(groupId = "io.intino.tafat", version = "2.1.7") tafat as Platform
-	Model(language = "Verso", version = "2.1.6", sdk = "2.1.8")
+Artifact(groupId = "io.intino.tafat", version = "2.2.0") tafat as Platform
+	Model(language = "Verso", version = "2.1.6", sdk = "2.1.9")
 	Imports
 		Test(groupId = "junit", artifactId = "junit", version = "4.12")
 		Compile(groupId = "com.sparkjava", artifactId = "spark-core", version = "2.3")
-		Compile(groupId = "com.google.code.gson", artifactId = "gson", version = "2.4")
+		Compile(groupId = "com.google.code.gson", artifactId = "gson", version = "2.8.0")
 		Compile(groupId = "org.siani.javafmi", artifactId = "fmu-wrapper", version = "2.18.3")
-		Compile("org.osp", "osp", "1.0.0")
-	Code(targetPackage = "io.intino.tafat")
-	Package(mode = LibrariesLinkedByManifest, attachSources = true)
-	Distribution(release = intino.release, language = intino.lang)
-
+		Compile(groupId = "org.osp", artifactId = "osp", version = "1.0.0")
+	Package(mode = ModulesAndLibrariesExtracted)
+	Code("io.intino.tafat")
+	Distribution(release = intino.frameworks, language = intino.languages)
 Repository("intino-maven") intino
-	Language("https://artifactory.intino.io/artifactory/release-languages") lang
+	Language("https://artifactory.intino.io/artifactory/release-languages") languages
 	Release("https://artifactory.intino.io/artifactory/releases")
-	Release("https://artifactory.intino.io/artifactory/release-frameworks")release
-	Release("https://artifactory.intino.io/artifactory/release-libraries") libs
-	Snapshot("https://artifactory.intino.io/artifactory/snapshot-frameworks")
-
-Repository("siani-maven")
-	Release(url = "https://artifactory.siani.es/artifactory/libs-release")
+	Release("https://artifactory.intino.io/artifactory/release-frameworks") frameworks
+Repository("siani-maven") siani
+	Release("https://artifactory.siani.es/artifactory/libs-release")
+	Release("https://artifactory.siani.es/artifactory/libs-release-local")

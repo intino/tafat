@@ -1,82 +1,84 @@
 package test;
 
-import io.intino.tafat.behavior.BehaviorEntity;
-import io.intino.tafat.graph.TafatGraph;
+import io.intino.tafat.graph.behavior.BehaviorEntity;
 import org.junit.Before;
-import org.junit.Test;
-import tara.magritte.Graph;
-import test.electrical.ElectricalFridge;
+import io.intino.tafat.graph.TafatGraph;
+import io.intino.tara.magritte.Graph;
+import test.graph.Fridge;
+import test.graph.TestGraph;
+import test.graph.electrical.ElectricalFridge;
 
 import static java.util.stream.IntStream.range;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 public class StateChartTest {
 
 	private TafatGraph platform;
-	private TestApplication domain;
+	private TestGraph product;
 
 	@Before
 	public void setUp() {
-		Graph model = Graph.load("StateChart").wrap(TestApplication.class, TafatGraph.class);
-		this.platform = model.platform();
-		this.domain = model.application();
+		Graph graph = new Graph().loadStashes("StateChart");
+		this.platform = graph.as(TafatGraph.class);
+		this.product = graph.as(TestGraph.class);
 		platform.init();
 	}
 
-	@Test
+	@org.junit.Test
 	public void should_initially_be_in_state_on_and_after_updating_in_state_off() throws Exception {
-		Fridge fridge = domain.fridgeList().get(0);
-		assertThat(fridge.as(BehaviorEntity.class).implementation(0).stateChart(0).current().name(), is("On"));
+		Fridge fridge = product.fridgeList().get(0);
+		assertThat(fridge.core$().as(BehaviorEntity.class).implementation(0).stateChart(0).current().name$(), is("On"));
 		platform.run();
-		assertThat(fridge.as(BehaviorEntity.class).implementation(0).stateChart(0).current().name(), is("Off"));
+		assertThat(fridge.core$().as(BehaviorEntity.class).implementation(0).stateChart(0).current().name$(), is("Off"));
 	}
 
-	@Test
+	@org.junit.Test
 	public void should_pass_all_stages_correctly() throws Exception {
-		Fridge fridge = domain.fridgeList().get(1);
-		assertThat(fridge.as(BehaviorEntity.class).implementation(0).stateChart(0).current().name(), is("Off"));
-		assertThat(fridge.as(ElectricalFridge.class).value(), is(-1));
+		Fridge fridge = product.fridgeList().get(1);
+		assertThat(fridge.core$().as(BehaviorEntity.class).implementation(0).stateChart(0).current().name$(), is("Off"));
+		assertThat(fridge.core$().as(ElectricalFridge.class).value(), is(-1));
 
-		fridge.as(BehaviorEntity.class).implementation(0).stateChart(0).receiveMessage("ON");
+		fridge.core$().as(BehaviorEntity.class).implementation(0).stateChart(0).receiveMessage("ON");
 		platform.run();
 
-		assertThat(fridge.as(BehaviorEntity.class).implementation(0).stateChart(0).current().name(), is("On"));
-		assertThat(fridge.as(BehaviorEntity.class).implementation(0).stateChart(0).current().current().name(), is("Heating"));
-		assertThat(fridge.as(ElectricalFridge.class).value(), is(1000));
+		assertThat(fridge.core$().as(BehaviorEntity.class).implementation(0).stateChart(0).current().name$(), is("On"));
+		assertThat(fridge.core$().as(BehaviorEntity.class).implementation(0).stateChart(0).current().current().name$(), is("Heating"));
+		assertThat(fridge.core$().as(ElectricalFridge.class).value(), is(1000));
 
 		range(0, 19).forEach(i -> platform.run());
 
-		assertThat(fridge.as(BehaviorEntity.class).implementation(0).stateChart(0).current().name(), is("On"));
-		assertThat(fridge.as(BehaviorEntity.class).implementation(0).stateChart(0).current().current().name(), is("Heating"));
-		assertThat(fridge.as(ElectricalFridge.class).value(), is(1000));
+		assertThat(fridge.core$().as(BehaviorEntity.class).implementation(0).stateChart(0).current().name$(), is("On"));
+		assertThat(fridge.core$().as(BehaviorEntity.class).implementation(0).stateChart(0).current().current().name$(), is("Heating"));
+		assertThat(fridge.core$().as(ElectricalFridge.class).value(), is(1000));
 
 		platform.run();
 
-		assertThat(fridge.as(BehaviorEntity.class).implementation(0).stateChart(0).current().name(), is("On"));
-		assertThat(fridge.as(BehaviorEntity.class).implementation(0).stateChart(0).current().current().name(), is("Washing"));
-		assertThat(fridge.as(ElectricalFridge.class).value(), is(500));
+		assertThat(fridge.core$().as(BehaviorEntity.class).implementation(0).stateChart(0).current().name$(), is("On"));
+		assertThat(fridge.core$().as(BehaviorEntity.class).implementation(0).stateChart(0).current().current().name$(), is("Washing"));
+		assertThat(fridge.core$().as(ElectricalFridge.class).value(), is(500));
 
 		range(0, 20).forEach(i -> platform.run());
 
-		assertThat(fridge.as(BehaviorEntity.class).implementation(0).stateChart(0).current().name(), is("On"));
-		assertThat(fridge.as(BehaviorEntity.class).implementation(0).stateChart(0).current().current().name(), is("Drying"));
-		assertThat(fridge.as(ElectricalFridge.class).value(), is(800));
+		assertThat(fridge.core$().as(BehaviorEntity.class).implementation(0).stateChart(0).current().name$(), is("On"));
+		assertThat(fridge.core$().as(BehaviorEntity.class).implementation(0).stateChart(0).current().current().name$(), is("Drying"));
+		assertThat(fridge.core$().as(ElectricalFridge.class).value(), is(800));
 
 		range(0, 20).forEach(i -> platform.run());
 
-		assertThat(fridge.as(BehaviorEntity.class).implementation(0).stateChart(0).current().name(), is("Off"));
-		assertThat(fridge.as(ElectricalFridge.class).value(), is(0));
+		assertThat(fridge.core$().as(BehaviorEntity.class).implementation(0).stateChart(0).current().name$(), is("Off"));
+		assertThat(fridge.core$().as(ElectricalFridge.class).value(), is(0));
 
 		range(0, 20).forEach(i -> platform.run());
 
-		assertThat(fridge.as(BehaviorEntity.class).implementation(0).stateChart(0).current().name(), is("Off"));
-		assertThat(fridge.as(ElectricalFridge.class).value(), is(0));
+		assertThat(fridge.core$().as(BehaviorEntity.class).implementation(0).stateChart(0).current().name$(), is("Off"));
+		assertThat(fridge.core$().as(ElectricalFridge.class).value(), is(0));
 	}
 
-	@Test
+	@org.junit.Test
 	public void after_updating_value_must_be_45() throws Exception {
-		Fridge fridge = domain.fridgeList().get(2);
+		Fridge fridge = product.fridgeList().get(2);
 		platform.run();
-		assertThat(fridge.as(ElectricalFridge.class).value(), is(45));
+		assertThat(fridge.core$().as(ElectricalFridge.class).value(), is(45));
 	}
 }

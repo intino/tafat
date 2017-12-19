@@ -2,19 +2,20 @@ package test;
 
 import io.intino.tafat.graph.TafatGraph;
 import org.junit.Before;
+import io.intino.tara.magritte.Graph;
 import org.junit.Test;
-import tara.magritte.Graph;
+import test.graph.TestGraph;
 
 public class OutputTest {
 
-	TafatGraph engine;
-	TestApplication domain;
+	private TafatGraph engine;
+	private TestGraph product;
 
 	@Before
 	public void setUp() {
-		Graph model = Graph.load("Output").wrap(TestApplication.class, TafatGraph.class);
-		this.engine = model.platform();
-		this.domain = model.application();
+		Graph graph = new Graph().loadStashes("Output");
+		this.engine = graph.as(TafatGraph.class);
+		this.product = graph.as(TestGraph.class);
 	}
 
 	@Test

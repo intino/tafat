@@ -3,26 +3,29 @@ package io.intino.tafat.engine;
 import io.intino.tafat.graph.functions.Action;
 import io.intino.tafat.graph.rules.TimeScale;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+
+import static io.intino.tafat.engine.Date.getInstant;
 
 public class TimeoutManager {
 
     private static List<Timeout> timeouts;
 
     public static void timeout(double duration, Action action) {
-        timeout(Date.getDateTime().plusSeconds((long) duration), action);
+        timeout(Date.getInstant().plusSeconds((long) duration), action);
     }
 
-    public static void timeout(LocalDateTime instant, Action action) {
+    public static void timeout(Instant instant, Action action) {
 		timeouts.add(new Timeout(instant, action));
-        timeouts.sort((t1, t2) -> t1.duration.compareTo(t2.duration));
+        timeouts.sort(Comparator.comparing(t -> t.duration));
     }
 
     public static void cyclicTimeout(TimeScale timeScale, Action action) {
 		timeouts.add(new CyclicTimeout(timeScale, action));
-        timeouts.sort((t1, t2) -> t1.duration.compareTo(t2.duration));
+        timeouts.sort(Comparator.comparing(t -> t.duration));
     }
 
 	static void init(){
@@ -33,7 +36,7 @@ public class TimeoutManager {
     static void update() {
         List<Timeout> finishedTimeouts = new ArrayList<>();
         for (Timeout timeout : timeouts) {
-            if(!timeout.duration.isAfter(Date.getDateTime()))
+            if(!timeout.duration.isAfter(Date.getInstant()))
                 finishedTimeouts.add(timeout);
             else
                 break;
@@ -48,10 +51,10 @@ public class TimeoutManager {
     }
 
     private static class Timeout {
-		LocalDateTime duration;
+		Instant duration;
 		final Action action;
 
-        public Timeout(LocalDateTime duration, Action action) {
+        public Timeout(Instant duration, Action action) {
             this.duration = duration;
             this.action = action;
         }
@@ -62,7 +65,7 @@ public class TimeoutManager {
 		final TimeScale timeScale;
 
 		public CyclicTimeout(TimeScale timeScale, Action action) {
-			super(Date.getDateTime().plusSeconds(timeScale.toSeconds()), action);
+			super(getInstant().plusSeconds(timeScale.toSeconds()), action);
 			this.timeScale = timeScale;
 		}
 

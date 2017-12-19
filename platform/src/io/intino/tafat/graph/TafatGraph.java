@@ -2,8 +2,7 @@ package io.intino.tafat.graph;
 
 import io.intino.tafat.engine.Executor;
 import io.intino.tafat.engine.utils.Random;
-import io.intino.tara.magritte.GraphWrapper;
-import tara.magritte.Graph;
+import io.intino.tara.magritte.Graph;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -13,17 +12,16 @@ import java.util.logging.Logger;
 import static java.lang.Thread.sleep;
 import static spark.Spark.*;
 
-public class TafatGraph extends GraphWrapper {
+public class TafatGraph extends AbstractGraph {
 
-	private static final Logger LOG = Logger.getLogger(TafatGraph.class.getName());
-	private static ExecutorService executorService = Executors.newFixedThreadPool(1);
+    private static final Logger LOG = Logger.getLogger(TafatGraph.class.getName());
+    private static ExecutorService executorService = Executors.newFixedThreadPool(1);
     private Executor executor;
     private Future<?> submission;
     private int delay = 1000;
 
-	public TafatGraph(Graph graph) {
-		super(graph);
-        Random.init(simulation().seed());
+    public TafatGraph(Graph graph) {
+        super(graph);
     }
 
     private void runProfiling() {
@@ -33,13 +31,13 @@ public class TafatGraph extends GraphWrapper {
     }
 
     public void init() {
+		Random.init(simulation().seed());
         runProfiling();
         executor = new Executor(graph);
         executor.init();
         initUserInterface();
     }
 
-    @Override
     public void execute(String... args) {
         if (args.length > 0 && userInterface() != null)
             userInterface().port(Integer.parseInt(args[0]));

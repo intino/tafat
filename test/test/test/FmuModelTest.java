@@ -1,23 +1,23 @@
 package test;
 
 import io.intino.tafat.graph.TafatGraph;
-import org.junit.Test;
-import tara.magritte.Graph;
+import io.intino.tara.magritte.Graph;
+import test.graph.TestGraph;
 
 import static junit.framework.TestCase.assertEquals;
-import static test.Fridge.Mode.Off;
-import static test.Fridge.Mode.On;
+import static test.graph.Fridge.Mode.Off;
+import static test.graph.Fridge.Mode.On;
 
 public class FmuModelTest {
 
 	private TafatGraph platform;
-	private TestApplication application;
+	private TestGraph application;
 
-	@Test
+	@org.junit.Test
 	public void should_execute_fmu_properly() throws Exception {
-		Graph model = Graph.load("FmuModel").wrap(TestApplication.class, TafatGraph.class);
-		this.platform = model.platform();
-		this.application = model.application();
+		Graph model = new Graph().loadStashes("FmuModel");
+		this.platform = model.as(TafatGraph.class);
+		this.application = model.as(TestGraph.class);
 		platform.init();
 
 		assertEquals(0, application.fridge(0).power(), 0.1);

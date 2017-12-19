@@ -13,5 +13,3 @@ Behavior Consumer on Family
 		Data(20, 300)
 		Data(23, 0)
 	Implementation Complex
-	TableFunction > LinearInterpolation; LinearExtrapolation
-		Data... with Consumption(hour, power)

@@ -1,30 +1,31 @@
 package test;
 
 import io.intino.tafat.graph.TafatGraph;
+import io.intino.tara.magritte.Graph;
 import org.junit.Before;
 import org.junit.Test;
-import tara.magritte.Graph;
+import test.graph.TestGraph;
 
 public class TraceTest {
 
 	TafatGraph platform;
-	TestApplication application;
+	TestGraph product;
 
 	public static void main(String[] args) {
-		Graph model = Graph.load("Trace").wrap(TestApplication.class, TafatGraph.class);
-		model.platform().execute();
-	}
-
-	@Test
-	public void should_trace_message() throws Exception {
-		this.platform.execute();
+		Graph graph = new Graph().loadStashes("Trace");
+		graph.as(TafatGraph.class).execute();
 	}
 
 	@Before
 	public void setUp() {
-		Graph model = Graph.load("Trace").wrap(TestApplication.class, TafatGraph.class);
-		this.platform = model.<TafatGraph>platform();
-		this.application = model.<TestApplication>application();
+		Graph graph = new Graph().loadStashes("Trace");
+		this.platform = graph.as(TafatGraph.class);
+		this.product = graph.as(TestGraph.class);
+		this.platform.execute();
+	}
+
+	@Test
+	public void should_trace_message() throws Exception {
 		this.platform.execute();
 	}
 }

@@ -1,8 +1,8 @@
-dsl Proteo
+dsl Verso
 
 use Main
 
-Concept SumusOutput extends Output is component
+Concept SumusOutput extends Output
 	var string language
 	var string simulationId
 	var string rootPath = "res/out/"

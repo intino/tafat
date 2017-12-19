@@ -1,5 +1,8 @@
-package io.intino.tafat.graph.graph.functions;
+package io.intino.tafat.graph.functions;
 
+@FunctionalInterface
 public interface Thing {
+
 	Object get();
+
 }

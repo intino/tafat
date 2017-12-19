@@ -4,7 +4,7 @@ import io.intino.tafat.graph.periodic.PeriodicTrace;
 
 public class Control {
 	public static void stop(Stop self) {
-		self.graph().<TafatGraph>platform().stop();
+		self.graph().core$().as(TafatGraph.class).stop();
 	}
 
 	public static boolean checkStep(PeriodicTrace self) {

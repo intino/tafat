@@ -1,8 +1,8 @@
-dsl Proteo 
+dsl Verso
 
 use Main
 
-Concept LogOutput extends Output is component
+Concept LogOutput extends Output
 	var word:TimeScale timeScale is final
 	var function:Action init = @init is private final
 	var function:Action process = @process is private final

@@ -1,6 +1,6 @@
 package io.intino.tafat.graph.functions;
 
-import tara.magritte.Graph;
+import io.intino.tara.magritte.Graph;
 
 import java.util.Random;
 

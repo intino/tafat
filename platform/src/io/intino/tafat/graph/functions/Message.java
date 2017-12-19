@@ -1,4 +1,4 @@
-package io.intino.tafat.graph.graph.functions;
+package io.intino.tafat.graph.functions;
 
 public interface Message {
 

@@ -2,9 +2,10 @@ package test;
 
 import io.intino.tafat.engine.Executor;
 import io.intino.tafat.graph.TafatGraph;
+import io.intino.tara.magritte.Graph;
 import org.junit.Before;
 import org.junit.Test;
-import tara.magritte.Graph;
+import test.graph.TestGraph;
 
 import java.io.ByteArrayOutputStream;
 import java.util.logging.Logger;
@@ -17,13 +18,13 @@ import static org.junit.Assert.assertThat;
 public class TestInTafatTest {
 
 	TafatGraph platform;
-	TestApplication application;
+	TestGraph product;
 
 	@Before
 	public void setUp() {
-		Graph model = Graph.load("TestInTafat").wrap(TestApplication.class, TafatGraph.class);
-		this.platform = model.<TafatGraph>platform();
-		this.application = model.<TestApplication>application();
+		Graph graph = new Graph().loadStashes("TestInTafat");
+		this.platform = graph.as(TafatGraph.class);
+		this.product = graph.as(TestGraph.class);
 	}
 
 	@Test

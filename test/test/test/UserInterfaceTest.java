@@ -1,13 +1,15 @@
 package test;
 
 import io.intino.tafat.graph.TafatGraph;
-import tara.magritte.Graph;
+import io.intino.tara.magritte.Graph;
+import test.graph.TestGraph;
 
 public class UserInterfaceTest {
 
-	public static void main(String[] args) throws Exception{
-		Graph model = Graph.load("UserInterface").wrap(TestApplication.class, TafatGraph.class);
-		TafatGraph engine = model.platform();
-		engine.execute();
+	public static void main(String[] args) throws Exception {
+		Graph graph = new Graph().loadStashes("UserInterface");
+		TafatGraph tafatGraph = graph.as(TafatGraph.class);
+		graph.as(TestGraph.class);
+		tafatGraph.execute();
 	}
 }

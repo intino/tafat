@@ -1,14 +1,14 @@
 package test;
 
 import io.intino.tafat.graph.TafatGraph;
+import io.intino.tara.magritte.Graph;
 import org.junit.Test;
-import tara.magritte.Graph;
 
 public class BuildingOdeTest {
 
     @Test
     public void ode_test() throws Exception {
-		Graph graph = Graph.load("BuildingOde").wrap(TestApplication.class, TafatGraph.class);
-		graph.platform().execute();
+        Graph graph = new Graph().loadStashes("BuildingOde");
+        graph.as(TafatGraph.class).execute();
     }
 }

@@ -1,9 +1,9 @@
 package io.intino.tafat.engine.tablefunction;
 
-import io.intino.tafat.TableFunction;
+import io.intino.tafat.graph.TableFunction;
 import io.intino.tafat.engine.pointset.Point;
 import io.intino.tafat.engine.pointset.PointSet;
-import tara.magritte.Layer;
+import io.intino.tara.magritte.Layer;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -20,13 +20,13 @@ import static java.util.stream.IntStream.range;
 
 public class TableFunctionProvider {
 
-    List<Dimension> dimensions = new ArrayList<>();
+    private List<Dimension> dimensions = new ArrayList<>();
     private TableFunction tableFunction;
 
     public TableFunctionProvider(TableFunction tableFunction) {
         this.tableFunction = tableFunction;
         List<Record> records = recordsOf(tableFunction.dataList());
-        new ArrayList<>(tableFunction.dataList()).stream().forEach(Layer::delete);
+        new ArrayList<>(tableFunction.dataList()).forEach(Layer::delete$);
         dimensions.addAll(dimensionsOf(records));
     }
 

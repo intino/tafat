@@ -2,7 +2,7 @@ package io.intino.tafat.graph;
 
 import io.intino.tafat.engine.utils.StatechartUpdater;
 
-import static io.intino.tafat.engine.Date.getDateTime;
+import static io.intino.tafat.engine.Date.getInstant;
 import static io.intino.tafat.engine.utils.TaskHelper.scheduledDate;
 
 public class ModelingMechanisms {
@@ -21,27 +21,27 @@ public class ModelingMechanisms {
     }
 
     public static boolean checkTimeBasedTransition(StateChart.Transition.TimeBased self, int advancedTime) {
-        return !self.when().isAfter(getDateTime());
+        return !self.when().isAfter(getInstant());
     }
 
     public static void activateTimeout(StateChart.Transition.Timeout self) {
-        self.when(getDateTime().plusSeconds(self.timeout()));
+        self.when(getInstant().plusSeconds(self.timeout()));
     }
 
     public static void activateAfter(StateChart.Transition.After self) {
-        self.when(getDateTime().plusSeconds(self.fixedTime()));
+        self.when(getInstant().plusSeconds(self.fixedTime()));
     }
 
     public static void activateRate(StateChart.Transition.Rate self) {
-        self.when(getDateTime().plusSeconds(self.unit() / self.times()));
+        self.when(getInstant().plusSeconds(self.unit() / self.times()));
     }
 
     public static boolean checkMessageTransition(StateChart.Transition.Message self, int advancedTime) {
-        return self.ownerAs(StateChart.class).message().equals(self.expectedMessage());
+        return self.core$().ownerAs(StateChart.class).message().equals(self.expectedMessage());
     }
 
     public static boolean checkTask(Task self) {
-        return !self.scheduledDate().isAfter(getDateTime());
+        return !self.scheduledDate().isAfter(getInstant());
     }
 
     public static void executeFmu(Fmu self, int step) {

@@ -1,22 +1,23 @@
 package io.intino.tafat.engine;
 
-import io.intino.tafat.conditional.ConditionalTrace;
+import io.intino.tafat.graph.*;
+import io.intino.tafat.graph.conditional.ConditionalTrace;
 import io.intino.tafat.engine.tablefunction.TableFunctionProvider;
 import io.intino.tafat.engine.utils.StatechartUpdater;
-import io.intino.tafat.graph.TafatGraph;
 import io.intino.tafat.graph.functions.Action;
-import io.intino.tafat.instant.InstantTrace;
-import io.intino.tafat.parallelizable.ParallelizableImplementation;
-import io.intino.tafat.periodic.PeriodicTrace;
-import tara.magritte.Graph;
-import tara.magritte.Layer;
+import io.intino.tafat.graph.instant.InstantTrace;
+import io.intino.tafat.graph.parallelizable.ParallelizableImplementation;
+import io.intino.tafat.graph.periodic.PeriodicTrace;
+import io.intino.tara.magritte.Graph;
+import io.intino.tara.magritte.Layer;
 
-import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 import static io.intino.tafat.engine.TimeoutManager.cyclicTimeout;
+import static io.intino.tafat.engine.TimeoutManager.timeout;
 import static java.util.stream.Collectors.toList;
 import static org.opensourcephysics.numerics.ODESolverFactory.createODESolver;
 
@@ -25,18 +26,18 @@ public class Executor {
     private static final Logger LOG = Logger.getLogger(Executor.class.getName());
 
     private final Graph graph;
-	private final TafatGraph platform;
-	private List<Implementation> parallelImplementations;
+    private final TafatGraph platform;
+    private List<Implementation> parallelImplementations;
     private List<Implementation> implementations;
     private int minStepSize;
 
     public Executor(Graph graph) {
         this.graph = graph;
-        this.platform = graph.platform();
+        this.platform = graph.as(TafatGraph.class);
     }
 
     public void init() {
-        Date.setDateTime(platform.simulation().from());
+        Date.setInstant(platform.simulation().from());
         initEngine();
         initEvents();
         initAssertions();
@@ -56,21 +57,21 @@ public class Executor {
     }
 
     private void initEvents() {
-        platform.eventList().forEach(e -> timeout(e.instant(), e::execute));
+        platform.eventList().forEach(e -> timeout(e.instantDate(), e::execute));
     }
 
     private void initTraces() {
         graph.find(PeriodicTrace.class)
-                .forEach(p -> cyclicTimeout(p.timeScale(), traceAction(p.as(Trace.class))));
+                .forEach(p -> cyclicTimeout(p.timeScale(), traceAction(p.core$().as(Trace.class))));
         graph.find(InstantTrace.class)
-                .forEach(p -> p.instants().forEach(i -> timeout(i, traceAction(p.as(Trace.class)))));
+                .forEach(p -> p.instants().forEach(i -> timeout(i, traceAction(p.core$().as(Trace.class)))));
     }
 
     private Action traceAction(Trace trace) {
         return () -> {
-            if (!trace.is(ConditionalTrace.class))
+            if (!trace.core$().is(ConditionalTrace.class))
                 LOG.info(trace.print());
-            else if (trace.as(ConditionalTrace.class).check())
+            else if (trace.core$().as(ConditionalTrace.class).check())
                 LOG.info(trace.print());
         };
     }
@@ -78,7 +79,7 @@ public class Executor {
     private void initAssertions() {
         platform.simulation().assertionList().forEach(a -> timeout(a.at(), () -> {
             if (a.that().equals(a.shouldBe())) return;
-            LOG.info(a.at() + ": assertion " + a.name() + " failed. Expected: " + a.shouldBe() + ". Was: " + a.that());
+            LOG.info(a.at() + ": assertion " + a.name$() + " failed. Expected: " + a.shouldBe() + ". Was: " + a.that());
         }));
     }
 
@@ -104,7 +105,7 @@ public class Executor {
         behaviors.forEach(b -> b.tableFunctionList().forEach(tableFunction -> {
             if (!tableFunction.dataList().isEmpty())
                 tableFunction.provider(new TableFunctionProvider(tableFunction));
-            else throw new RuntimeException("There is no data in table function " + tableFunction.name());
+            else throw new RuntimeException("There is no data in table function " + tableFunction.name$());
         }));
     }
 
@@ -136,7 +137,7 @@ public class Executor {
 
     private boolean isParallelizable(Implementation implementation) {
         return !implementation.periodicActivityList().isEmpty() &&
-                implementation.is(ParallelizableImplementation.class);
+                implementation.core$().is(ParallelizableImplementation.class);
     }
 
     private void purgeImplementations() {
@@ -148,10 +149,10 @@ public class Executor {
 
     private void purgeImplementations(Behavior behavior) {
         behavior.implementationList().stream()
-                .filter(i -> !i.name().equalsIgnoreCase(behavior.implementation()))
-                .collect(toList()).forEach(Layer::delete);
+                .filter(i -> !i.name$().equalsIgnoreCase(behavior.implementation()))
+                .collect(toList()).forEach(Layer::delete$);
         if (behavior.implementationList().isEmpty())
-            throw new RuntimeException("Behavior at " + behavior.name() + " must have an implementation selected");
+            throw new RuntimeException("Behavior at " + behavior.name$() + " must have an implementation selected");
     }
 
     @SuppressWarnings("WeakerAccess")
@@ -192,8 +193,7 @@ public class Executor {
     }
 
     private long steps() {
-        return (platform.simulation().to().toEpochSecond(ZoneOffset.UTC) -
-                platform.simulation().from().toEpochSecond(ZoneOffset.UTC));
-    }
+		return (platform.simulation().from().until(platform.simulation().to(), ChronoUnit.SECONDS));
+	}
 
 }

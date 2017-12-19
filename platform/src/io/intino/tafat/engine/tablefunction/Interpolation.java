@@ -1,6 +1,6 @@
 package io.intino.tafat.engine.tablefunction;
 
-import io.intino.tafat.TableFunction;
+import io.intino.tafat.graph.TableFunction;
 import io.intino.tafat.engine.pointset.PointSet;
 import io.intino.tafat.engine.tablefunction.functions.*;
 
@@ -42,7 +42,7 @@ public class Interpolation {
 	private Function functionFor(TableFunction.Extrapolation extrapolation, PointSet points) {
 		Function function = instantiateFunction(extrapolation.getClass(), points);
 		if(function != null && extrapolation.getClass() == TableFunction.CustomExtrapolation.class)
-			((Custom) function).function(() -> extrapolation.as(TableFunction.CustomExtrapolation.class).extrapolationFunction());
+			((Custom) function).function(() -> extrapolation.core$().as(TableFunction.CustomExtrapolation.class).extrapolationFunction());
 		return function;
 	}
 
