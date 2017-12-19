@@ -1,11 +1,15 @@
 dsl Legio
 
-Project(groupId = "tafat", version = "1.0") Test
-	Repositories
-		Language(url = "https://artifactory.siani.es/artifactory/languages-release", "siani-maven")
-		Release(url = "http://artifactory.siani.es/artifactory/libs-release", "siani-maven")
-	Dependencies
+Artifact(groupId = "tafat", version = "1.0.0") Test as Product
+	Model(language = "Tafat", version = "2.2.0", sdk = "2.1.9")
+	Code("test")
+	Imports
 		Test(groupId = "junit", artifactId = "junit", version = "4.12")
-	Factory as Application
-		generationPackage = "test"
-		Modeling(language="Tafat", version="LATEST")
+
+Repository("intino-maven") intino
+	Language("https://artifactory.intino.io/artifactory/release-languages") languages
+	Release("https://artifactory.intino.io/artifactory/releases")
+	Release("https://artifactory.intino.io/artifactory/release-frameworks") frameworks
+Repository("siani-maven") siani
+	Release("https://artifactory.siani.es/artifactory/libs-release")
+	Language("https://artifactory.siani.es/artifactory/languages-release")
