@@ -1,7 +1,7 @@
 dsl Legio
 
 Artifact(groupId = "tafat", version = "1.0.0") Test as Product
-	Model(language = "Tafat", version = "2.2.0", sdk = "2.1.9")
+	Model(language = "Tafat", version = "2.2.0", sdk = "2.1.10")
 	Code("test")
 	Imports
 		Test(groupId = "junit", artifactId = "junit", version = "4.12")
