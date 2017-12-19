@@ -1,4 +1,4 @@
-package io.intino.tafat;
+package io.intino.tafat.graph;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;

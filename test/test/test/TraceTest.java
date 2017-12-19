@@ -1,14 +1,20 @@
 package test;
 
-import io.intino.tafat.TafatGraph;
-import org.junit.Before;
+import io.intino.tafat.graph.TafatGraph;
 import io.intino.tara.magritte.Graph;
+import org.junit.Before;
 import org.junit.Test;
+import test.graph.TestGraph;
 
 public class TraceTest {
 
 	TafatGraph platform;
 	TestGraph product;
+
+	public static void main(String[] args) {
+		Graph graph = new Graph().loadStashes("Trace");
+		graph.as(TafatGraph.class).execute();
+	}
 
 	@Before
 	public void setUp() {
@@ -21,10 +27,5 @@ public class TraceTest {
 	@Test
 	public void should_trace_message() throws Exception {
 		this.platform.execute();
-	}
-
-	public static void main(String[] args) {
-		Graph graph = new Graph().loadStashes("Trace");
-		graph.as(TafatGraph.class).execute();
 	}
 }

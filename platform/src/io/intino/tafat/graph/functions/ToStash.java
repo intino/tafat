@@ -1,6 +1,6 @@
 package io.intino.tafat.graph.functions;
 
-import io.intino.tafat.SumusOutput;
+import io.intino.tafat.graph.SumusOutput;
 
 import java.util.List;
 

@@ -1,9 +1,12 @@
 dsl Test
 
-Simulation(from = "2016-01-01T00:00:00Z",  to = "2016-01-01T10:00:00Z")
 
-Environment(temperature = 15)
-	Building(temperature = 20) as Thermal
-		Radiator(temperature = 20) as Thermal
-LogOutput(timeScale = Minutes)
-	Line(name = "Building temperature", value = @buildingTemperature)
+
+//Simulation(from = "2016-01-01T00:00:00Z",  to = "2016-01-01T10:00:00Z")
+//
+//Environment(temperature = 15)
+//	Building(temperature = 20) as Thermal
+//		Radiator(temperature = 20) as Thermal
+//LogOutput(timeScale = Minutes)
+//	Line(name = "Building temperature", value = @buildingTemperature)
+

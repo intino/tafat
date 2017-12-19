@@ -35,21 +35,16 @@ MetaFacet Behavior is abstract
 	has TableFunction is final
 	has:{1..*} Implementation
 
-Concept Implementation is feature
+Concept Implementation is decorable feature
 	var integer step = 1 is terminal private
 	var integer timeout = 0 is private
 	var function:CheckStep checkStep = @checkStep is private
 
 	has Start
 	has PeriodicActivity
-	has Action is final
-	has ConditionalAction is final
-	has SystemDynamic is final
-	has StateChart is final
 	has Task is final
 	has Job is final
 	has Map is final
-	has Fmu is final
 
 MetaFacet Behavior on Entity
 MetaFacet Behavior on Agent

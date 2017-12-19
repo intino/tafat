@@ -1,6 +1,6 @@
 package io.intino.tafat.engine.utils;
 
-import io.intino.tafat.Task;
+import io.intino.tafat.graph.Task;
 import io.intino.tafat.engine.Date;
 import io.intino.tafat.graph.rules.DayOfWeek;
 

@@ -1,6 +1,6 @@
 {
   "ElectricalFridge.vFmu.vFmu.[anonymous@BooleanInput].push": [
-    "import static test.Fridge.Mode.On;"
+    "import static test.graph.Fridge.Mode.On;"
   ],
   "[anonymous@LogOutput].[anonymous@Line].value": [],
   "[anonymous@UserInterface].[anonymous@Heatmap].[anonymous@Square].value": [

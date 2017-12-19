@@ -1,4 +1,4 @@
-package io.intino.tafat;
+package io.intino.tafat.graph;
 
 import io.intino.tafat.engine.Executor;
 import io.intino.tafat.engine.utils.Random;
@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 import static java.lang.Thread.sleep;
 import static spark.Spark.*;
 
-public class TafatGraph extends io.intino.tafat.AbstractGraph {
+public class TafatGraph extends AbstractGraph {
 
     private static final Logger LOG = Logger.getLogger(TafatGraph.class.getName());
     private static ExecutorService executorService = Executors.newFixedThreadPool(1);

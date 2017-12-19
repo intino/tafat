@@ -1,6 +1,6 @@
-package io.intino.tafat;
+package io.intino.tafat.graph;
 
-import io.intino.tafat.periodic.PeriodicTrace;
+import io.intino.tafat.graph.periodic.PeriodicTrace;
 
 public class Control {
 	public static void stop(Stop self) {

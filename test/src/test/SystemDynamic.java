@@ -1,8 +1,9 @@
 package test;
 
 import io.intino.tafat.engine.DifferentialEquation;
-import test.thermal.environment.ThermalBuilding;
-import test.thermal.environment.building.ThermalRadiator;
+import test.graph.Environment;
+import test.graph.thermal.environment.ThermalBuilding;
+import test.graph.thermal.environment.building.ThermalRadiator;
 
 public class SystemDynamic {
 

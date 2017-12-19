@@ -1,11 +1,12 @@
 package test;
 
-import io.intino.tafat.TafatGraph;
+import io.intino.tafat.graph.TafatGraph;
 import io.intino.tara.magritte.Graph;
+import org.junit.Test;
 
 public class BuildingOdeTest {
 
-    @org.junit.Test
+    @Test
     public void ode_test() throws Exception {
         Graph graph = new Graph().loadStashes("BuildingOde");
         graph.as(TafatGraph.class).execute();

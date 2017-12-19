@@ -1,15 +1,12 @@
 package test;
 
-import io.intino.tafat.TafatGraph;
-import org.junit.Before;
+import io.intino.tafat.graph.TafatGraph;
 import io.intino.tara.magritte.Graph;
-
-import java.util.stream.Collectors;
+import org.junit.Before;
+import test.graph.Fridge;
+import test.graph.TestGraph;
 
 import static java.util.stream.Collectors.toList;
-import static junit.framework.TestCase.assertEquals;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 
 public class TableFunctionTest {
 

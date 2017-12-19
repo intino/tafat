@@ -1,6 +1,6 @@
 package io.intino.tafat.engine.tablefunction;
 
-import io.intino.tafat.TableFunction;
+import io.intino.tafat.graph.TableFunction;
 import io.intino.tafat.engine.pointset.Point;
 import io.intino.tafat.engine.pointset.PointSet;
 import io.intino.tara.magritte.Layer;

@@ -1,10 +1,11 @@
 package test;
 
-import io.intino.tafat.TafatGraph;
-import org.junit.Before;
 import io.intino.tafat.engine.Executor;
+import io.intino.tafat.graph.TafatGraph;
 import io.intino.tara.magritte.Graph;
+import org.junit.Before;
 import org.junit.Test;
+import test.graph.TestGraph;
 
 import java.io.ByteArrayOutputStream;
 import java.util.logging.Logger;

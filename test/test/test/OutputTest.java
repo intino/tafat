@@ -1,9 +1,10 @@
 package test;
 
-import io.intino.tafat.TafatGraph;
+import io.intino.tafat.graph.TafatGraph;
 import org.junit.Before;
 import io.intino.tara.magritte.Graph;
 import org.junit.Test;
+import test.graph.TestGraph;
 
 public class OutputTest {
 

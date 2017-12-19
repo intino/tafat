@@ -1,4 +1,4 @@
-package io.intino.tafat;
+package io.intino.tafat.graph;
 
 public class Main {
     public static boolean checkStep(Implementation self, int stepSize) {

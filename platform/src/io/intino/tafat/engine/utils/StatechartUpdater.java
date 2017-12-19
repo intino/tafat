@@ -1,9 +1,9 @@
 package io.intino.tafat.engine.utils;
 
-import io.intino.tafat.StateChart;
-import io.intino.tafat.StateChart.State;
-import io.intino.tafat.StateChart.Transition;
-import io.intino.tafat.StateChart.Transition.TimeBased;
+import io.intino.tafat.graph.StateChart;
+import io.intino.tafat.graph.StateChart.State;
+import io.intino.tafat.graph.StateChart.Transition;
+import io.intino.tafat.graph.StateChart.Transition.TimeBased;
 
 public class StatechartUpdater {
 

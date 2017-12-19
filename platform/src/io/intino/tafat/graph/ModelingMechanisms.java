@@ -1,4 +1,4 @@
-package io.intino.tafat;
+package io.intino.tafat.graph;
 
 import io.intino.tafat.engine.utils.StatechartUpdater;
 
