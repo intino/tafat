@@ -1,15 +1,8 @@
-.idea/workspace.xml
+
 out/
-*/gen/
+platform/res/web/*
 */test-gen/
-Engine/.idea/workspace.xml
-SGIFramework/target
-SGISite/target
-.directory
-deploy/deployproject.xml
-deploy/local
-*/gen/*
-Base/res/
+
 Tafat.language
 dsl/Tafat.reload
 dsl/Tafat/
@@ -19,3 +12,4 @@ site/dist/
 site/bower_components/
 site/.tmp/
 *.stash
+*.conf

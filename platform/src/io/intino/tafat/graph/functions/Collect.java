@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface Collect {
 
-    List<? extends tara.magritte.Layer> collect();
+    List<? extends io.intino.tara.magritte.Layer> collect();
 
 }

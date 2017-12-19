@@ -7,6 +7,6 @@ import java.util.List;
 @FunctionalInterface
 public interface CreateStash {
 
-	tara.io.Stash create(List<? extends SumusOutput.Extractor> extractors);
+	io.intino.tara.io.Stash create(List<? extends SumusOutput.Extractor> extractors);
 
 }
