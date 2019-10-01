@@ -7,5 +7,5 @@ Profiling(seed = 2)
 		execute
 			--
 			TestGraph product = graph.as(TestGraph.class);
-			range(0, 5).forEach(i -> product.create().fridge().power(random.nextDouble()));
+					range(0, 5).forEach(i -> product.create().fridge().power(random.nextDouble()));
 			--

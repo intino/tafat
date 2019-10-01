@@ -1,13 +1,13 @@
 package test;
 
-import io.intino.tafat.graph.behavior.BehaviorEntity;
-import org.junit.Before;
 import io.intino.tafat.graph.TafatGraph;
 import io.intino.tara.magritte.Graph;
+import org.junit.Before;
 import test.graph.Fridge;
+import test.graph.Fridge.ElectricalFridge;
 import test.graph.TestGraph;
-import test.graph.electrical.ElectricalFridge;
 
+import static io.intino.tafat.graph.Entity.BehaviorEntity;
 import static java.util.stream.IntStream.range;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;

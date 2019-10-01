@@ -1,6 +1,8 @@
 package test;
 
-import io.intino.tafat.LogOutput;
+
+import io.intino.tafat.graph.LogOutput;
+import test.graph.TestGraph;
 
 public class BuildingOde {
     public static double buildingTemperature(LogOutput.Line self) {

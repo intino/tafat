@@ -1,8 +1,8 @@
 dsl Test
 
 Simulation(from = "2016-01-01T00:00:00Z", to = "2016-01-01T00:00:20Z")
-	Assertion(that = 'self.core$().graph().first(Fridge.class).power();', shouldBe = '20.0', at = "2016-01-01T00:00:01Z") a1
-	Assertion(that = 'self.core$().graph().first(Fridge.class).power();', shouldBe = '30.0', at = "2016-01-01T00:00:02Z") a2
-	Assertion(that = 'self.core$().graph().first(Fridge.class).power();', shouldBe = '100.0', at = "2016-01-01T00:00:15Z") a3
+	Assertion(that = 'return self.core$().graph().first(Fridge.class).power();', shouldBe = '20.0', at = "2016-01-01T00:00:01Z") a1
+	Assertion(that = 'return self.core$().graph().first(Fridge.class).power();', shouldBe = '30.0', at = "2016-01-01T00:00:02Z") a2
+	Assertion(that = 'return self.core$().graph().first(Fridge.class).power();', shouldBe = '100.0', at = "2016-01-01T00:00:15Z") a3
 
 Fridge(power = 10) f0 as Electrical(v4)

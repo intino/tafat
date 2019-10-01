@@ -1,6 +1,5 @@
 dsl Legio
 
-Project(groupId = "siani.tafat", version = "1.0") toolbox
-	Repositories
-	Dependencies
+Artifact(groupId = "siani.tafat", version = "1.0") toolbox
+	Imports
 		Test(groupId = "junit", artifactId = "junit", version = "4.12")

@@ -1,13 +1,10 @@
 package io.intino.tafat.engine;
 
 import io.intino.tafat.graph.*;
-import io.intino.tafat.graph.conditional.ConditionalTrace;
 import io.intino.tafat.engine.tablefunction.TableFunctionProvider;
 import io.intino.tafat.engine.utils.StatechartUpdater;
+import io.intino.tafat.graph.AbstractImplementation.ParallelizableImplementation;
 import io.intino.tafat.graph.functions.Action;
-import io.intino.tafat.graph.instant.InstantTrace;
-import io.intino.tafat.graph.parallelizable.ParallelizableImplementation;
-import io.intino.tafat.graph.periodic.PeriodicTrace;
 import io.intino.tara.magritte.Graph;
 import io.intino.tara.magritte.Layer;
 
@@ -61,17 +58,17 @@ public class Executor {
     }
 
     private void initTraces() {
-        graph.find(PeriodicTrace.class)
+        graph.find(Trace.PeriodicTrace.class)
                 .forEach(p -> cyclicTimeout(p.timeScale(), traceAction(p.core$().as(Trace.class))));
-        graph.find(InstantTrace.class)
+        graph.find(Trace.InstantTrace.class)
                 .forEach(p -> p.instants().forEach(i -> timeout(i, traceAction(p.core$().as(Trace.class)))));
     }
 
     private Action traceAction(Trace trace) {
         return () -> {
-            if (!trace.core$().is(ConditionalTrace.class))
+            if (!trace.core$().is(Trace.ConditionalTrace.class))
                 LOG.info(trace.print());
-            else if (trace.core$().as(ConditionalTrace.class).check())
+            else if (trace.core$().as(Trace.ConditionalTrace.class).check())
                 LOG.info(trace.print());
         };
     }

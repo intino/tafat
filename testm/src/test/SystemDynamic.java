@@ -2,13 +2,15 @@ package test;
 
 import io.intino.tafat.engine.DifferentialEquation;
 import test.graph.Environment;
-import test.graph.thermal.environment.ThermalBuilding;
-import test.graph.thermal.environment.building.ThermalRadiator;
+import test.graph.Environment.Building.Radiator.ThermalRadiator;
+import test.graph.Environment.Building.ThermalBuilding;
+
+import static test.graph.Environment.*;
 
 public class SystemDynamic {
 
     public static boolean lowTemperature(ThermalRadiator self){
-        return self.core$().ownerAs(Environment.Building.class).temperature() < 18;
+        return self.core$().ownerAs(Building.class).temperature() < 18;
     }
 
     public static void startHeating(ThermalRadiator self){
@@ -16,7 +18,7 @@ public class SystemDynamic {
     }
 
     public static boolean highTemperature(ThermalRadiator self){
-        return self.core$().ownerAs(Environment.Building.class).temperature() > 24;
+        return self.core$().ownerAs(Building.class).temperature() > 24;
     }
 
     public static void stopHeating(ThermalRadiator self){
@@ -38,12 +40,12 @@ public class SystemDynamic {
 
         private final Environment environment;
         private final ThermalBuilding building;
-        private final Environment.Building.Radiator radiator;
+        private final Building.Radiator radiator;
 
         ThermalBuildingOde(ThermalBuilding self) {
             this.environment = self.core$().ownerAs(Environment.class);
             this.building = self;
-            this.radiator = self.radiatorList(0);
+            this.radiator = self.asBuilding().radiator(0);
             init(3, 2);
         }
 
