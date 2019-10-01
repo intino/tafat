@@ -17,4 +17,4 @@ Repository("intino-maven") intino
 	Release("https://artifactory.intino.io/artifactory/release-frameworks") frameworks
 Repository("siani-maven") siani
 	Release("https://artifactory.siani.es/artifactory/libs-release")
-	Release("https://artifactory.siani.es/artifactory/libs-release-local")
+	Release("https://artifactory.siImageHelperani.es/artifactory/libs-release-local")
