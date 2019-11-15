@@ -14,26 +14,27 @@ Concept:{1..1} Simulation
 
 MetaConcept Agent
 	has Knol
+	MetaAspect Layer
+	MetaAspect Behavior
+	Aspect Listener
+		var function:Message receiveMessage
 
-Facet Listener on Agent
-	var function:Message receiveMessage
+Facet Behavior
+	var string implementation = "" is private
+	var integer step = 1 is terminal
+	has Rule is final
+	has TableFunction is final
+	has:{1..*} Implementation
+
 
 MetaConcept Entity
 	has Entity
 	has Agent
 	MetaConcept Feature into feature
 		has Feature
-
-MetaFacet Aspect on Agent
-MetaFacet Aspect on Entity
-	has TableFunction is final
-
-MetaFacet Behavior is abstract
-	var string implementation = "" is private
-	var integer step = 1 is terminal
-	has Rule is final
-	has TableFunction is final
-	has:{1..*} Implementation
+	MetaAspect Layer
+		has TableFunction is final
+	MetaAspect Behavior
 
 Concept Implementation is decorable feature
 	var integer step = 1 is terminal private
@@ -46,10 +47,7 @@ Concept Implementation is decorable feature
 	has Job is final
 	has Map is final
 
-MetaFacet Behavior on Entity
-MetaFacet Behavior on Agent
-
-Facet Parallelizable on Implementation
+	Aspect Parallelizable
 
 Concept Output
 	var function:Action init is final

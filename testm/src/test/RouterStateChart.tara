@@ -3,13 +3,13 @@ dsl Tafat
 Entity Router
 	var word:{On Off} mode = Off
 
-Behavior Electrical on Router
-	Implementation
-		StateChart
-			State Idle > EntryAction('System.out.println("Idle")')
-			State Working > EntryAction('System.out.println("Working")')
-				State Connecting > EntryAction('System.out.println("Connecting")')
-				State Connected > EntryAction('System.out.println("Connected")')
-				Transition(Connecting, Connected) > After(15 seconds)
-			Transition(Idle, Working) > Condition(@checkIsOn)
-			Transition(Working, Idle) > Condition(@checkIsOff)
+	Behavior Electrical
+		Implementation
+			StateChart
+				State Idle > EntryAction('System.out.println("Idle")')
+				State Working > EntryAction('System.out.println("Working")')
+					State Connecting > EntryAction('System.out.println("Connecting")')
+					State Connected > EntryAction('System.out.println("Connected")')
+					Transition(Connecting, Connected) > After(15 seconds)
+				Transition(Idle, Working) > Condition(@checkIsOn)
+				Transition(Working, Idle) > Condition(@checkIsOff)

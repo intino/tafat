@@ -3,7 +3,6 @@ package io.intino.tafat.engine;
 import io.intino.tafat.graph.*;
 import io.intino.tafat.engine.tablefunction.TableFunctionProvider;
 import io.intino.tafat.engine.utils.StatechartUpdater;
-import io.intino.tafat.graph.AbstractImplementation.ParallelizableImplementation;
 import io.intino.tafat.graph.functions.Action;
 import io.intino.tara.magritte.Graph;
 import io.intino.tara.magritte.Layer;
@@ -58,17 +57,17 @@ public class Executor {
     }
 
     private void initTraces() {
-        graph.find(Trace.PeriodicTrace.class)
+        graph.find(Trace.Periodic.class)
                 .forEach(p -> cyclicTimeout(p.timeScale(), traceAction(p.core$().as(Trace.class))));
-        graph.find(Trace.InstantTrace.class)
+        graph.find(Trace.Instant.class)
                 .forEach(p -> p.instants().forEach(i -> timeout(i, traceAction(p.core$().as(Trace.class)))));
     }
 
     private Action traceAction(Trace trace) {
         return () -> {
-            if (!trace.core$().is(Trace.ConditionalTrace.class))
+            if (!trace.core$().is(Trace.Conditional.class))
                 LOG.info(trace.print());
-            else if (trace.core$().as(Trace.ConditionalTrace.class).check())
+            else if (trace.core$().as(Trace.Conditional.class).check())
                 LOG.info(trace.print());
         };
     }
@@ -134,7 +133,7 @@ public class Executor {
 
     private boolean isParallelizable(Implementation implementation) {
         return !implementation.periodicActivityList().isEmpty() &&
-                implementation.core$().is(ParallelizableImplementation.class);
+                implementation.core$().is(Implementation.Parallelizable.class);
     }
 
     private void purgeImplementations() {

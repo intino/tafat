@@ -5,7 +5,7 @@ public class Control {
 		self.graph().core$().as(TafatGraph.class).stop();
 	}
 
-	public static boolean checkStep(Trace.PeriodicTrace self) {
+	public static boolean checkStep(Trace.Periodic self) {
 		if (self.timeout() == 0) {
 			self.timeout(self.timeScale().toSeconds() - 1);
 			return true;
