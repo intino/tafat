@@ -1,7 +1,7 @@
 package test;
 
-import io.intino.tafat.graph.TafatGraph;
-import io.intino.tara.magritte.Graph;
+import io.intino.tafat.model.TafatGraph;
+import io.intino.magritte.framework.Graph;
 import org.junit.Test;
 
 public class BuildingOdeTest {

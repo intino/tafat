@@ -1,11 +1,11 @@
 package io.intino.tafat.engine;
 
-import io.intino.tafat.graph.*;
+import io.intino.tafat.model.*;
 import io.intino.tafat.engine.tablefunction.TableFunctionProvider;
 import io.intino.tafat.engine.utils.StatechartUpdater;
-import io.intino.tafat.graph.functions.Action;
-import io.intino.tara.magritte.Graph;
-import io.intino.tara.magritte.Layer;
+import io.intino.tafat.model.functions.Action;
+import io.intino.magritte.framework.Graph;
+import io.intino.magritte.framework.Layer;
 
 import java.time.temporal.ChronoUnit;
 import java.util.List;

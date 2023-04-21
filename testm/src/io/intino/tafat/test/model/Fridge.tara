@@ -1,0 +1,85 @@
+dsl Tafat 
+
+
+Entity Fridge
+	var word:{On Off} mode = Off
+	var double power = 0
+
+	Behavior Electrical
+    	var word:{v1 v2 v3 v4 v5 v6 vFmu} implementation
+    	var integer value = -1
+    	Implementation v1
+    		StateChart
+    			State On
+    			State Off
+    			Transition(from = On, to = Off) > Condition('true')
+
+    	Implementation v2
+    		StateChart
+    			State Off > EntryAction('self.value(0)')
+    			State On
+    				State Heating > EntryAction('self.value(1000)')
+    				State Washing > EntryAction('self.value(500)')
+    				State Drying > EntryAction('self.value(800);')
+    				Transition(from = Heating, to = Washing) > Timeout('20')
+    				Transition(from = Washing, to = Drying) > Timeout('20')
+    				Transition(from = Drying, to = Off) > Timeout('20')
+    			Transition(from = Off, to = On) > Message("ON")
+
+    	Implementation v3
+    		StateChart
+    			State s0 > EntryAction('self.value(0)')
+    			State s1
+    				State s0 > EntryAction('self.value(self.value() + 1)'); ExitAction('self.value(self.value() + 3)')
+    				State s1
+    					State s0
+    					State s1 > EntryAction('self.value(self.value() + 2)')
+    				Transition(s0, s1.s1, 'self.value(self.value() + 20)') > Condition('true')
+    			Transition(s0, s1, 'self.value(self.value() + 20)') > Condition('true')
+
+    	Implementation v4
+    		Action > action
+    				--
+    				if(self.power() <= 100) self.power(self.power() + 10);
+    				else self.power(0);
+    				--
+
+    	Implementation v5
+
+
+    	Implementation v6
+
+    	Implementation vFmu
+    		Fmu(file = "res/Fridge.fmu", step = 1) vFmu
+    			BooleanInput("on", 'return self.mode() == Mode.On;')
+    			RealOutput("power", 'self.power(value)')
+
+Agent Family
+	Behavior Consumer
+    	var word:{Simple Complex} implementation
+    	Implementation Simple
+    	TableFunction > LinearInterpolation; NoneExtrapolation
+    		Data(0, 0)
+    		Data(6, 0)
+    		Data(8, 200)
+    		Data(14, 400)
+    		Data(20, 300)
+    		Data(23, 0)
+    	Implementation Complex
+	Behavior Consumer2
+		Implementation
+			Task > Start("06:00", 10 minutes); Duration(120 minutes, 10 minutes)
+				StartAction('System.out.println("Switching on lights")')
+
+			Task(Monday Tuesday Wednesday Thursday Friday) > Start("06:30", 20 minutes)
+				StartAction('System.out.println("Making coffee")')
+
+			Task(Saturday Sunday) > Start("14:00", 25 minutes); Duration(90 minutes, 25 minutes)
+				StartAction('System.out.println("Switching on oven")')
+				EndAction('System.out.println("Switching off oven")')
+
+			Task > Start("20:00", 5 minutes); Duration(60 minutes, 5 minutes)
+				StartAction('System.out.println("Watching TV")')
+
+			Task > Start("22:00", 15 minutes); Duration(30 minutes, 15 minutes)
+				StartAction('System.out.println("Having a bath")')

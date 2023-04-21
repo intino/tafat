@@ -1,8 +1,8 @@
 package io.intino.tafat.engine.utils;
 
-import io.intino.tafat.graph.Task;
+import io.intino.tafat.model.Task;
 import io.intino.tafat.engine.Date;
-import io.intino.tafat.graph.rules.DayOfWeek;
+import io.intino.tafat.model.rules.DayOfWeek;
 
 import java.time.Instant;
 import java.time.LocalTime;

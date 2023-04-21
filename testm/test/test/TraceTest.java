@@ -1,10 +1,10 @@
 package test;
 
-import io.intino.tafat.graph.TafatGraph;
-import io.intino.tara.magritte.Graph;
+import io.intino.tafat.model.TafatGraph;
+import io.intino.magritte.framework.Graph;
 import org.junit.Before;
 import org.junit.Test;
-import test.graph.TestGraph;
+import io.intino.tafat.test.model.TestGraph;
 
 public class TraceTest {
 

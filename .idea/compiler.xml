@@ -10,6 +10,9 @@
       <entry name="!?*.flex" />
       <entry name="!?*.kt" />
       <entry name="!?*.clj" />
+      <entry name="!?*.tara" />
+      <entry name="!?*.itr" />
+      <entry name="!?*.konos" />
     </wildcardResourcePatterns>
     <annotationProcessing>
       <profile name="Annotation profile for test" enabled="true">

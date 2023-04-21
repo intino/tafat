@@ -1,11 +1,12 @@
 package test;
 
-import io.intino.tafat.graph.Entity;
-import io.intino.tafat.graph.TafatGraph;
-import io.intino.tara.magritte.Graph;
+import io.intino.tafat.model.Entity;
+import io.intino.tafat.model.TafatGraph;
+import io.intino.magritte.framework.Graph;
+import io.intino.tafat.test.model.Fridge;
 import org.junit.Before;
-import test.graph.Fridge;
-import test.graph.TestGraph;
+import io.intino.tafat.test.model.TestGraph;
+import org.junit.Test;
 
 import static java.util.stream.IntStream.range;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -24,7 +25,7 @@ public class StateChartTest {
 		platform.init();
 	}
 
-	@org.junit.Test
+	@Test
 	public void should_initially_be_in_state_on_and_after_updating_in_state_off() throws Exception {
 		Fridge fridge = product.fridgeList().get(0);
 		assertThat(fridge.core$().as(Entity.Behavior.class).implementation(0).stateChart(0).current().name$(), is("On"));
@@ -32,8 +33,8 @@ public class StateChartTest {
 		assertThat(fridge.core$().as(Entity.Behavior.class).implementation(0).stateChart(0).current().name$(), is("Off"));
 	}
 
-	@org.junit.Test
-	public void should_pass_all_stages_correctly() throws Exception {
+	@Test
+	public void should_pass_all_stages_correctly() {
 		Fridge fridge = product.fridgeList().get(1);
 		assertThat(fridge.core$().as(Entity.Behavior.class).implementation(0).stateChart(0).current().name$(), is("Off"));
 		assertThat(fridge.core$().as(Fridge.Electrical.class).value(), is(-1));
@@ -74,7 +75,7 @@ public class StateChartTest {
 		assertThat(fridge.core$().as(Fridge.Electrical.class).value(), is(0));
 	}
 
-	@org.junit.Test
+	@Test
 	public void after_updating_value_must_be_45() throws Exception {
 		Fridge fridge = product.fridgeList().get(2);
 		platform.run();

@@ -1,13 +1,13 @@
 package test;
 
-import io.intino.tafat.graph.TafatGraph;
-import io.intino.tara.magritte.Graph;
+import io.intino.magritte.framework.Graph;
+import io.intino.tafat.model.TafatGraph;
+import io.intino.tafat.test.model.TestGraph;
 import org.junit.Test;
-import test.graph.TestGraph;
 
+import static io.intino.tafat.test.model.Fridge.Mode.Off;
+import static io.intino.tafat.test.model.Fridge.Mode.On;
 import static junit.framework.TestCase.assertEquals;
-import static test.graph.Fridge.Mode.Off;
-import static test.graph.Fridge.Mode.On;
 
 public class FmuModelTest {
 

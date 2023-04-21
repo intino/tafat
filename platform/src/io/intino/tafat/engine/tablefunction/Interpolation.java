@@ -1,6 +1,6 @@
 package io.intino.tafat.engine.tablefunction;
 
-import io.intino.tafat.graph.TableFunction;
+import io.intino.tafat.model.TableFunction;
 import io.intino.tafat.engine.pointset.PointSet;
 import io.intino.tafat.engine.tablefunction.functions.*;
 

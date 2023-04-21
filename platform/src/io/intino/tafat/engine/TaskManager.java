@@ -1,6 +1,6 @@
 package io.intino.tafat.engine;
 
-import io.intino.tafat.graph.Task;
+import io.intino.tafat.model.Task;
 
 import java.time.Instant;
 import java.util.ArrayList;

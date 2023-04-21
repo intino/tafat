@@ -1,9 +1,9 @@
 package io.intino.tafat.engine.tablefunction;
 
-import io.intino.tafat.graph.TableFunction;
+import io.intino.tafat.model.TableFunction;
 import io.intino.tafat.engine.pointset.Point;
 import io.intino.tafat.engine.pointset.PointSet;
-import io.intino.tara.magritte.Layer;
+import io.intino.magritte.framework.Layer;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
